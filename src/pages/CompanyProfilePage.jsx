@@ -64,7 +64,7 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* Corporate History & Extended Vision */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', marginBottom: '60px', alignItems: 'center' }}>
+        <div className="grid-about-container" style={{ marginBottom: '60px' }}>
           <div>
             <span style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>12+ Years Legacy</span>
             <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '20px', color: '#FFFFFF', marginTop: '6px' }}>
@@ -247,7 +247,7 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
 
         {/* NEW FEATURE 2: Interactive Campus Visit Booking Form */}
         <div style={{ background: '#0F172A', padding: '40px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
+          <div className="grid-about-container">
             <div>
               <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Schedule a Visit</span>
               <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px', marginBottom: '16px' }}>

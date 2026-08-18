@@ -225,7 +225,7 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
             <p style={{ color: '#94A3B8', fontSize: '0.94rem' }}>Select your expected software type and branch size to calculate an estimated deployment investment.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center', background: '#070A12', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+          <div className="grid-about-container" style={{ background: '#070A12', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
             <div>
               <div className="form-group">
                 <label className="form-label">Software Product Type *</label>

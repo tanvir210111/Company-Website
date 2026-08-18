@@ -1083,6 +1083,25 @@ html, body {
     box-sizing: border-box;
   }
 
+  /* Grid Overrides for Mobile */
+  .grid-contact-container,
+  .grid-2col-row,
+  .grid-about-container,
+  .grid-message-container,
+  .grid-profile-container {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .section {
+    padding: 40px 16px !important;
+  }
+  .section-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   /* Modals */
   .modal-card {
     max-width: calc(100vw - 24px) !important;

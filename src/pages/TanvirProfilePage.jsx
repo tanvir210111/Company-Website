@@ -240,7 +240,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
         </div>
 
         {/* MAIN DETAILS GRID */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginBottom: '50px' }}>
+        <div className="grid-profile-container">
           
           {/* LEFT COLUMN: Detailed Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

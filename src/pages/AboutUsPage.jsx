@@ -403,7 +403,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
 
         {/* DETAILED TEXT SECTION 1: Detailed Corporate Background & Philosophy */}
         <div style={{ background: '#0F172A', padding: '44px 36px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', alignItems: 'center' }}>
+          <div className="grid-about-container">
             <div>
               <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Deep Dive</span>
               <h2 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px', marginBottom: '18px' }}>
