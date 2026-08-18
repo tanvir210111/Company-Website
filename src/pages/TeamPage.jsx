@@ -6,7 +6,7 @@ const TEAM_MEMBERS = [
     id: 1,
     name: "Engr. Tanvir Hossain Khan",
     role: "Managing Director & Chief Tech Strategist",
-    category: "Software development",
+    category: "Software Development",
     bio: "15+ years experience in enterprise software architecture, IT governance, and academic institute management. Leads organizational vision and corporate strategy.",
     avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
     skills: ["Software Architecture", "IT Governance", "Corporate Strategy"],
@@ -17,7 +17,7 @@ const TEAM_MEMBERS = [
     id: 2,
     name: "Md. Rahat Chowdhury",
     role: "Head of Software Engineering & Lead Trainer",
-    category: "Software development",
+    category: "Software Development",
     bio: "Senior Full Stack Engineer specializing in ReactJS, Node.js, Python Django, and Laravel frameworks. Mentored 1,500+ developers in BD.",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
     skills: ["ReactJS", "Python Django", "Laravel", "System Architecture"],
@@ -27,7 +27,7 @@ const TEAM_MEMBERS = [
     id: 3,
     name: "Mohammad Saniyat Zaman Khan",
     role: "Lead UI/UX & Graphics Design Instructor",
-    category: "creative media",
+    category: "Creative Media",
     bio: "Award-winning designer with 7+ years of experience training students in Figma, Adobe Illustrator, Photoshop, AutoCAD, and UI Research.",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
     skills: ["Figma", "Adobe Illustrator", "Photoshop", "UI/UX Research"],
@@ -37,7 +37,7 @@ const TEAM_MEMBERS = [
     id: 4,
     name: "Sharmin Sultana",
     role: "Director of Digital Marketing & SEO Services",
-    category: "creative media",
+    category: "Creative Media",
     bio: "Certified Google & Meta Ads Specialist. Has managed 200+ high-ROI growth campaigns for local and international e-commerce clients.",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
     skills: ["Advanced SEO", "Facebook Ads", "Google Ads", "Content Strategy"],
@@ -47,7 +47,7 @@ const TEAM_MEMBERS = [
     id: 5,
     name: "Tanzin Anik Kabir",
     role: "Senior Mobile & Full-Stack Developer",
-    category: "Software development",
+    category: "Software Development",
     bio: "Mobile app engineering expert specializing in Flutter, React Native, and ASP.NET Core microservice backend architectures.",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
     skills: ["Flutter Apps", "ASP.NET Core", "REST APIs", "SQL Server"],
@@ -57,7 +57,7 @@ const TEAM_MEMBERS = [
     id: 6,
     name: "Kazi Mahmudul Hasan",
     role: "Senior Python & Data Science Instructor",
-    category: "Software development",
+    category: "Software Development",
     bio: "Data Scientist & Python mentor. Teaches C, C++, Data Structures, Algorithms, and Machine Learning fundamentals.",
     avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80",
     skills: ["Python ML", "C & C++", "Data Structures", "PostgreSQL"],
@@ -67,7 +67,7 @@ const TEAM_MEMBERS = [
     id: 7,
     name: "Farhana Akter",
     role: "Lead WordPress & E-Commerce Web Trainer",
-    category: "Software development",
+    category: "Software Development",
     bio: "WordPress theme developer and WooCommerce specialist. Mentored 800+ freelancing students on Fiverr and Upwork.",
     avatar: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80",
     skills: ["WordPress", "WooCommerce", "Elementor Pro", "Fiverr freelancing"],
@@ -77,7 +77,7 @@ const TEAM_MEMBERS = [
     id: 8,
     name: "Sabrina Ahmed",
     role: "Lead UI Research & Design Specialist",
-    category: "creative media",
+    category: "Creative Media",
     bio: "Specializes in mobile design systems, accessibility standards, interactive wireframing, and design sprint facilitation.",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
     skills: ["Design Systems", "Figma Components", "User Testing", "Prototypes"],
@@ -87,7 +87,7 @@ const TEAM_MEMBERS = [
     id: 9,
     name: "Mehedi Hasan",
     role: "Cloud DevOps & Network Lab Specialist",
-    category: "it department",
+    category: "IT Department",
     bio: "AWS & Docker engineer managing Media Scope IT server infrastructure and lab Linux deployment environments.",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
     skills: ["Docker", "Linux Admin", "AWS Cloud", "CI/CD Pipelines"],
@@ -97,7 +97,7 @@ const TEAM_MEMBERS = [
     id: 10,
     name: "Nusrat Jahan",
     role: "Academic Coordinator & Student Placement Lead",
-    category: "it department",
+    category: "IT Department",
     bio: "Coordinates Dhanmondi lab ops, batch schedules, certificate verification, and job interview placement referrals.",
     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80",
     skills: ["Student Counseling", "Job Placement", "Lab Operations"],
@@ -158,7 +158,7 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
 
         {/* Filter Tabs */}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
-          {["All", "Software development", "creative media", "it department"].map(cat => (
+          {["All", "Software Development", "Creative Media", "IT Department"].map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedFilter(cat)}
