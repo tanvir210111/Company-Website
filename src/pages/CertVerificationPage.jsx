@@ -144,11 +144,11 @@ export default function CertVerificationPage({ onNavigate }) {
           </p>
 
           {/* Search Box */}
-          <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', gap: '12px' }}>
+          <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <input 
               type="text" 
               className="form-input" 
-              style={{ fontSize: '1.05rem', padding: '12px 18px', textTransform: 'uppercase', letterSpacing: '1px', background: '#070A12' }}
+              style={{ fontSize: '1.05rem', padding: '12px 18px', textTransform: 'uppercase', letterSpacing: '1px', background: '#070A12', flex: '1 1 200px' }}
               placeholder="e.g. MS-2026-101"
               value={certId}
               onChange={(e) => setCertId(e.target.value)}
@@ -156,7 +156,7 @@ export default function CertVerificationPage({ onNavigate }) {
             <button 
               onClick={() => handleVerify(certId)} 
               className="btn-primary" 
-              style={{ padding: '12px 24px', fontSize: '0.95rem', whiteSpace: 'nowrap' }}
+              style={{ padding: '12px 24px', fontSize: '0.95rem', whiteSpace: 'nowrap', flex: '1 1 140px', justifyContent: 'center' }}
             >
               <Search size={18} /> Verify Credentials
             </button>
@@ -179,38 +179,39 @@ export default function CertVerificationPage({ onNavigate }) {
 
         {/* OFFICIAL DIGITAL CERTIFICATE SHOWCASE CONTAINER */}
         {verifiedResult && (
-          <div className="printable-certificate-outer" style={{ marginBottom: '50px' }}>
-            <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontWeight: 800, fontSize: '1.1rem' }}>
-                <CheckCircle2 size={22} /> Official Verified Certificate & Transcript
+          <div className="cert-scroll-wrapper">
+            <div className="printable-certificate-outer" style={{ marginBottom: '50px', minWidth: '700px' }}>
+              <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontWeight: 800, fontSize: '1.1rem' }}>
+                  <CheckCircle2 size={22} /> Official Verified Certificate & Transcript
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button 
+                    onClick={handleDownloadPDF} 
+                    className="btn-primary" 
+                    disabled={isGenerating}
+                    style={{ fontSize: '0.88rem', padding: '10px 18px', gap: '8px' }}
+                  >
+                    <Download size={16} /> {isGenerating ? 'Generating PDF...' : 'Download PDF Certificate'}
+                  </button>
+
+                  <button onClick={handlePrint} className="btn-secondary" style={{ fontSize: '0.88rem', padding: '10px 18px', gap: '8px' }}>
+                    <Printer size={16} /> Print Preview
+                  </button>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button 
-                  onClick={handleDownloadPDF} 
-                  className="btn-primary" 
-                  disabled={isGenerating}
-                  style={{ fontSize: '0.88rem', padding: '10px 18px', gap: '8px' }}
-                >
-                  <Download size={16} /> {isGenerating ? 'Generating PDF...' : 'Download PDF Certificate'}
-                </button>
-
-                <button onClick={handlePrint} className="btn-secondary" style={{ fontSize: '0.88rem', padding: '10px 18px', gap: '8px' }}>
-                  <Printer size={16} /> Print Preview
-                </button>
-              </div>
-            </div>
-
-            {/* PRESTIGIOUS LUXURY CERTIFICATE CANVAS FRAME - ONLY THIS BOX IS DOWNLOADED / PRINTED */}
-            <div className="printable-certificate" style={{
-              background: '#0F172A',
-              borderRadius: '20px',
-              border: '10px double #00B4D8',
-              boxShadow: '0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 180, 216, 0.25)',
-              padding: '36px 32px',
-              position: 'relative',
-              overflow: 'hidden'
-            }}>
+              {/* PRESTIGIOUS LUXURY CERTIFICATE CANVAS FRAME - ONLY THIS BOX IS DOWNLOADED / PRINTED */}
+              <div className="printable-certificate" style={{
+                background: '#0F172A',
+                borderRadius: '20px',
+                border: '10px double #00B4D8',
+                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 180, 216, 0.25)',
+                padding: '36px 32px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
               {/* Translucent Background Watermark Logo */}
               <div style={{
                 position: 'absolute',
@@ -361,6 +362,7 @@ export default function CertVerificationPage({ onNavigate }) {
               </div>
             </div>
           </div>
+        </div>
         )}
       </div>
     </div>

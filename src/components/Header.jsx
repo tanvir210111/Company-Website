@@ -4,6 +4,11 @@ import { Phone, Mail, Award, BookOpen, ChevronDown, Menu, X, Briefcase, Graduati
 export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, onNavigate, currentUser, onOpenAuth, onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [mobileAccordion, setMobileAccordion] = useState(null);
+
+  const toggleMobileAccordion = (section) => {
+    setMobileAccordion(prev => prev === section ? null : section);
+  };
 
   const handleNavClick = (pageId, sectionHash = null) => {
     setActiveDropdown(null);
@@ -353,40 +358,152 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Full-Screen Mobile Drawer Menu with Accordion Sub-Menus */}
       {mobileMenuOpen && (
         <div style={{
           position: 'fixed',
-          top: '110px',
+          top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: '#0F172A',
+          background: '#070A12',
           color: 'white',
-          zIndex: 999,
-          padding: '24px',
-          overflowY: 'auto'
+          zIndex: 2500,
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch'
         }}>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            <li><button onClick={() => handleNavClick('home')} style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Home</button></li>
-            <li><button onClick={() => handleNavClick('about-us')} style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>About Us Hub</button></li>
-            <li><button onClick={() => handleNavClick('courses')} style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Training Courses Hub</button></li>
-            <li><button onClick={() => handleNavClick('services')} style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Services Hub</button></li>
-            <li><button onClick={() => handleNavClick('web-services')} style={{ fontSize: '1rem', fontWeight: 600, color: '#94A3B8', paddingLeft: '14px', background: 'none', border: 'none', cursor: 'pointer' }}>— Web Design & Dev Services</button></li>
-            <li><button onClick={() => handleNavClick('marketing-services')} style={{ fontSize: '1rem', fontWeight: 600, color: '#94A3B8', paddingLeft: '14px', background: 'none', border: 'none', cursor: 'pointer' }}>— Digital Marketing Services</button></li>
-            <li><button onClick={() => handleNavClick('software-services')} style={{ fontSize: '1rem', fontWeight: 600, color: '#94A3B8', paddingLeft: '14px', background: 'none', border: 'none', cursor: 'pointer' }}>— Enterprise Software Systems</button></li>
-            <li><button onClick={() => handleNavClick('other-services')} style={{ fontSize: '1rem', fontWeight: 600, color: '#94A3B8', paddingLeft: '14px', background: 'none', border: 'none', cursor: 'pointer' }}>— IT Consulting Services</button></li>
-            <li><button onClick={() => handleNavClick('home', 'blogs')} style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Blog</button></li>
-            <li><button onClick={() => handleNavClick('home', 'contact')} style={{ fontSize: '1.1rem', fontWeight: 700, color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Contact Us</button></li>
-            <li style={{ paddingTop: '20px', borderTop: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <button onClick={() => { setMobileMenuOpen(false); onOpenAdmission(); }} className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+          {/* Drawer Header Bar */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '16px 20px',
+            borderBottom: '1px solid var(--border-light)',
+            background: '#0F172A',
+            position: 'sticky',
+            top: 0,
+            zIndex: 10
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src="/logo.jpeg" alt="Logo" style={{ height: '36px', borderRadius: '4px' }} />
+              <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#FFFFFF' }}>MEDIA SCOPE IT LTD</span>
+            </div>
+            <button 
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <X size={22} />
+            </button>
+          </div>
+
+          {/* Drawer Links Body */}
+          <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {/* Home */}
+            <button 
+              onClick={() => handleNavClick('home')} 
+              style={{ textAlign: 'left', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#F8FAFC', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer' }}
+            >
+              Home
+            </button>
+
+            {/* About Us Accordion */}
+            <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <button 
+                onClick={() => toggleMobileAccordion('about')}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#F8FAFC', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer' }}
+              >
+                <span>About Us</span>
+                <ChevronDown size={18} style={{ transform: mobileAccordion === 'about' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              </button>
+              {mobileAccordion === 'about' && (
+                <div style={{ paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
+                  <button onClick={() => handleNavClick('about-us')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#FF6B00', fontWeight: 600, fontSize: '0.92rem', cursor: 'pointer' }}>— About Us Hub</button>
+                  <button onClick={() => handleNavClick('company-profile')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Company Profile</button>
+                  <button onClick={() => handleNavClick('md-message')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Message From MD</button>
+                  <button onClick={() => handleNavClick('team')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Our Team</button>
+                  <button onClick={() => handleNavClick('our-clients')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Our Corporate Clients</button>
+                </div>
+              )}
+            </div>
+
+            {/* Training Courses Accordion */}
+            <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <button 
+                onClick={() => toggleMobileAccordion('courses')}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#F8FAFC', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer' }}
+              >
+                <span>Training Courses</span>
+                <ChevronDown size={18} style={{ transform: mobileAccordion === 'courses' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              </button>
+              {mobileAccordion === 'courses' && (
+                <div style={{ paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
+                  <button onClick={() => handleNavClick('courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#FF6B00', fontWeight: 600, fontSize: '0.92rem', cursor: 'pointer' }}>— Courses Overview Hub</button>
+                  <button onClick={() => handleNavClick('web-courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Web Design & Development</button>
+                  <button onClick={() => handleNavClick('graphics-courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Graphics & UX/UI Design</button>
+                  <button onClick={() => handleNavClick('marketing-courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Digital Marketing & SEO</button>
+                  <button onClick={() => handleNavClick('software-courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Software Dev (Laravel / ASP.NET)</button>
+                  <button onClick={() => handleNavClick('programming-courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Programming (C / Python / Java)</button>
+                  <button onClick={() => handleNavClick('others-courses')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Office Management & Freelancing</button>
+                </div>
+              )}
+            </div>
+
+            {/* Services Accordion */}
+            <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <button 
+                onClick={() => toggleMobileAccordion('services')}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#F8FAFC', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer' }}
+              >
+                <span>Software & Services</span>
+                <ChevronDown size={18} style={{ transform: mobileAccordion === 'services' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              </button>
+              {mobileAccordion === 'services' && (
+                <div style={{ paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '10px' }}>
+                  <button onClick={() => handleNavClick('services')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#00B4D8', fontWeight: 600, fontSize: '0.92rem', cursor: 'pointer' }}>— Services Overview Hub</button>
+                  <button onClick={() => handleNavClick('web-services')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Web Design & Development</button>
+                  <button onClick={() => handleNavClick('marketing-services')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Digital Marketing Services</button>
+                  <button onClick={() => handleNavClick('software-services')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• Enterprise Software Systems</button>
+                  <button onClick={() => handleNavClick('other-services')} style={{ textAlign: 'left', padding: '8px 12px', background: 'none', border: 'none', color: '#94A3B8', fontWeight: 500, fontSize: '0.9rem', cursor: 'pointer' }}>• IT Consulting & Mobile Apps</button>
+                </div>
+              )}
+            </div>
+
+            {/* Certificate Verification */}
+            <button 
+              onClick={() => { setMobileMenuOpen(false); if (onScrollToCert) onScrollToCert(); }} 
+              style={{ textAlign: 'left', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#00B4D8', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
+              <Award size={18} /> Verify Certificate
+            </button>
+
+            {/* Blog */}
+            <button 
+              onClick={() => handleNavClick('home', 'blogs')} 
+              style={{ textAlign: 'left', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#F8FAFC', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer' }}
+            >
+              Blog
+            </button>
+
+            {/* Contact */}
+            <button 
+              onClick={() => handleNavClick('home', 'contact')} 
+              style={{ textAlign: 'left', padding: '12px 14px', borderRadius: '8px', background: 'none', border: 'none', color: '#F8FAFC', fontWeight: 700, fontSize: '1.05rem', cursor: 'pointer' }}
+            >
+              Contact Us
+            </button>
+
+            {/* Action Buttons */}
+            <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenAdmission(); }} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '12px' }}>
                 <GraduationCap size={18} /> Online Admission
               </button>
-              <button onClick={() => { setMobileMenuOpen(false); onOpenQuote(); }} className="btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenQuote(); }} className="btn-secondary" style={{ width: '100%', justifyContent: 'center', padding: '12px' }}>
                 <Briefcase size={16} /> Request Quotation
               </button>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       )}
     </header>

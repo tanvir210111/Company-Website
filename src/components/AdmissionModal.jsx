@@ -136,7 +136,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label">Mobile Number *</label>
                 <input 
@@ -162,7 +162,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label">Class Mode *</label>
                 <select 
@@ -201,7 +201,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
           <form onSubmit={handleFinalPaymentSubmit}>
             <h4 style={{ fontSize: '1rem', color: '#FFFFFF', fontWeight: 700, marginBottom: '14px' }}>Select Payment Method:</h4>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '10px', marginBottom: '20px' }}>
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, paymentMethod: 'bkash' })}

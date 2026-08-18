@@ -922,7 +922,26 @@ button {
   color: #64748B;
 }
 
-/* Responsive Media Queries */
+/* Responsive Media Queries & Mobile System */
+html, body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+.cert-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 12px;
+}
+
 @media (max-width: 992px) {
   .hero-container {
     grid-template-columns: 1fr;
@@ -938,18 +957,109 @@ button {
     display: none;
   }
   .mobile-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
-@media (max-width: 600px) {
+
+@media (max-width: 768px) {
+  .top-bar-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+  }
+  .top-contact {
+    gap: 12px;
+    font-size: 0.78rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .top-actions {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cert-verify-btn {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+  .header-container {
+    padding: 10px 14px;
+  }
+  .logo-text h1 {
+    font-size: 1.05rem;
+  }
+  .logo-text span {
+    font-size: 0.62rem;
+  }
+  .hero-section {
+    padding: 40px 16px;
+  }
   .hero-title {
-    font-size: 2.1rem;
+    font-size: 2rem;
+  }
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-actions .btn-primary, 
+  .hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .modal-card {
+    max-width: 95vw;
+    padding: 20px 16px;
+    max-height: 88vh;
+    border-radius: var(--radius-md);
+  }
+  .modal-close {
+    top: 12px;
+    right: 12px;
+  }
+  .floating-widget {
+    bottom: 16px;
+    right: 16px;
+    gap: 8px;
+  }
+  .float-btn {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-box img {
+    height: 38px !important;
+  }
+  .logo-text h1 {
+    font-size: 0.92rem;
+  }
+  .logo-text span {
+    display: none;
+  }
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  .hero-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .footer-container {
     grid-template-columns: 1fr;
+    gap: 28px;
   }
-  .courses-grid, .services-grid {
+  .courses-grid, .services-grid, .team-grid, .blog-grid {
     grid-template-columns: 1fr;
+  }
+  .form-group-row {
+    flex-direction: column !important;
+    gap: 12px !important;
   }
 }
 
