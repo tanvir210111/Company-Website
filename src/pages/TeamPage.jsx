@@ -15,44 +15,44 @@ const TEAM_MEMBERS = [
     github: "https://github.com/tanvir210111"
   },
   {
-    id: 3,
-    name: "Mohammad Saniyat Zaman Khan",
-    role: "Lead UI/UX & Graphics Design Instructor",
+    id: 2,
+    name: "Nashimul Hasan Nibir",
+    role: "Video Editor",
     category: "Creative Media",
-    bio: "Award-winning designer with 7+ years of experience training students in Figma, Adobe Illustrator, Photoshop, AutoCAD, and UI Research.",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
-    skills: ["Figma", "Adobe Illustrator", "Photoshop", "UI/UX Research"],
-    experience: "7+ Years Exp"
+    bio: "Creative Video Editor specializing in high-quality video production, motion graphics, and visual content strategy.",
+    avatar: "/Team/Nashimul Hasan Nibir.jpg",
+    skills: ["Video Editing", "Motion Graphics", "Content Production"],
+    experience: "Senior Specialist"
+  },
+  {
+    id: 3,
+    name: "MD NAIMUR RAHMAN NAIM",
+    role: "Sr. Social Media Marketer",
+    category: "IT Department",
+    bio: "Senior Social Media Marketer specializing in digital growth campaigns, Meta & Google Ads management, and audience analytics.",
+    avatar: "/Team/MD NAIMUR RAHMAN NAIM.jpg",
+    skills: ["Social Media Marketing", "Meta Ads", "Digital Campaigns"],
+    experience: "Sr. Marketer"
   },
   {
     id: 4,
-    name: "Sharmin Sultana",
-    role: "Director of Digital Marketing & SEO Services",
+    name: "Fahim Hasan Jidan",
+    role: "Jr. Social Media Marketer",
     category: "IT Department",
-    bio: "Certified Google & Meta Ads Specialist. Has managed 200+ high-ROI growth campaigns for local and international e-commerce clients.",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
-    skills: ["Advanced SEO", "Facebook Ads", "Google Ads", "Content Strategy"],
-    experience: "8+ Years Exp"
+    bio: "Junior Social Media Marketer focusing on social content engagement, audience interaction, and brand promotion.",
+    avatar: "/Team/Fahim Hasan Jidan.jpg",
+    skills: ["Social Media Ops", "Content Engagement", "Brand Growth"],
+    experience: "Jr. Marketer"
   },
   {
-    id: 9,
-    name: "Mehedi Hasan",
-    role: "Cloud DevOps & Network Lab Specialist",
+    id: 5,
+    name: "Hridoy Hasan",
+    role: "Jr. Social Media Marketer",
     category: "IT Department",
-    bio: "AWS & Docker engineer managing Media Scope IT server infrastructure and lab Linux deployment environments.",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
-    skills: ["Docker", "Linux Admin", "AWS Cloud", "CI/CD Pipelines"],
-    experience: "6+ Years Exp"
-  },
-  {
-    id: 10,
-    name: "Nusrat Jahan",
-    role: "Academic Coordinator & Student Placement Lead",
-    category: "IT Department",
-    bio: "Coordinates Dhanmondi lab ops, batch schedules, certificate verification, and job interview placement referrals.",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80",
-    skills: ["Student Counseling", "Job Placement", "Lab Operations"],
-    experience: "5+ Years Exp"
+    bio: "Junior Social Media Marketer assisting with digital marketing campaigns, social media management, and online operations.",
+    avatar: "/Team/Hridoy Hasan.jpg",
+    skills: ["Digital Marketing", "Social Media", "Campaign Ops"],
+    experience: "Jr. Marketer"
   }
 ];
 
