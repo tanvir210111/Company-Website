@@ -260,7 +260,7 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
 
                   {member.id === 1 ? (
                     <button 
-                      onClick={() => onNavigate('tanvir-details')}
+                      onClick={() => onNavigate('senior-software-developer-tanvir-hossain-khan')}
                       className="btn-primary"
                       style={{ padding: '6px 14px', fontSize: '0.82rem', gap: '4px' }}
                     >

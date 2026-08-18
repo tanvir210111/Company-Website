@@ -64,7 +64,7 @@ export default function App() {
       const hash = window.location.hash.replace('#', '');
       const route = path || hash;
       const validPages = [
-        'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'tanvir-details',
+        'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
         'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
@@ -222,7 +222,7 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'tanvir-details' && (
+        {currentPage === 'senior-software-developer-tanvir-hossain-khan' && (
           <TanvirProfilePage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission} 
