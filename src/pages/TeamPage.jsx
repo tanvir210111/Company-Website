@@ -258,13 +258,23 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
                     </a>
                   ) : <span style={{ fontSize: '0.8rem', color: '#64748B' }}>Senior Instructor</span>}
 
-                  <button 
-                    onClick={() => setBookingMember(member)}
-                    className="btn-outline"
-                    style={{ padding: '4px 10px', fontSize: '0.78rem' }}
-                  >
-                    Book Mentorship
-                  </button>
+                  {member.id === 1 ? (
+                    <button 
+                      onClick={() => onNavigate('tanvir-details')}
+                      className="btn-primary"
+                      style={{ padding: '6px 14px', fontSize: '0.82rem', gap: '4px' }}
+                    >
+                      View Details →
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => setBookingMember(member)}
+                      className="btn-outline"
+                      style={{ padding: '4px 10px', fontSize: '0.78rem' }}
+                    >
+                      Book Mentorship
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

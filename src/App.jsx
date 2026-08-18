@@ -20,6 +20,7 @@ import CompanyProfilePage from './pages/CompanyProfilePage';
 import MdMessagePage from './pages/MdMessagePage';
 import TeamPage from './pages/TeamPage';
 import OurClientsPage from './pages/OurClientsPage';
+import TanvirProfilePage from './pages/TanvirProfilePage';
 
 // Course Pages
 import CoursesPage from './pages/CoursesPage';
@@ -61,7 +62,7 @@ export default function App() {
     const syncPageFromHash = () => {
       const hash = window.location.hash.replace('#', '');
       const validPages = [
-        'about-us', 'company-profile', 'md-message', 'team', 'our-clients',
+        'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'tanvir-details',
         'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
@@ -212,6 +213,14 @@ export default function App() {
           <TeamPage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission} 
+          />
+        )}
+
+        {currentPage === 'tanvir-details' && (
+          <TanvirProfilePage 
+            onNavigate={handleNavigate} 
+            onOpenAdmission={handleOpenAdmission} 
+            onOpenQuote={handleOpenQuote}
           />
         )}
 
