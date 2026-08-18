@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Award, Briefcase, GraduationCap, Mail, Phone, MapPin, CheckCircle2, ShieldCheck, Sparkles, Send, Code, Terminal, Server, Star, Globe, Clock, UserCheck } from 'lucide-react';
+import { ArrowLeft, Award, Briefcase, GraduationCap, Mail, Phone, MapPin, CheckCircle2, ShieldCheck, Sparkles, Send, Code, Terminal, Server, Star, Globe, Clock, UserCheck, Layers, FileCheck, Cpu, Database, Laptop, Lock, Subtitles, ExternalLink } from 'lucide-react';
 
 export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQuote }) {
   const [sessionForm, setSessionForm] = useState({
@@ -20,9 +20,68 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
     }, 5000);
   };
 
+  const TECH_STACK = [
+    { name: "ReactJS & Vite", category: "Frontend" },
+    { name: "JavaScript (ES6+)", category: "Frontend" },
+    { name: "Tailwind CSS", category: "Frontend" },
+    { name: "Node.js & Express", category: "Backend" },
+    { name: "Python & Django", category: "Backend" },
+    { name: "PHP & Laravel", category: "Backend" },
+    { name: "MongoDB & PostgreSQL", category: "Database" },
+    { name: "Flutter & React Native", category: "Mobile" },
+    { name: "REST APIs & Postman", category: "API" },
+    { name: "Manual SQA Testing", category: "SQA" },
+    { name: "Selenium & Playwright", category: "SQA Automation" },
+    { name: "SDLC & STLC Workflows", category: "SQA" },
+    { name: "Ethical Hacking & Web Security", category: "Security" },
+    { name: "Linux & GitHub CI/CD", category: "DevOps" },
+    { name: "SRT Subtitle Translation", category: "Creative Media" },
+    { name: "Social Media Ads & Boosting", category: "Marketing" }
+  ];
+
+  const NOTABLE_PROJECTS = [
+    {
+      title: "Admify — AI Study Abroad Platform",
+      tagline: "AI-based University Recommendation & Study-Abroad System",
+      description: "Flagship final-year project featuring AI country/university recommendation, admission probability prediction, scholarship matching, SOP/LOR generator, and student-agent portal.",
+      tags: ["AI Recommendation", "React", "Node.js", "Python", "MongoDB"]
+    },
+    {
+      title: "Bug Tracking Management System",
+      tagline: "Full Defect Lifecycle & SQA Workflow Platform",
+      description: "Enterprise bug tracking tool managing issue logging, severity prioritization, test case execution, defect lifecycle tracking, and SQA reports.",
+      tags: ["SQA Testing", "Test Cases", "Postman", "Selenium"]
+    },
+    {
+      title: "Hospital Management System",
+      tagline: "Healthcare Operations & Patient Records",
+      description: "Comprehensive medical ERP system for patient registration, doctor appointments, diagnostic billing, and pharmacy inventory.",
+      tags: ["Full Stack", "Database", "React", "REST API"]
+    },
+    {
+      title: "FOBS Team Subtitle Website",
+      tagline: "English → Bangla Media Translation Portal",
+      description: "Custom platform for media subtitle translation, SRT synchronization, and video localization management.",
+      tags: ["Subtitle Translation", "SRT", "Media Automation"]
+    },
+    {
+      title: "Kapasia Sheba Portal",
+      tagline: "Community Service & Hotline Directory App",
+      description: "Local service directory app providing instant access to blood donors, emergency services, hotline contacts, and community resources.",
+      tags: ["Community App", "Web & Mobile"]
+    },
+    {
+      title: "Social Media Metrics & Automation Tools",
+      tagline: "Bulk Video Downloader & Analytics Web App",
+      description: "Custom automation utilities for social media metrics tracking, Facebook/TikTok bulk video processing, and ad campaign performance.",
+      tags: ["Automation", "Python", "Web Scraping"]
+    }
+  ];
+
   return (
     <div style={{ background: '#070A12', color: 'white', minHeight: '100vh', padding: '40px 20px' }}>
       <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
+        
         {/* Navigation Breadcrumb */}
         <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
           <button 
@@ -58,7 +117,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             gap: '36px',
             alignItems: 'center'
           }}>
-            {/* Image Box with Fading Mask Border */}
+            {/* Image Box */}
             <div style={{ position: 'relative', textAlign: 'center' }}>
               <div style={{
                 width: '260px',
@@ -103,7 +162,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             {/* Profile Content */}
             <div>
               <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} color="#FF6B00" /> Full-Stack Engineering & Mentorship
+                <Sparkles size={16} color="#FF6B00" /> Full-Stack Engineering, SQA & Creative Media
               </div>
 
               <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.15 }}>
@@ -111,23 +170,23 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </h1>
 
               <div style={{ fontSize: '1.15rem', color: '#00B4D8', fontWeight: 700, marginBottom: '16px' }}>
-                Senior Software Developer — Media Scope IT Ltd
+                Senior Software Developer & Tech Lead — Media Scope IT Ltd
               </div>
 
               <p style={{ color: '#94A3B8', fontSize: '1rem', lineHeight: 1.65, marginBottom: '24px' }}>
-                3+ years of hands-on experience in full-stack web application development, scalable microservices, database architecture, and software engineering mentorship in Bangladesh.
+                Full-stack developer, software quality assurance (SQA) practitioner, and creative media specialist with 3+ years of experience engineering web apps, AI systems, test automation, and digital media solutions.
               </p>
 
               {/* Quick Info Badges */}
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '28px' }}>
                 <span style={{ background: '#0B1120', border: '1px solid var(--border-light)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Award size={14} color="#FFB703" /> 3+ Years Tech Experience
+                  <Award size={14} color="#FFB703" /> 3+ Years Experience
                 </span>
                 <span style={{ background: '#0B1120', border: '1px solid var(--border-light)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <GraduationCap size={14} color="#00B4D8" /> Full-Stack Developer
+                  <GraduationCap size={14} color="#00B4D8" /> B.Sc. in CSE (DIIT)
                 </span>
                 <span style={{ background: '#0B1120', border: '1px solid var(--border-light)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Briefcase size={14} color="#FF6B00" /> Web & Mobile Apps
+                  <Briefcase size={14} color="#FF6B00" /> Full-Stack & SQA
                 </span>
               </div>
 
@@ -154,42 +213,50 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
           </div>
         </div>
 
-        {/* GRID SECTION: Details & Mentorship Form */}
+        {/* MAIN DETAILS GRID */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginBottom: '50px' }}>
           
-          {/* LEFT COL: Detailed Professional Background */}
+          {/* LEFT COLUMN: Detailed Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {/* Bio Card */}
+            
+            {/* Professional Overview */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <UserCheck size={20} color="#00B4D8" /> Professional Overview
               </h3>
               <p style={{ color: '#94A3B8', fontSize: '0.96rem', lineHeight: 1.7, marginBottom: '14px' }}>
-                Engr. Tanvir Hossain Khan is a Senior Software Developer at <strong>Media Scope IT Ltd</strong>. With 3+ years of dedicated industry experience, he specializes in building modern web applications, scalable APIs, and robust software solutions.
+                Engr. Tanvir Hossain Khan is a Senior Software Developer at <strong>Media Scope IT Ltd</strong>. His engineering philosophy combines end-to-end development (Idea → Prompt → Build → Test → Fix → Deploy) with rigorous SQA testing and user-centric media design.
               </p>
               <p style={{ color: '#94A3B8', fontSize: '0.96rem', lineHeight: 1.7 }}>
-                He works actively on full-stack web and mobile systems, database optimization, and conducting 1-on-1 code reviews and career mentorship sessions for students at Dhanmondi campus.
+                Beyond software development, he conducts 1-on-1 mentorship sessions, code reviews, manual/automated testing, and assists students in real-world project deployments at Dhanmondi campus.
               </p>
             </div>
 
-            {/* Core Competencies & Skills */}
+            {/* Academic Credentials */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Code size={20} color="#FF6B00" /> Core Competencies & Expertise
+                <GraduationCap size={20} color="#FFB703" /> Academic Education
+              </h3>
+              <div style={{ background: '#0B1120', padding: '16px 20px', borderRadius: '14px', border: '1px solid var(--border-light)' }}>
+                <div style={{ fontSize: '1.1rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '4px' }}>
+                  B.Sc. in Computer Science & Engineering (CSE)
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#00B4D8', fontWeight: 700, marginBottom: '6px' }}>
+                  Daffodil Institute of IT (DIIT)
+                </div>
+                <div style={{ fontSize: '0.82rem', color: '#94A3B8' }}>
+                  Final Year / 2026 Completion • Major in Software Engineering & AI Systems
+                </div>
+              </div>
+            </div>
+
+            {/* Technical Skills & Tools */}
+            <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+              <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Code size={20} color="#FF6B00" /> Technology & SQA Stack
               </h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {[
-                  "Enterprise Software Architecture",
-                  "Full Stack System Design",
-                  "IT Governance & Compliance",
-                  "ReactJS & Node.js Microservices",
-                  "Python & Django Backends",
-                  "Database Engineering & SQL",
-                  "Cloud Infrastructure & DevOps",
-                  "Academic Curriculum Design",
-                  "Corporate Strategic Leadership",
-                  "1-on-1 Student Career Coaching"
-                ].map((skill, idx) => (
+                {TECH_STACK.map((item, idx) => (
                   <div key={idx} style={{
                     background: 'rgba(0, 180, 216, 0.12)',
                     border: '1px solid rgba(0, 180, 216, 0.3)',
@@ -202,7 +269,41 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                     alignItems: 'center',
                     gap: '6px'
                   }}>
-                    <CheckCircle2 size={14} color="#00B4D8" /> {skill}
+                    <CheckCircle2 size={14} color="#00B4D8" /> {item.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Featured Projects Section */}
+            <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+              <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Layers size={20} color="#00B4D8" /> Featured Engineering & SQA Projects
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {NOTABLE_PROJECTS.map((proj, idx) => (
+                  <div key={idx} style={{
+                    background: '#0B1120',
+                    padding: '18px 20px',
+                    borderRadius: '14px',
+                    border: '1px solid var(--border-light)'
+                  }}>
+                    <div style={{ fontSize: '1.05rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '4px' }}>
+                      {proj.title}
+                    </div>
+                    <div style={{ fontSize: '0.82rem', color: '#FF6B00', fontWeight: 700, marginBottom: '8px' }}>
+                      {proj.tagline}
+                    </div>
+                    <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '12px' }}>
+                      {proj.description}
+                    </p>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                      {proj.tags.map((t, i) => (
+                        <span key={i} style={{ background: 'rgba(255, 255, 255, 0.08)', color: '#CBD5E1', fontSize: '0.75rem', padding: '3px 8px', borderRadius: '6px' }}>
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -211,7 +312,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             {/* Direct Office Contact Details */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <MapPin size={20} color="#FFB703" /> Direct Office Credentials
+                <MapPin size={20} color="#FFB703" /> Direct Credentials & Office Address
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.92rem', color: '#CBD5E1' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -230,7 +331,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             </div>
           </div>
 
-          {/* RIGHT COL: 1-on-1 Consultation & Mentorship Request Form */}
+          {/* RIGHT COLUMN: 1-on-1 Mentorship Request Form */}
           <div>
             <div style={{
               background: '#0F172A',
@@ -242,13 +343,13 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               top: '100px'
             }}>
               <div style={{ color: '#00B4D8', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>
-                Direct Executive Access
+                Direct Mentorship Access
               </div>
               <h3 style={{ fontSize: '1.5rem', color: '#FFFFFF', fontWeight: 900, marginBottom: '12px' }}>
-                Book 1-on-1 Mentorship Session
+                Book 1-on-1 Consultation
               </h3>
               <p style={{ color: '#94A3B8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '24px' }}>
-                Request a personal consultation session directly with Engr. Tanvir Hossain Khan for IT career planning, software architecture guidance, or corporate project partnership.
+                Schedule a direct 1-on-1 mentorship session with Engr. Tanvir Hossain Khan for software architecture, code review, SQA testing guidance, or project consultation.
               </p>
 
               {submitted ? (
@@ -302,25 +403,26 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                       value={sessionForm.topic}
                       onChange={e => setSessionForm({ ...sessionForm, topic: e.target.value })}
                     >
-                      <option value="Career & Software Mentorship">IT Training & Career Guidance</option>
+                      <option value="Career & Software Mentorship">Full-Stack Development & Career Guidance</option>
+                      <option value="SQA & Testing Advice">Software Quality Assurance (SQA) Guidance</option>
                       <option value="Enterprise Software Quote">Enterprise Software Development Quote</option>
-                      <option value="Code Architecture Advice">Software Code & Architecture Advice</option>
+                      <option value="Code Architecture Advice">Code Review & Bug Fixing Session</option>
                     </select>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Brief Note / Question</label>
+                    <label className="form-label">Brief Note / Project Overview</label>
                     <textarea 
                       className="form-textarea"
                       rows="3"
-                      placeholder="Write your topic or questions here..."
+                      placeholder="Write your topic or project details here..."
                       value={sessionForm.message}
                       onChange={e => setSessionForm({ ...sessionForm, message: e.target.value })}
                     ></textarea>
                   </div>
 
                   <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '12px' }}>
-                    <Send size={16} /> Submit Mentorship Request
+                    <Send size={16} /> Submit Consultation Request
                   </button>
                 </form>
               )}
