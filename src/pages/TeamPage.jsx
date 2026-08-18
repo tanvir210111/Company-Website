@@ -5,12 +5,12 @@ const TEAM_MEMBERS = [
   {
     id: 1,
     name: "Engr. Tanvir Hossain Khan",
-    role: "Managing Director & Chief Tech Strategist",
+    role: "Senior Software Developer",
     category: "Software Development",
-    bio: "15+ years experience in enterprise software architecture, IT governance, and academic institute management. Leads organizational vision and corporate strategy.",
+    bio: "3+ years of hands-on experience in full-stack web development, software engineering architecture, and technical mentorship.",
     avatar: "/Team/Tanvir Hossain Khan.jpg",
-    skills: ["Software Architecture", "IT Governance", "Corporate Strategy"],
-    experience: "15+ Years Exp",
+    skills: ["Full-Stack Engineering", "Software Architecture", "Web Development"],
+    experience: "3+ Years Exp",
     linkedin: "https://www.linkedin.com/in/tanvir-khan-90122a30b"
   },
   {

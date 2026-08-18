@@ -94,14 +94,14 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                 fontWeight: 700,
                 marginTop: '16px'
               }}>
-                <ShieldCheck size={16} /> Verified Managing Director
+                <ShieldCheck size={16} /> Verified Senior Software Developer
               </div>
             </div>
 
             {/* Profile Content */}
             <div>
               <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} color="#FF6B00" /> Executive Tech Leader & Founder
+                <Sparkles size={16} color="#FF6B00" /> Full-Stack Engineering & Mentorship
               </div>
 
               <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.15 }}>
@@ -109,23 +109,23 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </h1>
 
               <div style={{ fontSize: '1.15rem', color: '#00B4D8', fontWeight: 700, marginBottom: '16px' }}>
-                Managing Director & Chief Technology Strategist — Media Scope IT Ltd
+                Senior Software Developer — Media Scope IT Ltd
               </div>
 
               <p style={{ color: '#94A3B8', fontSize: '1rem', lineHeight: 1.65, marginBottom: '24px' }}>
-                15+ years of distinguished experience in enterprise software architecture, IT governance, corporate digital transformation, and academic institute development in Bangladesh.
+                3+ years of hands-on experience in full-stack web application development, scalable microservices, database architecture, and software engineering mentorship in Bangladesh.
               </p>
 
               {/* Quick Info Badges */}
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '28px' }}>
                 <span style={{ background: '#0B1120', border: '1px solid var(--border-light)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Award size={14} color="#FFB703" /> 15+ Years Tech Leadership
+                  <Award size={14} color="#FFB703" /> 3+ Years Tech Experience
                 </span>
                 <span style={{ background: '#0B1120', border: '1px solid var(--border-light)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <GraduationCap size={14} color="#00B4D8" /> 4,000+ Alumni Mentored
+                  <GraduationCap size={14} color="#00B4D8" /> Full-Stack Developer
                 </span>
                 <span style={{ background: '#0B1120', border: '1px solid var(--border-light)', padding: '6px 14px', borderRadius: '10px', fontSize: '0.82rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Briefcase size={14} color="#FF6B00" /> 200+ Corporate Solutions
+                  <Briefcase size={14} color="#FF6B00" /> Web & Mobile Apps
                 </span>
               </div>
 
@@ -145,7 +145,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                   className="btn-secondary"
                   style={{ padding: '10px 20px', fontSize: '0.88rem' }}
                 >
-                  <Briefcase size={16} /> Request Enterprise Consultation
+                  <Briefcase size={16} /> Request Consultation
                 </button>
               </div>
             </div>
@@ -160,13 +160,13 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             {/* Bio Card */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <UserCheck size={20} color="#00B4D8" /> Executive Overview
+                <UserCheck size={20} color="#00B4D8" /> Professional Overview
               </h3>
               <p style={{ color: '#94A3B8', fontSize: '0.96rem', lineHeight: 1.7, marginBottom: '14px' }}>
-                Engr. Tanvir Hossain Khan is the Founder and Managing Director of <strong>Media Scope IT Ltd</strong> (RJSC Registration: <code>C-166968/2020</code>). Under his strategic leadership since 2011, Media Scope IT has transformed from a pioneering software development lab in Dhanmondi, Dhaka into one of Bangladesh's premier IT training institutes and enterprise solution providers.
+                Engr. Tanvir Hossain Khan is a Senior Software Developer at <strong>Media Scope IT Ltd</strong>. With 3+ years of dedicated industry experience, he specializes in building modern web applications, scalable APIs, and robust software solutions.
               </p>
               <p style={{ color: '#94A3B8', fontSize: '0.96rem', lineHeight: 1.7 }}>
-                He specializes in high-availability enterprise system architecture, full-stack web and mobile systems, database governance, and career mentoring for aspiring software engineers.
+                He works actively on full-stack web and mobile systems, database optimization, and conducting 1-on-1 code reviews and career mentorship sessions for students at Dhanmondi campus.
               </p>
             </div>
 
