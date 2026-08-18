@@ -5,11 +5,11 @@ const TEAM_MEMBERS = [
   {
     id: 1,
     name: "Engr. Tanvir Hossain Khan",
-    role: "Senior Software Developer",
+    role: "Software Engineer & SQA Engineer",
     category: "Software Development",
-    bio: "3+ years of hands-on experience in full-stack web development, software engineering architecture, and technical mentorship.",
+    bio: "3+ years of hands-on experience in full-stack web development, software engineering architecture, SQA testing, and technical mentorship.",
     avatar: "/Team/Tanvir Hossain Khan.jpg",
-    skills: ["Full-Stack Engineering", "Software Architecture", "Web Development"],
+    skills: ["Software Engineering", "SQA & Automation", "Full-Stack Development"],
     experience: "3+ Years Exp",
     linkedin: "https://www.linkedin.com/in/tanvir-khan-90122a30b"
   },
