@@ -15,16 +15,6 @@ const TEAM_MEMBERS = [
     github: "https://github.com/tanvir210111"
   },
   {
-    id: 2,
-    name: "Md. Rahat Chowdhury",
-    role: "Head of Software Engineering & Lead Trainer",
-    category: "Software Development",
-    bio: "Senior Full Stack Engineer specializing in ReactJS, Node.js, Python Django, and Laravel frameworks. Mentored 1,500+ developers in BD.",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-    skills: ["ReactJS", "Python Django", "Laravel", "System Architecture"],
-    experience: "9+ Years Exp"
-  },
-  {
     id: 3,
     name: "Mohammad Saniyat Zaman Khan",
     role: "Lead UI/UX & Graphics Design Instructor",
@@ -43,46 +33,6 @@ const TEAM_MEMBERS = [
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
     skills: ["Advanced SEO", "Facebook Ads", "Google Ads", "Content Strategy"],
     experience: "8+ Years Exp"
-  },
-  {
-    id: 5,
-    name: "Tanzin Anik Kabir",
-    role: "Senior Mobile & Full-Stack Developer",
-    category: "Software Development",
-    bio: "Mobile app engineering expert specializing in Flutter, React Native, and ASP.NET Core microservice backend architectures.",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
-    skills: ["Flutter Apps", "ASP.NET Core", "REST APIs", "SQL Server"],
-    experience: "6+ Years Exp"
-  },
-  {
-    id: 6,
-    name: "Kazi Mahmudul Hasan",
-    role: "Senior Python & Data Science Instructor",
-    category: "Software Development",
-    bio: "Data Scientist & Python mentor. Teaches C, C++, Data Structures, Algorithms, and Machine Learning fundamentals.",
-    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80",
-    skills: ["Python ML", "C & C++", "Data Structures", "PostgreSQL"],
-    experience: "6+ Years Exp"
-  },
-  {
-    id: 7,
-    name: "Farhana Akter",
-    role: "Lead WordPress & E-Commerce Web Trainer",
-    category: "Software Development",
-    bio: "WordPress theme developer and WooCommerce specialist. Mentored 800+ freelancing students on Fiverr and Upwork.",
-    avatar: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80",
-    skills: ["WordPress", "WooCommerce", "Elementor Pro", "Fiverr freelancing"],
-    experience: "5+ Years Exp"
-  },
-  {
-    id: 8,
-    name: "Sabrina Ahmed",
-    role: "Lead UI Research & Design Specialist",
-    category: "Software Development",
-    bio: "Specializes in mobile design systems, accessibility standards, interactive wireframing, and design sprint facilitation.",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
-    skills: ["Design Systems", "Figma Components", "User Testing", "Prototypes"],
-    experience: "5+ Years Exp"
   },
   {
     id: 9,
