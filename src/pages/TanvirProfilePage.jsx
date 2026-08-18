@@ -172,7 +172,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                 fontWeight: 700,
                 marginTop: '16px'
               }}>
-                <ShieldCheck size={16} /> Verified Senior Software Engineer
+                <ShieldCheck size={16} /> Verified Software Engineer
               </div>
             </div>
 
@@ -187,7 +187,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </h1>
 
               <div style={{ fontSize: '1.15rem', color: '#00B4D8', fontWeight: 700, marginBottom: '16px' }}>
-                Senior Software Engineer & Tech Lead – Media Scope IT Ltd
+                Software Engineer – Media Scope IT Ltd
               </div>
 
               <p style={{ color: '#94A3B8', fontSize: '1rem', lineHeight: 1.65, marginBottom: '24px' }}>
