@@ -223,9 +223,9 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                   target="_blank" 
                   rel="noreferrer"
                   className="btn-outline"
-                  style={{ padding: '10px 20px', fontSize: '0.88rem', background: '#0B1120', borderColor: 'var(--border-light)' }}
+                  style={{ padding: '10px 20px', fontSize: '0.88rem' }}
                 >
-                  <Code size={16} color="#00B4D8" /> GitHub Profile
+                  <Code size={16} /> GitHub Profile
                 </a>
                 <button 
                   onClick={() => onOpenQuote()} 
