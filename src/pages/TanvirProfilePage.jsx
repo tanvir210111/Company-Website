@@ -72,6 +72,8 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                 <img 
                   src="/Team/Tanvir Hossain Khan.jpg" 
                   alt="Engr. Tanvir Hossain Khan" 
+                  loading="eager"
+                  decoding="async"
                   style={{
                     width: '100%',
                     height: '100%',

@@ -192,6 +192,8 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
                 <img 
                   src={member.avatar} 
                   alt={member.name} 
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     width: '100%',
                     height: '100%',
