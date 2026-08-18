@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Award, Briefcase, GraduationCap, Mail, Phone, MapPin, CheckCircle2, ShieldCheck, Sparkles, Send, Code, Terminal, Server, Star, Globe, Clock, UserCheck, Layers, FileCheck, Cpu, Database, Laptop, Lock, Subtitles, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Award, Briefcase, GraduationCap, Mail, Phone, MapPin, CheckCircle2, ShieldCheck, Sparkles, Send, Code, Terminal, Server, Star, Globe, Clock, UserCheck, Layers, Cpu, Database, Laptop, Lock, ExternalLink } from 'lucide-react';
 
 export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQuote }) {
+  useEffect(() => {
+    document.title = "Engr. Tanvir Hossain Khan | Senior Software Engineer & SQA Engineer | Media Scope IT Ltd";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const [sessionForm, setSessionForm] = useState({
     name: '',
     phone: '',
     email: '',
-    topic: 'Career & Software Mentorship',
+    topic: 'Full-Stack Development & Career Guidance',
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
@@ -16,64 +21,77 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setSessionForm({ name: '', phone: '', email: '', topic: 'Career & Software Mentorship', message: '' });
+      setSessionForm({ name: '', phone: '', email: '', topic: 'Full-Stack Development & Career Guidance', message: '' });
     }, 5000);
   };
 
-  const TECH_STACK = [
-    { name: "ReactJS & Vite", category: "Frontend" },
-    { name: "JavaScript (ES6+)", category: "Frontend" },
-    { name: "Tailwind CSS", category: "Frontend" },
-    { name: "Node.js & Express", category: "Backend" },
-    { name: "Python & Django", category: "Backend" },
-    { name: "PHP & Laravel", category: "Backend" },
-    { name: "MongoDB & PostgreSQL", category: "Database" },
-    { name: "Flutter & React Native", category: "Mobile" },
-    { name: "REST APIs & Postman", category: "API" },
-    { name: "Manual SQA Testing", category: "SQA" },
-    { name: "Selenium & Playwright", category: "SQA Automation" },
-    { name: "SDLC & STLC Workflows", category: "SQA" },
-    { name: "Ethical Hacking & Web Security", category: "Security" },
-    { name: "Linux & GitHub CI/CD", category: "DevOps" },
-    { name: "Test Case & Defect Management", category: "SQA" }
+  const TECH_CATEGORIES = [
+    {
+      category: "Frontend",
+      items: ["ReactJS & Vite", "JavaScript (ES6+)", "Tailwind CSS"]
+    },
+    {
+      category: "Backend",
+      items: ["Node.js & Express", "Python & Django", "PHP & Laravel"]
+    },
+    {
+      category: "Database",
+      items: ["MongoDB & PostgreSQL"]
+    },
+    {
+      category: "Mobile",
+      items: ["Flutter & React Native"]
+    },
+    {
+      category: "API",
+      items: ["REST APIs & Postman"]
+    },
+    {
+      category: "SQA",
+      items: ["Manual SQA Testing", "Selenium & Playwright", "SDLC & STLC Workflows", "Test Case & Defect Management"]
+    },
+    {
+      category: "Security / DevOps",
+      items: ["Ethical Hacking & Web Security", "Linux & GitHub CI/CD"]
+    }
   ];
 
   const NOTABLE_PROJECTS = [
     {
-      title: "Admify — AI Study Abroad Platform",
-      tagline: "AI-based University Recommendation & Study-Abroad System",
-      description: "Flagship final-year project featuring AI country/university recommendation, admission probability prediction, scholarship matching, SOP/LOR generator, and student-agent portal.",
+      title: "Admify – AI Study Abroad Platform",
+      subtitle: "AI-Based University Recommendation & Study-Abroad System",
+      description: "Flagship final-year project featuring AI country/university recommendations, admission probability prediction, scholarship matching, SOP/LOR generation, and student-agent portal.",
       tags: ["AI Recommendation", "React", "Node.js", "Python", "MongoDB"]
     },
     {
       title: "Bug Tracking Management System",
-      tagline: "Full Defect Lifecycle & SQA Workflow Platform",
+      subtitle: "Full Defect Lifecycle & SQA Workflow Platform",
       description: "Enterprise bug tracking tool managing issue logging, severity prioritization, test case execution, defect lifecycle tracking, and SQA reports.",
       tags: ["SQA Testing", "Test Cases", "Postman", "Selenium"]
     },
     {
       title: "Hospital Management System",
-      tagline: "Healthcare Operations & Patient Records",
-      description: "Comprehensive medical ERP system for patient registration, doctor appointments, diagnostic billing, and pharmacy inventory.",
+      subtitle: "Healthcare Operations & Patient Records",
+      description: "Comprehensive medical ERP system for patient registration, doctor appointments, diagnostic billing, pharmacy inventory, and healthcare operations.",
       tags: ["Full Stack", "Database", "React", "REST API"]
     },
     {
       title: "FOBS Team Subtitle Website",
-      tagline: "English → Bangla Media Translation Portal",
+      subtitle: "English → Bangla Media Translation Platform",
       description: "Custom platform for media subtitle translation, SRT synchronization, and video localization management.",
       tags: ["Subtitle Translation", "SRT", "Media Automation"]
     },
     {
       title: "Kapasia Sheba Portal",
-      tagline: "Community Service & Hotline Directory App",
+      subtitle: "Community Service & Helpline Directory App",
       description: "Local service directory app providing instant access to blood donors, emergency services, hotline contacts, and community resources.",
       tags: ["Community App", "Web & Mobile"]
     },
     {
       title: "Social Media Metrics & Automation Tools",
-      tagline: "Bulk Video Downloader & Analytics Web App",
+      subtitle: "Bulk Video Downloader & Analytics Web App",
       description: "Custom automation utilities for social media metrics tracking, Facebook/TikTok bulk video processing, and ad campaign performance.",
-      tags: ["Automation", "Python", "Web Scraping"]
+      tags: ["Automation", "Web Scraping"]
     }
   ];
 
@@ -169,11 +187,11 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </h1>
 
               <div style={{ fontSize: '1.15rem', color: '#00B4D8', fontWeight: 700, marginBottom: '16px' }}>
-                Senior Software Engineer & Tech Lead — Media Scope IT Ltd
+                Senior Software Engineer & Tech Lead – Media Scope IT Ltd
               </div>
 
               <p style={{ color: '#94A3B8', fontSize: '1rem', lineHeight: 1.65, marginBottom: '24px' }}>
-                Full-Stack Developer and SQA Engineer with 3+ years of hands-on experience building web applications, scalable backend microservices, AI platforms, and automated software quality assurance suites.
+                Full-Stack Developer and SQA Engineer with 3+ years of hands-on experience building web applications, scalable backend systems, AI platforms, and automated software quality assurance suites.
               </p>
 
               {/* Quick Info Badges */}
@@ -233,51 +251,60 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                 <UserCheck size={20} color="#00B4D8" /> Professional Overview
               </h3>
               <p style={{ color: '#94A3B8', fontSize: '0.96rem', lineHeight: 1.7, marginBottom: '14px' }}>
-                Engr. Tanvir Hossain Khan is a Senior Software Developer at <strong>Media Scope IT Ltd</strong>. His engineering philosophy combines end-to-end development (Idea → Prompt → Build → Test → Fix → Deploy) with rigorous SQA testing and user-centric media design.
+                Engr. Tanvir Hossain Khan is a Full-Stack Software Engineer and SQA Engineer at Media Scope IT Ltd. His engineering philosophy combines end-to-end development (Idea → Prompt → Build → Test → Fix → Deploy) with rigorous SQA testing and user-centric media design.
               </p>
               <p style={{ color: '#94A3B8', fontSize: '0.96rem', lineHeight: 1.7 }}>
                 Beyond software development, he conducts 1-on-1 mentorship sessions, code reviews, manual/automated testing, and assists students in real-world project deployments at Dhanmondi campus.
               </p>
             </div>
 
-            {/* Academic Credentials */}
+            {/* Academic Education */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <GraduationCap size={20} color="#FFB703" /> Academic Education
               </h3>
-              <div style={{ background: '#0B1120', padding: '16px 20px', borderRadius: '14px', border: '1px solid var(--border-light)' }}>
+              <div style={{ background: '#0B1120', padding: '18px 20px', borderRadius: '14px', border: '1px solid var(--border-light)' }}>
                 <div style={{ fontSize: '1.1rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '4px' }}>
                   B.Sc. in Computer Science & Engineering (CSE)
                 </div>
-                <div style={{ fontSize: '0.9rem', color: '#00B4D8', fontWeight: 700, marginBottom: '6px' }}>
+                <div style={{ fontSize: '0.92rem', color: '#00B4D8', fontWeight: 700, marginBottom: '6px' }}>
                   Daffodil Institute of IT (DIIT)
                 </div>
-                <div style={{ fontSize: '0.82rem', color: '#94A3B8' }}>
-                  Final Year / 2026 Completion • Major in Software Engineering & AI Systems
+                <div style={{ fontSize: '0.84rem', color: '#94A3B8' }}>
+                  Final Year / 2026 Completion · Major in Software Engineering & AI Systems
                 </div>
               </div>
             </div>
 
-            {/* Technical Skills & Tools */}
+            {/* Technology & SQA Stack */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
-              <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Code size={20} color="#FF6B00" /> Technology & SQA Stack
               </h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {TECH_STACK.map((item, idx) => (
-                  <div key={idx} style={{
-                    background: 'rgba(0, 180, 216, 0.12)',
-                    border: '1px solid rgba(0, 180, 216, 0.3)',
-                    color: '#FFFFFF',
-                    padding: '8px 14px',
-                    borderRadius: '12px',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}>
-                    <CheckCircle2 size={14} color="#00B4D8" /> {item.name}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {TECH_CATEGORIES.map((catGroup, idx) => (
+                  <div key={idx} style={{ background: '#0B1120', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-light)' }}>
+                    <div style={{ fontSize: '0.82rem', color: '#00B4D8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '10px' }}>
+                      {catGroup.category}
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {catGroup.items.map((item, i) => (
+                        <div key={i} style={{
+                          background: 'rgba(0, 180, 216, 0.12)',
+                          border: '1px solid rgba(0, 180, 216, 0.3)',
+                          color: '#FFFFFF',
+                          padding: '6px 12px',
+                          borderRadius: '10px',
+                          fontSize: '0.84rem',
+                          fontWeight: 600,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}>
+                          <CheckCircle2 size={13} color="#00B4D8" /> {item}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -288,26 +315,26 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Layers size={20} color="#00B4D8" /> Featured Engineering & SQA Projects
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                 {NOTABLE_PROJECTS.map((proj, idx) => (
                   <div key={idx} style={{
                     background: '#0B1120',
-                    padding: '18px 20px',
+                    padding: '20px',
                     borderRadius: '14px',
                     border: '1px solid var(--border-light)'
                   }}>
-                    <div style={{ fontSize: '1.05rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '4px' }}>
+                    <div style={{ fontSize: '1.1rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '4px' }}>
                       {proj.title}
                     </div>
-                    <div style={{ fontSize: '0.82rem', color: '#FF6B00', fontWeight: 700, marginBottom: '8px' }}>
-                      {proj.tagline}
+                    <div style={{ fontSize: '0.84rem', color: '#FF6B00', fontWeight: 700, marginBottom: '10px' }}>
+                      {proj.subtitle}
                     </div>
-                    <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '12px' }}>
+                    <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '14px' }}>
                       {proj.description}
                     </p>
-                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       {proj.tags.map((t, i) => (
-                        <span key={i} style={{ background: 'rgba(255, 255, 255, 0.08)', color: '#CBD5E1', fontSize: '0.75rem', padding: '3px 8px', borderRadius: '6px' }}>
+                        <span key={i} style={{ background: 'rgba(0, 180, 216, 0.15)', color: '#00B4D8', fontSize: '0.78rem', fontWeight: 600, padding: '4px 10px', borderRadius: '8px', border: '1px solid rgba(0, 180, 216, 0.3)' }}>
                           #{t}
                         </span>
                       ))}
@@ -317,25 +344,33 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </div>
             </div>
 
-            {/* Direct Office Contact Details */}
+            {/* Direct Credentials & Office Address */}
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
-              <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <MapPin size={20} color="#FFB703" /> Direct Credentials & Office Address
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.92rem', color: '#CBD5E1' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.94rem', color: '#CBD5E1', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Phone size={16} color="#00B4D8" />
                   <span>Hotline: <strong>+88 01714-691963</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Mail size={16} color="#00B4D8" />
-                  <span>Email: <strong>info@mediascopeit.com</strong></span>
+                  <span>Email: <a href="mailto:info@mediascopeit.com" style={{ color: '#00B4D8', textDecoration: 'underline' }}>info@mediascopeit.com</a></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <MapPin size={16} color="#00B4D8" />
                   <span>Location: House-32, Road-02, Dhanmondi, Dhaka-1205, Bangladesh.</span>
                 </div>
               </div>
+
+              <button 
+                onClick={() => onNavigate('cert-verification')} 
+                className="cert-verify-btn"
+                style={{ padding: '10px 20px', fontSize: '0.88rem' }}
+              >
+                <Award size={16} /> Verify Certificate Online
+              </button>
             </div>
           </div>
 
@@ -357,7 +392,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                 Book 1-on-1 Consultation
               </h3>
               <p style={{ color: '#94A3B8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '24px' }}>
-                Schedule a direct 1-on-1 mentorship session with Engr. Tanvir Hossain Khan for software architecture, code review, SQA testing guidance, or project consultation.
+                Schedule a direct 1-on-1 mentorship session with Engr. Tanvir Hossain Khan for software architecture, code review, SQA, testing guidance, or project consultation.
               </p>
 
               {submitted ? (
@@ -411,10 +446,13 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                       value={sessionForm.topic}
                       onChange={e => setSessionForm({ ...sessionForm, topic: e.target.value })}
                     >
-                      <option value="Career & Software Mentorship">Full-Stack Development & Career Guidance</option>
-                      <option value="SQA & Testing Advice">Software Quality Assurance (SQA) Guidance</option>
-                      <option value="Enterprise Software Quote">Enterprise Software Development Quote</option>
-                      <option value="Code Architecture Advice">Code Review & Bug Fixing Session</option>
+                      <option value="Full-Stack Development & Career Guidance">Full-Stack Development & Career Guidance</option>
+                      <option value="Software Architecture">Software Architecture</option>
+                      <option value="SQA & Manual Testing">SQA & Manual Testing</option>
+                      <option value="Automation Testing">Automation Testing</option>
+                      <option value="Final Year Project Guidance">Final Year Project Guidance</option>
+                      <option value="Code Review">Code Review</option>
+                      <option value="AI Project Consultation">AI Project Consultation</option>
                     </select>
                   </div>
 

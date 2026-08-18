@@ -99,9 +99,13 @@ export default function Footer({ onScrollToCert }) {
       <div className="footer-bottom">
         © 2026 Media Scope IT Ltd. All Rights Reserved. | Developed by{' '}
         <a 
-          href="https://www.linkedin.com/in/tanvir-khan-90122a30b" 
-          target="_blank" 
-          rel="noopener noreferrer"
+          href="/senior-software-developer-tanvir-hossain-khan" 
+          onClick={(e) => {
+            e.preventDefault();
+            window.history.pushState(null, '', '/senior-software-developer-tanvir-hossain-khan');
+            window.dispatchEvent(new Event('popstate'));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           style={{ color: '#00B4D8', fontWeight: 600, textDecoration: 'underline' }}
         >
           Tanvir Hossain Khan
