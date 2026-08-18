@@ -1063,6 +1063,59 @@ html, body {
   }
 }
 
+/* Touch-friendly Targets & Prevents iOS Auto-Zoom on Form Inputs */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS auto-zoom on input focus */
+  }
+  
+  .btn-primary, .btn-secondary, .btn-outline, .cert-verify-btn, .mobile-toggle {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Safe Area Insets for iPhones with notches and home indicators */
+  .header-wrapper {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+
+  .floating-widget {
+    bottom: max(16px, env(safe-area-inset-bottom));
+    right: max(16px, env(safe-area-inset-right));
+  }
+
+  /* Controlled horizontal scroll for academic certificates */
+  .cert-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+  }
+}
+
+/* 320px - 360px Small Screen Devices (iPhone SE, Small Androids) */
+@media (max-width: 360px) {
+  body {
+    font-size: 0.9rem;
+  }
+  .header-container {
+    padding: 8px 10px;
+  }
+  .hero-title {
+    font-size: 1.5rem !important;
+  }
+  .btn-primary, .btn-secondary, .btn-outline {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+  .modal-card {
+    padding: 16px 12px !important;
+  }
+}
+
 /* @media print: Full-Bleed 100% Filled Upright A4 Landscape Certificate (Zero Margin, No Browser Headers) */
 @page {
   size: A4 landscape;
