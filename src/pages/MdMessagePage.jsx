@@ -111,7 +111,7 @@ export default function MdMessagePage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* Main Profile & Detailed Letter Grid */}
-        <div className="grid-message-container">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '40px', marginBottom: '60px', alignItems: 'flex-start' }}>
           {/* MD Profile Card */}
           <div style={{
             background: '#0F172A',
@@ -399,7 +399,7 @@ export default function MdMessagePage({ onNavigate, onOpenAdmission }) {
               </div>
             ) : (
               <form onSubmit={handleInquirySubmit}>
-                <div className="grid-2col-row">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="form-group">
                     <label className="form-label">Full Name *</label>
                     <input 

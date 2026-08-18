@@ -23,7 +23,7 @@ export default function ContactSection() {
           </p>
         </div>
 
-        <div className="grid-contact-container">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '40px' }}>
           {/* Office Contact Info Column */}
           <div style={{ background: '#0F172A', color: 'white', padding: '36px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '20px' }}>Head Office Details</h3>
@@ -94,7 +94,7 @@ export default function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div className="grid-2col-row">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="form-group">
                     <label className="form-label">Full Name *</label>
                     <input 

@@ -16,7 +16,7 @@ export default function BlogSection() {
           </p>
         </div>
 
-        <div className="blog-grid">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
           {BLOGS.map(blog => (
             <div key={blog.id} style={{
               background: '#0F172A',

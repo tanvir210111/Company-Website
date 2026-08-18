@@ -5,7 +5,7 @@ export default function AboutSection() {
   return (
     <section id="about" className="section" style={{ background: '#070A12' }}>
       <div className="section-container">
-        <div className="grid-about-container">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '50px', alignItems: 'center' }}>
           {/* Custom thin border image box: 1px border on top/left/right, no shadow, no bottom border line */}
           <div className="about-img-border-custom">
             <div className="about-img-inner">
@@ -23,7 +23,7 @@ export default function AboutSection() {
               Media Scope IT Ltd (RJSC: C-166968/2020) is a premier IT training course institute and software development company based in Dhanmondi, Dhaka, Bangladesh. We specialize in practical hands-on skill development, custom web/mobile software, and result-driven digital marketing.
             </p>
 
-            <div className="grid-2col-row" style={{ marginBottom: '30px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
               <div style={{ background: '#0F172A', padding: '18px', borderRadius: '14px', borderLeft: '4px solid #FF6B00', borderTop: '1px solid var(--border-light)', borderRight: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}>
                 <div style={{ fontWeight: 700, fontSize: '1rem', color: '#FFFFFF', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Target size={18} color="#FF6B00" /> Practical Curriculum
