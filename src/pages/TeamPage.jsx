@@ -8,7 +8,7 @@ const TEAM_MEMBERS = [
     role: "Managing Director & Chief Tech Strategist",
     category: "Software Development",
     bio: "15+ years experience in enterprise software architecture, IT governance, and academic institute management. Leads organizational vision and corporate strategy.",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
+    avatar: "/Team/Tanvir Hossain Khan.jpg",
     skills: ["Software Architecture", "IT Governance", "Corporate Strategy"],
     experience: "15+ Years Exp",
     linkedin: "https://www.linkedin.com/in/tanvir-khan-90122a30b"
