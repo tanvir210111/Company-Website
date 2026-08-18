@@ -154,14 +154,14 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                 fontWeight: 700,
                 marginTop: '16px'
               }}>
-                <ShieldCheck size={16} /> Verified Software Engineer & SQA Engineer
+                <ShieldCheck size={16} /> Verified Senior Software Engineer
               </div>
             </div>
 
             {/* Profile Content */}
             <div>
               <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} color="#FF6B00" /> SOFTWARE ENGINEERING & SQA ENGINEERING
+                <Sparkles size={16} color="#FF6B00" /> FULL STACK SOFTWARE ENGINEERING & SQA ENGINEERING
               </div>
 
               <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.15 }}>
@@ -169,7 +169,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </h1>
 
               <div style={{ fontSize: '1.15rem', color: '#00B4D8', fontWeight: 700, marginBottom: '16px' }}>
-                Software Engineer & SQA Engineer — Media Scope IT Ltd
+                Senior Software Engineer & Tech Lead — Media Scope IT Ltd
               </div>
 
               <p style={{ color: '#94A3B8', fontSize: '1rem', lineHeight: 1.65, marginBottom: '24px' }}>
