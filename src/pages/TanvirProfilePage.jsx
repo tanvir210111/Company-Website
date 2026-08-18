@@ -35,8 +35,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
     { name: "SDLC & STLC Workflows", category: "SQA" },
     { name: "Ethical Hacking & Web Security", category: "Security" },
     { name: "Linux & GitHub CI/CD", category: "DevOps" },
-    { name: "SRT Subtitle Translation", category: "Creative Media" },
-    { name: "Social Media Ads & Boosting", category: "Marketing" }
+    { name: "Test Case & Defect Management", category: "SQA" }
   ];
 
   const NOTABLE_PROJECTS = [
@@ -162,7 +161,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             {/* Profile Content */}
             <div>
               <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} color="#FF6B00" /> Full-Stack Engineering, SQA & Creative Media
+                <Sparkles size={16} color="#FF6B00" /> FULL-STACK & SQA ENGINEERING
               </div>
 
               <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.15 }}>
@@ -174,7 +173,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </div>
 
               <p style={{ color: '#94A3B8', fontSize: '1rem', lineHeight: 1.65, marginBottom: '24px' }}>
-                Full-stack developer, software quality assurance (SQA) practitioner, and creative media specialist with 3+ years of experience engineering web apps, AI systems, test automation, and digital media solutions.
+                Full-Stack Developer and SQA Engineer with 3+ years of hands-on experience building web applications, scalable backend microservices, AI platforms, and automated software quality assurance suites.
               </p>
 
               {/* Quick Info Badges */}
