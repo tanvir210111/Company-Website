@@ -21,6 +21,10 @@ import MdMessagePage from './pages/MdMessagePage';
 import TeamPage from './pages/TeamPage';
 import OurClientsPage from './pages/OurClientsPage';
 import TanvirProfilePage from './pages/TanvirProfilePage';
+import NibirProfilePage from './pages/NibirProfilePage';
+import NaimProfilePage from './pages/NaimProfilePage';
+import JidanProfilePage from './pages/JidanProfilePage';
+import HridoyProfilePage from './pages/HridoyProfilePage';
 
 // Course Pages
 import CoursesPage from './pages/CoursesPage';
@@ -65,6 +69,8 @@ export default function App() {
       const route = path || hash;
       const validPages = [
         'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
+        'video-editor-nashimul-hasan-nibir', 'sr-social-media-marketer-naimur-rahman-naim',
+        'jr-social-media-marketer-fahim-hasan-jidan', 'jr-social-media-marketer-hridoy-hasan',
         'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
@@ -224,6 +230,34 @@ export default function App() {
           <TanvirProfilePage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission} 
+            onOpenQuote={handleOpenQuote}
+          />
+        )}
+
+        {currentPage === 'video-editor-nashimul-hasan-nibir' && (
+          <NibirProfilePage 
+            onNavigate={handleNavigate} 
+            onOpenQuote={handleOpenQuote}
+          />
+        )}
+
+        {currentPage === 'sr-social-media-marketer-naimur-rahman-naim' && (
+          <NaimProfilePage 
+            onNavigate={handleNavigate} 
+            onOpenQuote={handleOpenQuote}
+          />
+        )}
+
+        {currentPage === 'jr-social-media-marketer-fahim-hasan-jidan' && (
+          <JidanProfilePage 
+            onNavigate={handleNavigate} 
+            onOpenQuote={handleOpenQuote}
+          />
+        )}
+
+        {currentPage === 'jr-social-media-marketer-hridoy-hasan' && (
+          <HridoyProfilePage 
+            onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
           />
         )}

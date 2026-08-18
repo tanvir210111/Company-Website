@@ -211,23 +211,22 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
                     </a>
                   ) : <span style={{ fontSize: '0.8rem', color: '#64748B' }}>Senior Instructor</span>}
 
-                  {member.id === 1 ? (
-                    <button 
-                      onClick={() => onNavigate('senior-software-developer-tanvir-hossain-khan')}
-                      className="btn-primary"
-                      style={{ padding: '6px 14px', fontSize: '0.82rem', gap: '4px' }}
-                    >
-                      View Details →
-                    </button>
-                  ) : (
-                    <button 
-                      onClick={() => setBookingMember(member)}
-                      className="btn-outline"
-                      style={{ padding: '4px 10px', fontSize: '0.78rem' }}
-                    >
-                      Book Mentorship
-                    </button>
-                  )}
+                  <button 
+                    onClick={() => {
+                      const slugs = {
+                        1: 'senior-software-developer-tanvir-hossain-khan',
+                        2: 'video-editor-nashimul-hasan-nibir',
+                        3: 'sr-social-media-marketer-naimur-rahman-naim',
+                        4: 'jr-social-media-marketer-fahim-hasan-jidan',
+                        5: 'jr-social-media-marketer-hridoy-hasan'
+                      };
+                      onNavigate(slugs[member.id] || 'team');
+                    }}
+                    className="btn-primary"
+                    style={{ padding: '6px 14px', fontSize: '0.82rem', gap: '4px' }}
+                  >
+                    View Details →
+                  </button>
                 </div>
               </div>
             </div>
