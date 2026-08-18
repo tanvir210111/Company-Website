@@ -57,10 +57,12 @@ export default function App() {
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
 
-  // URL BROWSER HASH ROUTER SYNC
+  // URL BROWSER ROUTER SYNC (Supports Clean Path /team and Hash /#team)
   useEffect(() => {
-    const syncPageFromHash = () => {
+    const syncPageFromUrl = () => {
+      const path = window.location.pathname.replace(/^\//, '');
       const hash = window.location.hash.replace('#', '');
+      const route = path || hash;
       const validPages = [
         'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'tanvir-details',
         'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
@@ -69,24 +71,28 @@ export default function App() {
         'cert-verification'
       ];
 
-      if (validPages.includes(hash)) {
-        setCurrentPage(hash);
-      } else if (!hash || hash === 'home') {
+      if (validPages.includes(route)) {
+        setCurrentPage(route);
+      } else {
         setCurrentPage('home');
       }
     };
 
-    syncPageFromHash();
-    window.addEventListener('hashchange', syncPageFromHash);
-    return () => window.removeEventListener('hashchange', syncPageFromHash);
+    syncPageFromUrl();
+    window.addEventListener('popstate', syncPageFromUrl);
+    window.addEventListener('hashchange', syncPageFromUrl);
+    return () => {
+      window.removeEventListener('popstate', syncPageFromUrl);
+      window.removeEventListener('hashchange', syncPageFromUrl);
+    };
   }, []);
 
   const handleNavigate = (pageId) => {
     setCurrentPage(pageId);
     if (pageId === 'home') {
-      window.history.pushState(null, '', window.location.pathname);
+      window.history.pushState(null, '', '/');
     } else {
-      window.location.hash = pageId;
+      window.history.pushState(null, '', `/${pageId}`);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
