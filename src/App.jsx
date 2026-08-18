@@ -57,10 +57,10 @@ export default function App() {
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
 
-  // URL BROWSER ROUTER SYNC (Supports Clean Path /team and Hash /#team)
+  // URL BROWSER ROUTER SYNC (100% Clean Path Routing /team, /senior-software-developer-tanvir-hossain-khan)
   useEffect(() => {
     const syncPageFromUrl = () => {
-      const path = window.location.pathname.replace(/^\//, '');
+      const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
       const hash = window.location.hash.replace('#', '');
       const route = path || hash;
       const validPages = [
@@ -80,22 +80,17 @@ export default function App() {
 
     syncPageFromUrl();
     window.addEventListener('popstate', syncPageFromUrl);
-    window.addEventListener('hashchange', syncPageFromUrl);
     return () => {
       window.removeEventListener('popstate', syncPageFromUrl);
-      window.removeEventListener('hashchange', syncPageFromUrl);
     };
   }, []);
 
   const handleNavigate = (pageId) => {
     setCurrentPage(pageId);
     if (pageId === 'home') {
-      window.history.pushState(null, '', window.location.pathname.replace(/\/$/, '') || '/');
-      if (window.location.hash) {
-        window.history.pushState(null, '', '/');
-      }
+      window.history.pushState(null, '', '/');
     } else {
-      window.location.hash = pageId;
+      window.history.pushState(null, '', `/${pageId}`);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
