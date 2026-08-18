@@ -90,9 +90,12 @@ export default function App() {
   const handleNavigate = (pageId) => {
     setCurrentPage(pageId);
     if (pageId === 'home') {
-      window.history.pushState(null, '', '/');
+      window.history.pushState(null, '', window.location.pathname.replace(/\/$/, '') || '/');
+      if (window.location.hash) {
+        window.history.pushState(null, '', '/');
+      }
     } else {
-      window.history.pushState(null, '', `/${pageId}`);
+      window.location.hash = pageId;
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
