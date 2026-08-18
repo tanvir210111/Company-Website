@@ -346,7 +346,7 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
             <button onClick={() => onOpenQuote()} className="btn-secondary" style={{ display: 'none', md: 'inline-flex' }}>
               <Briefcase size={16} /> Get Quote
             </button>
-            <button onClick={() => onOpenAdmission()} className="btn-primary">
+            <button onClick={() => onOpenAdmission()} className="btn-primary desktop-header-btn">
               <GraduationCap size={18} /> Online Admission
             </button>
 
@@ -400,6 +400,15 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
 
           {/* Drawer Links Body */}
           <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {/* Quick Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '12px' }}>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenAdmission(); }} className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                <GraduationCap size={18} /> Online Admission
+              </button>
+              <button onClick={() => { setMobileMenuOpen(false); onOpenQuote(); }} className="btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
+                <Briefcase size={18} /> Get Software Quote
+              </button>
+            </div>
             {/* Home */}
             <button 
               onClick={() => handleNavClick('home')} 
