@@ -161,7 +161,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
             {/* Profile Content */}
             <div>
               <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} color="#FF6B00" /> FULL STACK SOFTWARE ENGINEERING & SQA ENGINEERING
+                <Sparkles size={16} color="#FF6B00" /> FULL STACK SOFTWARE ENGINEER & SQA ENGINEER
               </div>
 
               <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.15 }}>
@@ -199,6 +199,15 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                   style={{ padding: '10px 20px', fontSize: '0.88rem' }}
                 >
                   <Globe size={16} /> Official LinkedIn Profile
+                </a>
+                <a 
+                  href="https://github.com/tanvir210111" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="btn-outline"
+                  style={{ padding: '10px 20px', fontSize: '0.88rem', background: '#0B1120', borderColor: 'var(--border-light)' }}
+                >
+                  <Code size={16} color="#00B4D8" /> GitHub Profile
                 </a>
                 <button 
                   onClick={() => onOpenQuote()} 

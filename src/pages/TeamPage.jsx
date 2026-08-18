@@ -11,7 +11,8 @@ const TEAM_MEMBERS = [
     avatar: "/Team/Tanvir Hossain Khan.jpg",
     skills: ["Software Engineering", "SQA & Automation", "Full-Stack Development"],
     experience: "3+ Years Exp",
-    linkedin: "https://www.linkedin.com/in/tanvir-khan-90122a30b"
+    linkedin: "https://www.linkedin.com/in/tanvir-khan-90122a30b",
+    github: "https://github.com/tanvir210111"
   },
   {
     id: 2,
