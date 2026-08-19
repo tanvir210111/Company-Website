@@ -214,15 +214,32 @@ CREATE TABLE IF NOT EXISTS `payments` (
   CONSTRAINT `fk_pmt_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_pmt_enrollment` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_pmt_project` FOREIGN KEY (`project_id`) REFERENCES `software_projects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  -- EXCLUSIVE RELATIONSHIP CONSTRAINT: Belongs to enrollment OR project, but never both simultaneously!
-  CONSTRAINT `chk_pmt_exclusive_relation` CHECK (
-    (`enrollment_id` IS NULL AND `project_id` IS NULL) OR
-    (`enrollment_id` IS NOT NULL AND `project_id` IS NULL) OR
-    (`enrollment_id` IS NULL AND `project_id` IS NOT NULL)
-  ),
   INDEX `idx_pmt_order` (`order_id`),
   INDEX `idx_pmt_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- MySQL 8.4 Triggers to enforce exclusive relation (cannot belong to both enrollment and project simultaneously)
+DROP TRIGGER IF EXISTS `trg_payments_exclusive_insert`;
+CREATE TRIGGER `trg_payments_exclusive_insert`
+BEFORE INSERT ON `payments`
+FOR EACH ROW
+BEGIN
+  IF (NEW.enrollment_id IS NOT NULL AND NEW.project_id IS NOT NULL) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Payment cannot belong to both an enrollment and a software project simultaneously.';
+  END IF;
+END;
+
+DROP TRIGGER IF EXISTS `trg_payments_exclusive_update`;
+CREATE TRIGGER `trg_payments_exclusive_update`
+BEFORE UPDATE ON `payments`
+FOR EACH ROW
+BEGIN
+  IF (NEW.enrollment_id IS NOT NULL AND NEW.project_id IS NOT NULL) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Payment cannot belong to both an enrollment and a software project simultaneously.';
+  END IF;
+END;
 
 -- ----------------------------------------------------------------------------
 -- 12. PAYMENT_TRANSACTIONS (SSLCommerz Callbacks & Validation Logs)
