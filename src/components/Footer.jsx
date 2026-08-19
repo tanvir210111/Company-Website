@@ -1,7 +1,17 @@
 import React from 'react';
-import { Phone, Mail, MapPin, Award, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, Award, ShieldCheck, Lock } from 'lucide-react';
 
-export default function Footer({ onScrollToCert }) {
+export default function Footer({ onScrollToCert, onNavigate }) {
+  const handleNavClick = (pageId) => {
+    if (onNavigate) {
+      onNavigate(pageId);
+    } else {
+      window.history.pushState(null, '', `/${pageId}`);
+      window.dispatchEvent(new Event('popstate'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -37,20 +47,44 @@ export default function Footer({ onScrollToCert }) {
               <ShieldCheck size={14} /> Official Government Registrations
             </div>
             <strong>RJSC Reg:</strong> C-166968/2020 | <strong>Trade Lic:</strong> TRAD/DSCC/048330/2020 <br />
-            <strong>TIN:</strong> 125190932932 | <strong>BIN:</strong> 003975158-0208
+            <strong>TIN:</strong> 125190932932 | <strong>DBID:</strong> [DBID NUMBER]
           </div>
         </div>
 
-        {/* Quick Links */}
+        {/* Legal & Compliance Links */}
         <div className="footer-col">
-          <h3>Popular Courses</h3>
+          <h3>Quick & Legal Links</h3>
           <ul className="footer-links" style={{ fontSize: '0.88rem' }}>
-            <li><a href="#courses">Professional Graphics Design</a></li>
-            <li><a href="#courses">Full Stack Web Development</a></li>
-            <li><a href="#courses">Digital Marketing & SEO</a></li>
-            <li><a href="#courses">Python & Django Programming</a></li>
-            <li><a href="#courses">C & C++ Programming</a></li>
-            <li><a href="#courses">WordPress Theme Development</a></li>
+            <li>
+              <a href="/about-us" onClick={(e) => { e.preventDefault(); handleNavClick('about-us'); }}>
+                About Us
+              </a>
+            </li>
+            <li>
+              <a href="/terms-and-conditions" onClick={(e) => { e.preventDefault(); handleNavClick('terms-and-conditions'); }}>
+                Terms & Conditions
+              </a>
+            </li>
+            <li>
+              <a href="/privacy-policy" onClick={(e) => { e.preventDefault(); handleNavClick('privacy-policy'); }}>
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="/refund-policy" onClick={(e) => { e.preventDefault(); handleNavClick('refund-policy'); }}>
+                Refund & Return Policy
+              </a>
+            </li>
+            <li>
+              <a href="/delivery-policy" onClick={(e) => { e.preventDefault(); handleNavClick('delivery-policy'); }}>
+                Delivery / Service Policy
+              </a>
+            </li>
+            <li>
+              <a href="#contact" onClick={(e) => { e.preventDefault(); handleNavClick('home'); setTimeout(() => { const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 100); }}>
+                Contact Us
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -93,15 +127,31 @@ export default function Footer({ onScrollToCert }) {
         </div>
       </div>
 
-      <div className="footer-bottom">
+      {/* Official SSLCommerz Payment Gateway Supported Channels Banner */}
+      <div style={{ padding: '20px 20px 0 20px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.76rem', color: '#94A3B8', fontWeight: 700, marginBottom: '10px', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+          <Lock size={14} color="#00B4D8" /> SECURE ONLINE PAYMENT GATEWAY POWERED BY SSLCOMMERZ (256-BIT SSL ENCRYPTED)
+        </div>
+        
+        <div style={{ background: '#0B1120', padding: '10px 18px', borderRadius: '12px', border: '1px solid var(--border-light)', display: 'inline-flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '10px', maxWidth: '100%', boxSizing: 'border-box' }}>
+          <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#00B4D8', letterSpacing: '0.5px' }}>SSLCOMMERZ</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FFFFFF', background: '#1A233A', padding: '3px 8px', borderRadius: '4px', border: '1px solid #334155' }}>VISA</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FF4D4D', background: '#1A233A', padding: '3px 8px', borderRadius: '4px', border: '1px solid #334155' }}>MasterCard</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0099FF', background: '#1A233A', padding: '3px 8px', borderRadius: '4px', border: '1px solid #334155' }}>AMEX</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#EC1261', background: 'rgba(236, 18, 97, 0.15)', padding: '3px 8px', borderRadius: '4px', border: '1px solid #EC1261' }}>bKash</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#F7941D', background: 'rgba(247, 148, 29, 0.15)', padding: '3px 8px', borderRadius: '4px', border: '1px solid #F7941D' }}>Nagad</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#A855F7', background: '#1A233A', padding: '3px 8px', borderRadius: '4px', border: '1px solid #334155' }}>Rocket</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10B981', background: '#1A233A', padding: '3px 8px', borderRadius: '4px', border: '1px solid #334155' }}>Internet Banking</span>
+        </div>
+      </div>
+
+      <div className="footer-bottom" style={{ marginTop: '20px' }}>
         © 2026 Media Scope IT Ltd. All Rights Reserved. | Developed by{' '}
         <a 
           href="/senior-software-developer-tanvir-hossain-khan" 
           onClick={(e) => {
             e.preventDefault();
-            window.history.pushState(null, '', '/senior-software-developer-tanvir-hossain-khan');
-            window.dispatchEvent(new Event('popstate'));
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            handleNavClick('senior-software-developer-tanvir-hossain-khan');
           }}
           style={{ color: '#00B4D8', fontWeight: 600, textDecoration: 'underline' }}
         >

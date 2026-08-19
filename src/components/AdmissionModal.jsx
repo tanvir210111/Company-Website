@@ -12,7 +12,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
     email: currentUser?.email || '',
     batchChoice: 'Upcoming Regular Batch',
     classMode: 'Offline Dhanmondi Campus',
-    paymentMethod: 'bkash', // 'bkash' | 'nagad' | 'card' | 'bank'
+    paymentMethod: 'sslcommerz', // 'sslcommerz' | 'bkash' | 'nagad' | 'card' | 'bank'
     trxId: '',
     userCaptcha: ''
   });
@@ -21,6 +21,10 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
   const [captchaNum2, setCaptchaNum2] = useState(3);
   const [captchaError, setCaptchaError] = useState('');
   const [trxError, setTrxError] = useState('');
+  const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
+  const [sslError, setSslError] = useState('');
+  const [agreePolicy, setAgreePolicy] = useState(false);
+  const [policyError, setPolicyError] = useState('');
 
   useEffect(() => {
     if (selectedCourse) {
@@ -38,12 +42,16 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
       email: currentUser?.email || '',
       batchChoice: 'Upcoming Regular Batch',
       classMode: 'Offline Dhanmondi Campus',
-      paymentMethod: 'bkash',
+      paymentMethod: 'sslcommerz',
       trxId: '',
       userCaptcha: ''
     });
     setCaptchaError('');
     setTrxError('');
+    setIsSubmittingPayment(false);
+    setSslError('');
+    setAgreePolicy(false);
+    setPolicyError('');
   }, [isOpen, currentUser]);
 
   const generateCaptcha = () => {
@@ -60,8 +68,53 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
     setStep(2);
   };
 
-  const handleFinalPaymentSubmit = (e) => {
+  const handleFinalPaymentSubmit = async (e) => {
     e.preventDefault();
+
+    if (!agreePolicy) {
+      setPolicyError('You must read and agree to the Terms & Conditions, Privacy Policy, and Refund Policy before proceeding.');
+      return;
+    }
+    setPolicyError('');
+
+    if (formData.paymentMethod === 'sslcommerz') {
+      setIsSubmittingPayment(true);
+      setSslError('');
+
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const response = await fetch(`${backendUrl}/api/payment/initiate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            courseId: course.id,
+            courseTitle: course.title,
+            amount: course.discountFee,
+            studentName: formData.studentName,
+            phone: formData.phone,
+            email: formData.email,
+            classMode: formData.classMode,
+            batchChoice: formData.batchChoice
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.url) {
+          window.location.href = data.url;
+        } else {
+          setSslError(data.message || 'Unable to start payment. Please try again.');
+          setIsSubmittingPayment(false);
+        }
+      } catch (err) {
+        console.error('SSLCommerz initiation error:', err);
+        setSslError('Unable to start payment. Please check network connection and try again.');
+        setIsSubmittingPayment(false);
+      }
+      return;
+    }
+
+    // Manual Payment Options Validation
     const sum = captchaNum1 + captchaNum2;
     if (parseInt(formData.userCaptcha) !== sum) {
       setCaptchaError('Incorrect math captcha answer. Please try again.');
@@ -204,6 +257,30 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '10px', marginBottom: '20px' }}>
               <button
                 type="button"
+                onClick={() => setFormData({ ...formData, paymentMethod: 'sslcommerz' })}
+                style={{
+                  gridColumn: '1 / -1',
+                  background: formData.paymentMethod === 'sslcommerz' ? 'rgba(0, 180, 216, 0.25)' : '#0B1120',
+                  border: formData.paymentMethod === 'sslcommerz' ? '2px solid #00B4D8' : '1px solid var(--border-light)',
+                  padding: '14px 12px',
+                  borderRadius: '12px',
+                  color: '#FFFFFF',
+                  fontSize: '0.92rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: formData.paymentMethod === 'sslcommerz' ? '0 0 15px rgba(0, 180, 216, 0.3)' : 'none'
+                }}
+              >
+                <ShieldCheck size={18} color="#00B4D8" /> SSLCOMMERZ — Secure Online Payment (Instant Verification)
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setFormData({ ...formData, paymentMethod: 'bkash' })}
                 style={{
                   background: formData.paymentMethod === 'bkash' ? 'rgba(236, 18, 97, 0.2)' : '#0B1120',
@@ -217,7 +294,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
                   textAlign: 'center'
                 }}
               >
-                bKash Pay
+                bKash Manual
               </button>
 
               <button
@@ -235,7 +312,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
                   textAlign: 'center'
                 }}
               >
-                Nagad Pay
+                Nagad Manual
               </button>
 
               <button
@@ -253,7 +330,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
                   textAlign: 'center'
                 }}
               >
-                Visa / Card
+                Card Ref
               </button>
 
               <button
@@ -277,6 +354,20 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
 
             {/* Payment Instructions */}
             <div style={{ background: '#0B1120', padding: '16px', borderRadius: '14px', border: '1px solid var(--border-light)', marginBottom: '20px', fontSize: '0.88rem' }}>
+              {formData.paymentMethod === 'sslcommerz' && (
+                <div>
+                  <strong style={{ color: '#00B4D8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <ShieldCheck size={16} /> SSLCommerz Hosted Checkout Channel:
+                  </strong>
+                  <p style={{ color: '#CBD5E1', marginTop: '6px', lineHeight: 1.5 }}>
+                    Supports <strong>Visa, MasterCard, AMEX, bKash, Nagad, Rocket, Upay, CellFin, City Touch</strong>, and all Bangladeshi Credit / Debit cards and Internet Banking.
+                  </p>
+                  <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    ✓ Instant automated server verification & immediate receipt issuance.
+                  </div>
+                </div>
+              )}
+
               {formData.paymentMethod === 'bkash' && (
                 <div>
                   <strong style={{ color: '#EC1261' }}>bKash Merchant Pay Instructions:</strong>
@@ -302,9 +393,9 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
 
               {formData.paymentMethod === 'card' && (
                 <div>
-                  <strong style={{ color: '#00B4D8' }}>Visa / MasterCard / AMEX Online Gateway:</strong>
+                  <strong style={{ color: '#00B4D8' }}>Visa / MasterCard / AMEX Manual Reference:</strong>
                   <p style={{ color: '#CBD5E1', marginTop: '6px' }}>
-                    SSLCommerz Secure 256-Bit SSL Encrypted Checkout. Supports all Bangladeshi credit and debit cards.
+                    Enter your POS/Card payment transaction reference code below for manual verification.
                   </p>
                 </div>
               )}
@@ -321,53 +412,99 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
               )}
             </div>
 
-            {/* TrxID Input */}
-            <div className="form-group">
-              <label className="form-label">Payment Transaction ID (TrxID / Reference Code) *</label>
-              <input 
-                type="text" 
-                required 
-                className="form-input"
-                placeholder="e.g. 9J482KSL92 or Card Ref"
-                value={formData.trxId}
-                onChange={e => setFormData({ ...formData, trxId: e.target.value })}
-              />
-              {trxError && <div style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '4px' }}>{trxError}</div>}
-            </div>
-
-            {/* Security Captcha */}
-            <div className="form-group" style={{ background: '#0B1120', padding: '14px', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
-              <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Security Verification Captcha:</span>
-                <button type="button" onClick={generateCaptcha} style={{ background: 'none', border: 'none', color: '#00B4D8', cursor: 'pointer', fontSize: '0.8rem' }}>
-                  <RefreshCw size={12} /> New Numbers
-                </button>
-              </label>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-                <span style={{ background: '#0F172A', padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--border-light)', fontSize: '1.2rem', fontWeight: 800, color: '#FF6B00' }}>
-                  {captchaNum1} + {captchaNum2} = ?
-                </span>
-                
-                <input 
-                  type="number" 
-                  required 
-                  className="form-input" 
-                  style={{ width: '100px' }}
-                  placeholder="Answer"
-                  value={formData.userCaptcha}
-                  onChange={e => setFormData({ ...formData, userCaptcha: e.target.value })}
-                />
+            {sslError && (
+              <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid #EF4444', color: '#EF4444', padding: '10px 14px', borderRadius: '10px', fontSize: '0.85rem', marginBottom: '16px' }}>
+                {sslError}
               </div>
-              {captchaError && <div style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '6px' }}>{captchaError}</div>}
+            )}
+
+            {/* TrxID Input & Captcha (Only shown for Manual Payment Methods) */}
+            {formData.paymentMethod !== 'sslcommerz' && (
+              <>
+                <div className="form-group">
+                  <label className="form-label">Payment Transaction ID (TrxID / Reference Code) *</label>
+                  <input 
+                    type="text" 
+                    required 
+                    className="form-input"
+                    placeholder="e.g. 9J482KSL92 or Card Ref"
+                    value={formData.trxId}
+                    onChange={e => setFormData({ ...formData, trxId: e.target.value })}
+                  />
+                  {trxError && <div style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '4px' }}>{trxError}</div>}
+                </div>
+
+                <div className="form-group" style={{ background: '#0B1120', padding: '14px', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
+                  <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>Security Verification Captcha:</span>
+                    <button type="button" onClick={generateCaptcha} style={{ background: 'none', border: 'none', color: '#00B4D8', cursor: 'pointer', fontSize: '0.8rem' }}>
+                      <RefreshCw size={12} /> New Numbers
+                    </button>
+                  </label>
+                  
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
+                    <span style={{ background: '#0F172A', padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--border-light)', fontSize: '1.2rem', fontWeight: 800, color: '#FF6B00' }}>
+                      {captchaNum1} + {captchaNum2} = ?
+                    </span>
+                    
+                    <input 
+                      type="number" 
+                      required 
+                      className="form-input" 
+                      style={{ width: '100px' }}
+                      placeholder="Answer"
+                      value={formData.userCaptcha}
+                      onChange={e => setFormData({ ...formData, userCaptcha: e.target.value })}
+                    />
+                  </div>
+                  {captchaError && <div style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '6px' }}>{captchaError}</div>}
+                </div>
+              </>
+            )}
+
+            {/* Mandatory SSLCommerz Merchant Compliance Policy Agreement Checkbox */}
+            <div style={{ marginTop: '16px', marginBottom: '16px', background: '#0F172A', padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.85rem', color: '#CBD5E1', cursor: 'pointer', lineHeight: 1.5 }}>
+                <input 
+                  type="checkbox" 
+                  required
+                  checked={agreePolicy} 
+                  onChange={(e) => { setAgreePolicy(e.target.checked); if (e.target.checked) setPolicyError(''); }}
+                  style={{ marginTop: '3px', width: '16px', height: '16px', accentColor: '#00B4D8', cursor: 'pointer', flexShrink: 0 }}
+                />
+                <span>
+                  I have read and agree to the{' '}
+                  <a href="/terms-and-conditions" target="_blank" rel="noreferrer" style={{ color: '#00B4D8', textDecoration: 'underline', fontWeight: 600 }}>Terms & Conditions</a>,{' '}
+                  <a href="/privacy-policy" target="_blank" rel="noreferrer" style={{ color: '#00B4D8', textDecoration: 'underline', fontWeight: 600 }}>Privacy Policy</a>, and{' '}
+                  <a href="/refund-policy" target="_blank" rel="noreferrer" style={{ color: '#00B4D8', textDecoration: 'underline', fontWeight: 600 }}>Refund & Return Policy</a>.
+                </span>
+              </label>
+              {policyError && <div style={{ color: '#EF4444', fontSize: '0.8rem', marginTop: '6px' }}>{policyError}</div>}
             </div>
 
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button type="button" onClick={() => setStep(1)} className="btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
+              <button type="button" onClick={() => setStep(1)} disabled={isSubmittingPayment} className="btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
                 ← Back
               </button>
-              <button type="submit" className="btn-primary" style={{ flex: 2, justifyContent: 'center' }}>
-                Complete Admission & Submit Payment
+              <button 
+                type="submit" 
+                disabled={isSubmittingPayment}
+                className="btn-primary" 
+                style={{ flex: 2, justifyContent: 'center', opacity: isSubmittingPayment ? 0.7 : 1, cursor: isSubmittingPayment ? 'not-allowed' : 'pointer' }}
+              >
+                {isSubmittingPayment ? (
+                  <>
+                    <RefreshCw className="animate-spin" size={16} /> Processing Payment...
+                  </>
+                ) : formData.paymentMethod === 'sslcommerz' ? (
+                  <>
+                    Pay Securely with SSLCommerz <ArrowRight size={16} />
+                  </>
+                ) : (
+                  <>
+                    Complete Admission & Submit Payment
+                  </>
+                )}
               </button>
             </div>
           </form>

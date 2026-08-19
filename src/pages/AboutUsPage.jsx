@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Building, Users, Award, ShieldCheck, Quote, GraduationCap, ArrowRight, Sparkles, CheckCircle2, MapPin, Phone, BookOpen, Clock, HelpCircle, ChevronDown, ChevronUp, Server, Monitor, HeartHandshake, Target, Check, Layers, Cpu } from 'lucide-react';
 
 export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
   const [openFaq, setOpenFaq] = useState(null);
+
+  useEffect(() => {
+    document.title = 'Media Scope IT Ltd | About Us';
+    window.scrollTo(0, 0);
+  }, []);
 
   const hubFaqs = [
     {
@@ -449,8 +454,8 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                   <strong style={{ color: '#00B4D8' }}>125190932932</strong>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: '#0F172A', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
-                  <span style={{ color: '#94A3B8' }}>BIN / VAT:</span>
-                  <strong style={{ color: '#00B4D8' }}>003975158-0208</strong>
+                  <span style={{ color: '#94A3B8' }}>DBID Number:</span>
+                  <strong style={{ color: '#00B4D8' }}>[DBID NUMBER]</strong>
                 </div>
               </div>
             </div>

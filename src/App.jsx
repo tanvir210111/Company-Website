@@ -45,6 +45,17 @@ import OtherServicesPage from './pages/OtherServicesPage';
 // Certificate Verification Dedicated Page
 import CertVerificationPage from './pages/CertVerificationPage';
 
+// SSLCommerz Payment Result Pages
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import PaymentFailPage from './pages/PaymentFailPage';
+import PaymentCancelPage from './pages/PaymentCancelPage';
+
+// SSLCommerz Compliance Pages
+import TermsConditionsPage from './pages/TermsConditionsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import RefundPolicyPage from './pages/RefundPolicyPage';
+import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home'); 
   const [searchQuery, setSearchQuery] = useState('');
@@ -74,7 +85,8 @@ export default function App() {
         'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
-        'cert-verification'
+        'cert-verification', 'payment/success', 'payment/fail', 'payment/cancel',
+        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy'
       ];
 
       if (validPages.includes(route)) {
@@ -354,9 +366,55 @@ export default function App() {
             onOpenQuote={handleOpenQuote}
           />
         )}
+
+        {/* SSLCommerz Payment Result Routes */}
+        {currentPage === 'payment/success' && (
+          <PaymentSuccessPage 
+            onNavigate={handleNavigate} 
+          />
+        )}
+
+        {currentPage === 'payment/fail' && (
+          <PaymentFailPage 
+            onNavigate={handleNavigate}
+            onOpenAdmission={handleOpenAdmission}
+          />
+        )}
+
+        {currentPage === 'payment/cancel' && (
+          <PaymentCancelPage 
+            onNavigate={handleNavigate}
+            onOpenAdmission={handleOpenAdmission}
+          />
+        )}
+
+        {/* SSLCommerz Merchant Compliance Policy Pages */}
+        {currentPage === 'terms-and-conditions' && (
+          <TermsConditionsPage 
+            onNavigate={handleNavigate} 
+          />
+        )}
+
+        {currentPage === 'privacy-policy' && (
+          <PrivacyPolicyPage 
+            onNavigate={handleNavigate} 
+          />
+        )}
+
+        {currentPage === 'refund-policy' && (
+          <RefundPolicyPage 
+            onNavigate={handleNavigate} 
+          />
+        )}
+
+        {currentPage === 'delivery-policy' && (
+          <DeliveryPolicyPage 
+            onNavigate={handleNavigate} 
+          />
+        )}
       </main>
 
-      <Footer onScrollToCert={handleScrollToCert} />
+      <Footer onScrollToCert={handleScrollToCert} onNavigate={handleNavigate} />
 
       {/* Auth Modal (Login / Sign Up) */}
       <AuthModal 
