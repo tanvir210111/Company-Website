@@ -42,7 +42,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
     const userObj = {
       name: loginEmail.includes('@') ? loginEmail.split('@')[0] : (accountRole === 'student' ? 'Tanvir Hossain Khan' : 'Tanvir (Corporate Client)'),
       email: loginEmail.includes('@') ? loginEmail : 'tanvir@mediascopeit.com',
-      phone: '01714-691963',
+      phone: '01325-165451',
       role: accountRole,
       companyName: accountRole === 'client' ? 'Acme Enterprise Ltd' : null,
       id: accountRole === 'student' ? 'STD-2026-9481' : 'CLT-2026-3092'

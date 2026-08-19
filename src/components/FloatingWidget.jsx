@@ -5,7 +5,7 @@ export default function FloatingWidget() {
   return (
     <div className="floating-widget no-print">
       <a 
-        href="https://wa.me/8801714691963?text=Hello%20Media%20Scope%20IT%20Ltd,%20I%20want%20to%20know%20about%20your%20courses%20and%20services." 
+        href="https://wa.me/8801325165451?text=Hello%20Media%20Scope%20IT%20Ltd,%20I%20want%20to%20know%20about%20your%20courses%20and%20services." 
         target="_blank" 
         rel="noreferrer" 
         className="float-btn float-whatsapp no-print"
@@ -15,7 +15,7 @@ export default function FloatingWidget() {
       </a>
 
       <a 
-        href="tel:+8801714691963" 
+        href="tel:+8801325165451" 
         className="float-btn float-phone no-print"
         title="Call Admission Hotline"
       >

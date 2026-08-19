@@ -352,15 +352,15 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.94rem', color: '#CBD5E1', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Phone size={16} color="#00B4D8" />
-                  <span>Hotline: <strong>+88 01714-691963</strong></span>
+                  <span>Hotline: <strong>+88 01325-165451</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Mail size={16} color="#00B4D8" />
                   <span>Email: <a href="mailto:info@mediascopeit.com" style={{ color: '#00B4D8', textDecoration: 'underline' }}>info@mediascopeit.com</a></span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <MapPin size={16} color="#00B4D8" />
-                  <span>Location: House-32, Road-02, Dhanmondi, Dhaka-1205, Bangladesh.</span>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                  <MapPin size={16} color="#00B4D8" style={{ flexShrink: 0, marginTop: '3px' }} />
+                  <span>Location: House-05, Flat B-3, Road-03, Sector-15F, Uttara, Dhaka, Bangladesh.</span>
                 </div>
               </div>
 

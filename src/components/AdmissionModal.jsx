@@ -282,7 +282,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
                   <strong style={{ color: '#EC1261' }}>bKash Merchant Pay Instructions:</strong>
                   <ol style={{ paddingLeft: '20px', marginTop: '6px', color: '#CBD5E1', lineHeight: 1.6 }}>
                     <li>Go to your bKash App or dial *247#</li>
-                    <li>Select <strong>Make Payment</strong> to Merchant Number: <strong style={{ color: '#FFFFFF' }}>01714-691963</strong></li>
+                    <li>Select <strong>Make Payment</strong> to Merchant Number: <strong style={{ color: '#FFFFFF' }}>01325-165451</strong></li>
                     <li>Enter Amount: <strong style={{ color: '#00B4D8' }}>{course.discountFee}</strong></li>
                     <li>Reference: <strong style={{ color: '#FFFFFF' }}>{formData.phone || 'ADMISSION'}</strong></li>
                   </ol>
@@ -294,7 +294,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
                   <strong style={{ color: '#F7941D' }}>Nagad Payment Instructions:</strong>
                   <ol style={{ paddingLeft: '20px', marginTop: '6px', color: '#CBD5E1', lineHeight: 1.6 }}>
                     <li>Go to Nagad App or dial *167#</li>
-                    <li>Select <strong>Merchant Pay</strong> to Number: <strong style={{ color: '#FFFFFF' }}>01714-691963</strong></li>
+                    <li>Select <strong>Merchant Pay</strong> to Number: <strong style={{ color: '#FFFFFF' }}>01325-165451</strong></li>
                     <li>Enter Amount: <strong style={{ color: '#00B4D8' }}>{course.discountFee}</strong></li>
                   </ol>
                 </div>

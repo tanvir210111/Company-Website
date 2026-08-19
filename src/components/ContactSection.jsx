@@ -30,45 +30,43 @@ export default function ContactSection() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ width: '40px', height: '40px', background: 'rgba(0, 180, 216, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justify: 'center', color: '#00B4D8', flexShrink: 0 }}>
+                <div style={{ width: '40px', height: '40px', background: 'rgba(0, 180, 216, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00B4D8', flexShrink: 0 }}>
                   <MapPin size={20} />
                 </div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#00B4D8' }}>Office Address</div>
                   <div style={{ fontSize: '0.88rem', color: '#94A3B8', marginTop: '2px' }}>
-                    Dhanmondi, Dhaka - 1209, Bangladesh.
+                    House-05, Flat B-3, Road-03, Sector-15F, Uttara, Dhaka, Bangladesh.
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ width: '40px', height: '40px', background: 'rgba(255, 107, 0, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justify: 'center', color: '#FF6B00', flexShrink: 0 }}>
+                <div style={{ width: '40px', height: '40px', background: 'rgba(255, 107, 0, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FF6B00', flexShrink: 0 }}>
                   <Phone size={20} />
                 </div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#FF6B00' }}>Hotline Numbers</div>
                   <div style={{ fontSize: '0.88rem', color: '#94A3B8', marginTop: '2px' }}>
-                    +88 01714-691963 <br />
-                    +88 01922-170672
+                    +88 01325-165451
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ width: '40px', height: '40px', background: 'rgba(255, 183, 3, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justify: 'center', color: '#FFB703', flexShrink: 0 }}>
+                <div style={{ width: '40px', height: '40px', background: 'rgba(255, 183, 3, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFB703', flexShrink: 0 }}>
                   <Mail size={20} />
                 </div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#FFB703' }}>Official Email</div>
                   <div style={{ fontSize: '0.88rem', color: '#94A3B8', marginTop: '2px' }}>
-                    info@mediascopeit.com <br />
-                    mediascopeit@gmail.com
+                    info@mediascopeit.com
                   </div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ width: '40px', height: '40px', background: 'rgba(16, 185, 129, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justify: 'center', color: '#10B981', flexShrink: 0 }}>
+                <div style={{ width: '40px', height: '40px', background: 'rgba(16, 185, 129, 0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10B981', flexShrink: 0 }}>
                   <Clock size={20} />
                 </div>
                 <div>

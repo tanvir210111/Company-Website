@@ -30,8 +30,8 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
       <div className="top-bar">
         <div className="top-bar-container">
           <div className="top-contact">
-            <a href="tel:+8801714691963" className="top-contact-item">
-              <Phone size={14} /> +88 01714-691963 (Admission Hotline)
+            <a href="tel:+8801325165451" className="top-contact-item">
+              <Phone size={14} /> +88 01325-165451 (Admission Hotline)
             </a>
             <a href="mailto:info@mediascopeit.com" className="top-contact-item">
               <Mail size={14} /> info@mediascopeit.com

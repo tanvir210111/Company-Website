@@ -20,7 +20,7 @@ export default function AboutSection() {
             <div className="section-tag">About Media Scope IT Ltd</div>
             <h2 className="section-title">Leading IT Training & Software Innovation Center Since 2011</h2>
             <p className="section-desc" style={{ marginBottom: '24px' }}>
-              Media Scope IT Ltd (RJSC: C-166968/2020) is a premier IT training course institute and software development company based in Dhanmondi, Dhaka, Bangladesh. We specialize in practical hands-on skill development, custom web/mobile software, and result-driven digital marketing.
+              Media Scope IT Ltd (RJSC: C-166968/2020) is a premier IT training course institute and software development company based in Uttara, Dhaka, Bangladesh. We specialize in practical hands-on skill development, custom web/mobile software, and result-driven digital marketing.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>

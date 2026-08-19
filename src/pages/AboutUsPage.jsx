@@ -51,7 +51,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
             About Us — Who We Are, Our Legacy & Tech Mission
           </h1>
           <p style={{ color: '#94A3B8', fontSize: '1.12rem', maxWidth: '900px', lineHeight: 1.7 }}>
-            Media Scope IT Ltd is Bangladesh’s leading IT training course institute and custom enterprise software development company. Based in Dhanmondi, Dhaka, we have spent over 12+ years empowering students, engineering commercial software, and building global tech careers.
+            Media Scope IT Ltd is Bangladesh’s leading IT training course institute and custom enterprise software development company. Based in Uttara, Dhaka, we have spent over 12+ years empowering students, engineering commercial software, and building global tech careers.
           </p>
 
           {/* Key Metric Counters */}

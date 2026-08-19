@@ -72,16 +72,13 @@ export default function Footer({ onScrollToCert }) {
           <h3>Contact Info</h3>
           <ul className="footer-links" style={{ fontSize: '0.88rem' }}>
             <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Phone size={14} color="#FF6B00" /> +88 01714-691963
-            </li>
-            <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Phone size={14} color="#FF6B00" /> +88 01922-170672
+              <Phone size={14} color="#FF6B00" /> +88 01325-165451
             </li>
             <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Mail size={14} color="#00B4D8" /> info@mediascopeit.com
             </li>
-            <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <MapPin size={14} color="#FFB703" /> Dhanmondi, Dhaka, BD
+            <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <MapPin size={14} color="#FFB703" style={{ flexShrink: 0, marginTop: '3px' }} /> House-05, Flat B-3, Road-03, Sector-15F, Uttara, Dhaka
             </li>
             <li style={{ marginTop: '14px' }}>
               <button 

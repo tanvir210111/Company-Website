@@ -39,7 +39,7 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
             Media Scope IT Ltd — Company Profile & Credentials
           </h1>
           <p style={{ color: '#94A3B8', fontSize: '1.1rem', maxWidth: '850px', lineHeight: 1.6 }}>
-            Established in 2011, Media Scope IT Ltd (RJSC Reg: C-166968/2020) is a top-rated IT training course institute and custom enterprise software development firm based in Dhanmondi, Dhaka, Bangladesh.
+            Established in 2011, Media Scope IT Ltd (RJSC Reg: C-166968/2020) is a top-rated IT training course institute and custom enterprise software development firm based in Uttara, Dhaka, Bangladesh.
           </p>
 
           {/* Quick Stats Row */}
@@ -251,21 +251,21 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
             <div>
               <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Schedule a Visit</span>
               <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px', marginBottom: '16px' }}>
-                Visit Our Dhanmondi Campus & Talk to Advisors
+                Visit Our Uttara Campus & Talk to Advisors
               </h2>
               <p style={{ color: '#94A3B8', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '20px' }}>
                 We invite prospective students and parents to tour our computer labs, sit in a free trial class, and consult with our academic advisors.
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.9rem', color: '#CBD5E1' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <MapPin size={18} color="#FF6B00" /> Address: Dhanmondi, Dhaka - 1209, BD
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                  <MapPin size={18} color="#FF6B00" style={{ flexShrink: 0, marginTop: '3px' }} /> Address: House-05, Flat B-3, Road-03, Sector-15F, Uttara, Dhaka
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Clock size={18} color="#00B4D8" /> Hours: Sat–Thu (10am–8pm), Fri (3pm–8pm)
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Phone size={18} color="#FFB703" /> Hotline: +88 01714-691963
+                  <Phone size={18} color="#FFB703" /> Hotline: +88 01325-165451
                 </div>
               </div>
             </div>

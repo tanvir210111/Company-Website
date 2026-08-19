@@ -1100,7 +1100,6 @@ html, body {
     overflow: hidden !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
-    color-adjust: exact !important;
   }
 
   .printable-certificate-outer {
@@ -1111,7 +1110,7 @@ html, body {
     background: #0F172A !important;
     display: flex !important;
     align-items: center !important;
-    justify: center !important;
+    justify-content: center !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     box-sizing: border-box !important;
@@ -1132,7 +1131,7 @@ html, body {
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
-    justify: space-between !important;
+    justify-content: space-between !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     page-break-after: avoid !important;
@@ -1149,7 +1148,7 @@ html, body {
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
-    justify: space-between !important;
+    justify-content: space-between !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
