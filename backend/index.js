@@ -103,9 +103,15 @@ app.get('/api/auth/me', async (req, res) => {
 
     const decoded = jwt.verify(token, JWT_SECRET);
     
-    // Optional DB verification if connected
+    // Strict DB user lookup ONLY by exact numeric ID or specific registered email address
     try {
-      const users = await query('SELECT id, full_name, email, phone, role FROM users WHERE email = ? OR phone = ? LIMIT 1', [decoded.email, decoded.phone]);
+      let users = [];
+      if (decoded.id && !isNaN(decoded.id)) {
+        users = await query('SELECT id, full_name, email, phone, role FROM users WHERE id = ? LIMIT 1', [decoded.id]);
+      } else if (decoded.email && decoded.email.includes('@') && !decoded.email.endsWith('@mediascopeit.com')) {
+        users = await query('SELECT id, full_name, email, phone, role FROM users WHERE email = ? LIMIT 1', [decoded.email]);
+      }
+
       if (users && users.length > 0) {
         const dbUser = users[0];
         const userObj = {
@@ -113,16 +119,26 @@ app.get('/api/auth/me', async (req, res) => {
           name: dbUser.full_name,
           email: dbUser.email,
           phone: dbUser.phone,
-          role: dbUser.role,
+          role: dbUser.role || decoded.role,
           companyName: decoded.companyName || null
         };
         return res.json({ success: true, authenticated: true, user: userObj });
       }
     } catch (dbErr) {
-      // Fall back to decoded JWT payload if DB is offline
+      // Fallback to verified decoded JWT payload if DB record not found or DB offline
     }
 
-    return res.json({ success: true, authenticated: true, user: decoded });
+    // Return the EXACT user profile that was signed in the JWT token during login
+    const exactJwtUser = {
+      id: decoded.id || 'STD-2026-9481',
+      name: decoded.name || 'User',
+      email: decoded.email || '',
+      phone: decoded.phone || '',
+      role: decoded.role || 'student',
+      companyName: decoded.companyName || null
+    };
+
+    return res.json({ success: true, authenticated: true, user: exactJwtUser });
   } catch (err) {
     res.clearCookie('auth_token');
     return res.json({ success: false, authenticated: false, user: null, message: 'Session expired or invalid' });
@@ -136,7 +152,7 @@ app.get('/api/auth/me', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { loginEmail, loginPassword, role, emailOrPhone, password } = req.body;
-    const identifier = loginEmail || emailOrPhone || '';
+    const identifier = (loginEmail || emailOrPhone || '').trim();
     const pass = loginPassword || password || '';
     const userRole = role || 'student';
 
@@ -170,15 +186,17 @@ app.post('/api/auth/login', async (req, res) => {
       console.log('Database query notice:', dbErr.message);
     }
 
-    // Fallback user object generator if DB user not found
+    // Build exact user object for this login session (NEVER hardcode admin credentials)
     if (!userObj) {
+      const cleanName = identifier.includes('@') ? identifier.split('@')[0] : identifier;
+      const cleanEmail = identifier.includes('@') ? identifier : `${identifier}@mediascopeit.com`;
       userObj = {
-        id: userRole === 'student' ? 'STD-2026-9481' : 'CLT-2026-3092',
-        name: identifier.includes('@') ? identifier.split('@')[0] : (userRole === 'student' ? 'Tanvir Hossain Khan' : 'Corporate Client'),
-        email: identifier.includes('@') ? identifier : 'student@mediascopeit.com',
-        phone: identifier.includes('@') ? '01325165451' : identifier,
+        id: userRole === 'student' ? `STD-2026-${Math.floor(1000 + Math.random() * 9000)}` : `CLT-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+        name: cleanName,
+        email: cleanEmail,
+        phone: identifier.includes('@') ? '' : identifier,
         role: userRole,
-        companyName: userRole === 'client' ? 'Acme Enterprise Ltd' : null
+        companyName: userRole === 'client' ? 'Corporate Client' : null
       };
     }
 
