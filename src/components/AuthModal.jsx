@@ -31,7 +31,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
 
   if (!isOpen) return null;
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (!loginEmail || !loginPassword) {
       setLoginError('Please enter your email/phone and password.');
@@ -39,19 +39,33 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
     }
     setLoginError('');
 
-    const userObj = {
-      name: loginEmail.includes('@') ? loginEmail.split('@')[0] : (accountRole === 'student' ? 'Tanvir Hossain Khan' : 'Tanvir (Corporate Client)'),
-      email: loginEmail.includes('@') ? loginEmail : 'tanvir@mediascopeit.com',
-      phone: '01325-165451',
-      role: accountRole,
-      companyName: accountRole === 'client' ? 'Acme Enterprise Ltd' : null,
-      id: accountRole === 'student' ? 'STD-2026-9481' : 'CLT-2026-3092'
-    };
+    try {
+      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+      const res = await fetch(`${backendUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          loginEmail,
+          loginPassword,
+          role: accountRole
+        })
+      });
 
-    onLoginSuccess(userObj);
+      const data = await res.json();
+      if (data.success && data.user) {
+        localStorage.setItem('msit_user', JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('msit_token', data.token);
+        onLoginSuccess(data.user);
+      } else {
+        setLoginError(data.message || 'Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      setLoginError('Unable to connect to authentication server. Please check your internet connection and try again.');
+    }
   };
 
-  const handleSignUpSubmit = (e) => {
+  const handleSignUpSubmit = async (e) => {
     e.preventDefault();
     if (signUpPassword !== signUpConfirmPassword) {
       setSignUpError('Passwords do not match. Please check again.');
@@ -64,16 +78,33 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
 
     setSignUpError('');
 
-    const userObj = {
-      name: signUpName,
-      companyName: accountRole === 'client' ? signUpCompanyName : null,
-      email: signUpEmail,
-      phone: signUpPhone,
-      role: accountRole,
-      id: accountRole === 'student' ? 'STD-2026-9482' : 'CLT-2026-3093'
-    };
+    try {
+      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+      const res = await fetch(`${backendUrl}/api/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name: signUpName,
+          companyName: accountRole === 'client' ? signUpCompanyName : null,
+          email: signUpEmail,
+          phone: signUpPhone,
+          password: signUpPassword,
+          role: accountRole
+        })
+      });
 
-    onLoginSuccess(userObj);
+      const data = await res.json();
+      if (data.success && data.user) {
+        localStorage.setItem('msit_user', JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('msit_token', data.token);
+        onLoginSuccess(data.user);
+      } else {
+        setSignUpError(data.message || 'Signup failed. Please try again.');
+      }
+    } catch (err) {
+      setSignUpError('Unable to connect to authentication server. Please check your internet connection and try again.');
+    }
   };
 
   return (

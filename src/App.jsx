@@ -60,8 +60,9 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home'); 
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Student Authentication State
-  const [currentUser, setCurrentUser] = useState(null); 
+  // Strict Backend-Authoritative Authentication State (Default: null)
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState(null); // { type: 'course' | 'quote', payload: any }
 
@@ -71,6 +72,42 @@ export default function App() {
 
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+
+  // STARTUP AUTHENTICATION SESSION RESTORE & VERIFICATION (Strict HttpOnly Cookie Check)
+  useEffect(() => {
+    const verifyAuthSession = async () => {
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${backendUrl}/api/auth/me`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include'
+        });
+
+        const data = await res.json();
+
+        // ONLY set authenticated currentUser when the backend HttpOnly cookie is verified!
+        if (data.success && data.authenticated && data.user) {
+          setCurrentUser(data.user);
+          localStorage.setItem('msit_user', JSON.stringify(data.user));
+        } else {
+          // If backend responds unauthenticated or token expired, purge local storage & remain logged out
+          setCurrentUser(null);
+          localStorage.removeItem('msit_user');
+          localStorage.removeItem('msit_token');
+        }
+      } catch (err) {
+        console.log('Session verification notice:', err);
+        // On network error or offline state, do NOT grant authenticated access based on local storage
+        setCurrentUser(null);
+        localStorage.removeItem('msit_user');
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    verifyAuthSession();
+  }, []);
 
   // URL BROWSER ROUTER SYNC (100% Clean Path Routing /team, /senior-software-developer-tanvir-hossain-khan)
   useEffect(() => {
@@ -137,6 +174,7 @@ export default function App() {
 
   const handleLoginSuccess = (userObj) => {
     setCurrentUser(userObj);
+    localStorage.setItem('msit_user', JSON.stringify(userObj));
     setAuthModalOpen(false);
 
     if (pendingAction) {
@@ -151,8 +189,20 @@ export default function App() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setCurrentUser(null);
+    localStorage.removeItem('msit_user');
+    localStorage.removeItem('msit_token');
+
+    try {
+      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+      await fetch(`${backendUrl}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (err) {
+      console.log('Logout API call notice:', err);
+    }
   };
 
   const handleScrollToCert = () => {
