@@ -1,17 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { COURSES, COURSE_CATEGORIES } from '../data/coursesData';
 import { Clock, Calendar, Star, Users, ArrowRight, BookOpen, CheckCircle } from 'lucide-react';
 
 export default function CoursesSection({ onOpenAdmission, searchQuery }) {
+  const [coursesList, setCoursesList] = useState(COURSES);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeCourseModal, setActiveCourseModal] = useState(null);
 
-  const filteredCourses = COURSES.filter(course => {
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPublicCourses = async () => {
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${backendUrl}/api/public/courses`);
+        const data = await res.json();
+        if (isMounted && data.success && Array.isArray(data.courses) && data.courses.length > 0) {
+          setCoursesList(data.courses);
+        }
+      } catch (err) {
+        console.log('Using static courses fallback:', err);
+      }
+    };
+
+    fetchPublicCourses();
+    return () => { isMounted = false; };
+  }, []);
+
+  const filteredCourses = coursesList.filter(course => {
     const matchesCategory = selectedCategory === "All" || course.category === selectedCategory;
     const matchesSearch = searchQuery === "" || 
-      course.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      course.shortDesc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.category.toLowerCase().includes(searchQuery.toLowerCase());
+      (course.title && course.title.toLowerCase().includes(searchQuery.toLowerCase())) || 
+      ((course.short_desc || course.shortDesc) && (course.short_desc || course.shortDesc).toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (course.category && course.category.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 

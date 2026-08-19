@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BLOGS } from '../data/blogsData';
 import { Calendar, User, ArrowRight, BookOpen } from 'lucide-react';
 
 export default function BlogSection() {
+  const [blogsList, setBlogsList] = useState(BLOGS);
   const [activeBlog, setActiveBlog] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPublicBlogs = async () => {
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${backendUrl}/api/public/blog`);
+        const data = await res.json();
+        if (isMounted && data.success && Array.isArray(data.posts) && data.posts.length > 0) {
+          setBlogsList(data.posts);
+        }
+      } catch (err) {
+        console.log('Using static blogs fallback:', err);
+      }
+    };
+
+    fetchPublicBlogs();
+    return () => { isMounted = false; };
+  }, []);
 
   return (
     <section id="blogs" className="section" style={{ background: '#070A12' }}>
@@ -17,7 +37,7 @@ export default function BlogSection() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
-          {BLOGS.map(blog => (
+          {blogsList.map(blog => (
             <div key={blog.id} style={{
               background: '#0F172A',
               borderRadius: '18px',

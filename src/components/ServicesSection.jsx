@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SERVICES } from '../data/servicesData';
-import { Users, CreditCard, ShoppingCart, Activity, Megaphone, Search, Globe, Smartphone, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { Users, CreditCard, ShoppingCart, Activity, Megaphone, Search, Globe, Smartphone, CheckCircle, ArrowRight, Sparkles, Code, Shield, Laptop } from 'lucide-react';
 
 const iconMap = {
   Users: Users,
@@ -10,11 +10,34 @@ const iconMap = {
   Megaphone: Megaphone,
   Search: Search,
   Globe: Globe,
-  Smartphone: Smartphone
+  Smartphone: Smartphone,
+  Code: Code,
+  Shield: Shield,
+  Laptop: Laptop
 };
 
 export default function ServicesSection({ onOpenQuote }) {
+  const [servicesList, setServicesList] = useState(SERVICES);
   const fallbackImage = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80";
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPublicServices = async () => {
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${backendUrl}/api/public/services`);
+        const data = await res.json();
+        if (isMounted && data.success && Array.isArray(data.services) && data.services.length > 0) {
+          setServicesList(data.services);
+        }
+      } catch (err) {
+        console.log('Using static services fallback:', err);
+      }
+    };
+
+    fetchPublicServices();
+    return () => { isMounted = false; };
+  }, []);
 
   return (
     <section id="services" className="section" style={{ background: '#070A12' }}>
@@ -31,7 +54,7 @@ export default function ServicesSection({ onOpenQuote }) {
 
         {/* ELEGANT 100% EQUAL HEIGHT SERVICES GRID WITH VERIFIED COVER PHOTOS */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px' }}>
-          {SERVICES.map(service => {
+          {servicesList.map(service => {
             const IconComponent = iconMap[service.icon] || Globe;
             return (
               <div 

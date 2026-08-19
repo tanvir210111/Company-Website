@@ -74,11 +74,12 @@ CREATE TABLE IF NOT EXISTS `courses` (
   `curriculum_json` JSON DEFAULT NULL,
   `thumbnail_url` VARCHAR(255) DEFAULT NULL,
   `is_popular` TINYINT(1) DEFAULT 0,
+  `display_order` INT DEFAULT 0,
   `is_active` TINYINT(1) DEFAULT 1,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX `idx_course_slug` (`slug`),
   INDEX `idx_course_category` (`category`),
-  INDEX `idx_course_active` (`is_active`)
+  INDEX `idx_course_active` (`is_active`, `display_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------------
@@ -343,10 +344,13 @@ CREATE TABLE IF NOT EXISTS `team_members` (
   `name` VARCHAR(150) NOT NULL,
   `designation` VARCHAR(150) NOT NULL,
   `department` VARCHAR(100) DEFAULT NULL,
+  `email` VARCHAR(150) DEFAULT NULL,
+  `phone` VARCHAR(30) DEFAULT NULL,
   `bio` TEXT DEFAULT NULL,
   `photo_url` VARCHAR(255) DEFAULT NULL,
   `facebook_url` VARCHAR(255) DEFAULT NULL,
   `linkedin_url` VARCHAR(255) DEFAULT NULL,
+  `github_url` VARCHAR(255) DEFAULT NULL,
   `sort_order` INT DEFAULT 0,
   `is_active` TINYINT(1) DEFAULT 1,
   INDEX `idx_team_active` (`is_active`, `sort_order`)
@@ -359,12 +363,14 @@ CREATE TABLE IF NOT EXISTS `testimonials` (
   `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `author_name` VARCHAR(150) NOT NULL,
   `author_title` VARCHAR(150) DEFAULT NULL,
+  `company` VARCHAR(150) DEFAULT NULL,
   `rating` DECIMAL(2,1) DEFAULT 5.0,
   `review_text` TEXT NOT NULL,
   `photo_url` VARCHAR(255) DEFAULT NULL,
   `is_featured` TINYINT(1) DEFAULT 1,
   `sort_order` INT DEFAULT 0,
-  INDEX `idx_testi_featured` (`is_featured`)
+  `is_active` TINYINT(1) DEFAULT 1,
+  INDEX `idx_testi_active` (`is_active`, `sort_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------------
@@ -381,18 +387,193 @@ CREATE TABLE IF NOT EXISTS `faqs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------------
--- 21. MEDIA (Uploaded Image & Asset Registry)
+-- 22. SERVICES (Commercial Software Products & Digital Services Catalog)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `services` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `slug` VARCHAR(150) NOT NULL UNIQUE,
+  `title` VARCHAR(200) NOT NULL,
+  `category` VARCHAR(100) NOT NULL DEFAULT 'Software Products',
+  `tagline` VARCHAR(255) DEFAULT NULL,
+  `icon` VARCHAR(50) DEFAULT 'Code',
+  `image_url` VARCHAR(255) DEFAULT NULL,
+  `short_description` TEXT NOT NULL,
+  `full_description` LONGTEXT DEFAULT NULL,
+  `features_json` JSON DEFAULT NULL,
+  `cta_text` VARCHAR(100) DEFAULT 'Request Quote',
+  `cta_link` VARCHAR(255) DEFAULT '#contact',
+  `display_order` INT DEFAULT 0,
+  `is_active` TINYINT(1) DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_services_slug` (`slug`),
+  INDEX `idx_services_active` (`is_active`, `display_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 23. BLOG_POSTS (WordPress-like Content Management Engine)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `blog_posts` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `slug` VARCHAR(180) NOT NULL UNIQUE,
+  `title` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(100) DEFAULT 'Media Scope IT Editorial',
+  `category` VARCHAR(100) DEFAULT 'Career Guidance',
+  `tags` VARCHAR(255) DEFAULT NULL,
+  `featured_image` VARCHAR(255) DEFAULT NULL,
+  `excerpt` TEXT NOT NULL,
+  `content` LONGTEXT NOT NULL,
+  `seo_title` VARCHAR(255) DEFAULT NULL,
+  `seo_description` TEXT DEFAULT NULL,
+  `views_count` INT DEFAULT 0,
+  `is_active` TINYINT(1) DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_blog_slug` (`slug`),
+  INDEX `idx_blog_category` (`category`),
+  INDEX `idx_blog_active` (`is_active`, `created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 24. PAGES (WordPress-like Dynamic Content Pages Engine)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `pages` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `slug` VARCHAR(180) NOT NULL UNIQUE,
+  `title` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(100) DEFAULT 'Media Scope IT Admin',
+  `featured_image` VARCHAR(255) DEFAULT NULL,
+  `content` LONGTEXT NOT NULL,
+  `seo_title` VARCHAR(255) DEFAULT NULL,
+  `seo_description` TEXT DEFAULT NULL,
+  `is_active` TINYINT(1) DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_pages_slug` (`slug`),
+  INDEX `idx_pages_active` (`is_active`, `created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 25. MEDIA (WordPress-like Media Library & Uploads Engine)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `media` (
   `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `file_name` VARCHAR(255) NOT NULL,
+  `original_name` VARCHAR(255) NOT NULL,
   `file_path` VARCHAR(255) NOT NULL,
-  `file_type` VARCHAR(50) NOT NULL,
+  `public_url` VARCHAR(255) NOT NULL,
+  `mime_type` VARCHAR(100) NOT NULL,
   `file_size` INT UNSIGNED NOT NULL,
-  `uploaded_by` INT UNSIGNED DEFAULT NULL,
+  `uploaded_by` VARCHAR(100) DEFAULT 'Media Scope IT Admin',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT `fk_media_user` FOREIGN KEY (`uploaded_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  INDEX `idx_media_type` (`file_type`)
+  INDEX `idx_media_url` (`public_url`),
+  INDEX `idx_media_type` (`mime_type`),
+  INDEX `idx_media_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 26. CERTIFICATES (Student Course Certificate Management)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `certificates` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `certificate_number` VARCHAR(100) NOT NULL UNIQUE,
+  `enrollment_id` INT UNSIGNED NOT NULL,
+  `student_id` INT UNSIGNED NOT NULL,
+  `course_id` INT UNSIGNED NOT NULL,
+  `issue_date` DATE NOT NULL,
+  `status` ENUM('active', 'revoked') NOT NULL DEFAULT 'active',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_cert_enrollment` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cert_student` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cert_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX `idx_cert_number` (`certificate_number`),
+  INDEX `idx_cert_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 27. CONVERSATIONS (Internal Messaging Threads)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `conversations` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `subject` VARCHAR(200) NOT NULL,
+  `created_by` INT UNSIGNED NOT NULL,
+  `recipient_id` INT UNSIGNED NOT NULL,
+  `status` ENUM('open', 'closed') NOT NULL DEFAULT 'open',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_conv_creator` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_conv_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX `idx_conv_updated` (`updated_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 28. MESSAGES (Conversation Messages Logs)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `conversation_id` INT UNSIGNED NOT NULL,
+  `sender_id` INT UNSIGNED NOT NULL,
+  `receiver_id` INT UNSIGNED NOT NULL,
+  `message` TEXT NOT NULL,
+  `is_read` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_msg_conv` FOREIGN KEY (`conversation_id`) REFERENCES `conversations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_msg_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_msg_receiver` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX `idx_msg_read` (`is_read`),
+  INDEX `idx_msg_conv` (`conversation_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 29. NOTIFICATIONS (In-App User Alerts)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `title` VARCHAR(200) NOT NULL,
+  `message` TEXT NOT NULL,
+  `type` VARCHAR(50) NOT NULL DEFAULT 'system',
+  `related_type` VARCHAR(50) DEFAULT NULL,
+  `related_id` INT UNSIGNED DEFAULT NULL,
+  `is_read` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_notif_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  INDEX `idx_notif_user_read` (`user_id`, `is_read`),
+  INDEX `idx_notif_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 30. ANNOUNCEMENTS (Platform Notices)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `announcements` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(200) NOT NULL,
+  `content` TEXT NOT NULL,
+  `target_audience` ENUM('all', 'students', 'clients') NOT NULL DEFAULT 'all',
+  `status` ENUM('draft', 'published', 'archived') NOT NULL DEFAULT 'published',
+  `published_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_ann_audience` (`target_audience`),
+  INDEX `idx_ann_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------------
+-- 31. ACTIVITY_LOGS (Admin Audit Trail Logs)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `activity_logs` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `actor_user_id` INT UNSIGNED DEFAULT NULL,
+  `action` VARCHAR(100) NOT NULL,
+  `entity_type` VARCHAR(50) NOT NULL,
+  `entity_id` INT UNSIGNED DEFAULT NULL,
+  `description` TEXT NOT NULL,
+  `metadata_json` JSON DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_actlog_actor` FOREIGN KEY (`actor_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  INDEX `idx_actlog_action` (`action`),
+  INDEX `idx_actlog_entity` (`entity_type`, `entity_id`),
+  INDEX `idx_actlog_created` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

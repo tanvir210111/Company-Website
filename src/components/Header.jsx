@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Phone, Mail, Award, BookOpen, ChevronDown, Menu, X, Briefcase, GraduationCap, Globe, Palette, Megaphone, Code2, Terminal, Laptop, Monitor, Server, Settings, User, LogOut, LogIn } from 'lucide-react';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 
 export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, onNavigate, currentUser, onOpenAuth, onLogout }) {
+  const { settings } = useSiteSettings();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileAccordion, setMobileAccordion] = useState(null);
@@ -30,11 +32,11 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
       <div className="top-bar">
         <div className="top-bar-container">
           <div className="top-contact">
-            <a href="tel:+8801325165451" className="top-contact-item">
-              <Phone size={14} /> +88 01325-165451 (Admission Hotline)
+            <a href={`tel:${(settings.contact_phone || '').replace(/[^0-9+]/g, '')}`} className="top-contact-item">
+              <Phone size={14} /> {settings.contact_phone || '+88 01325-165451'} (Admission Hotline)
             </a>
-            <a href="mailto:info@mediascopeit.com" className="top-contact-item">
-              <Mail size={14} /> info@mediascopeit.com
+            <a href={`mailto:${settings.contact_email || 'info@mediascopeit.com'}`} className="top-contact-item">
+              <Mail size={14} /> {settings.contact_email || 'info@mediascopeit.com'}
             </a>
           </div>
           <div className="top-actions">

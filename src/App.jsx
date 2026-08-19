@@ -56,6 +56,37 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import RefundPolicyPage from './pages/RefundPolicyPage';
 import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 
+// Public Page Components
+import FAQSection from './components/FAQSection';
+
+import DynamicPage from './pages/DynamicPage';
+
+// Admin Panel Components
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminUsers from './components/admin/AdminUsers';
+import AdminStudents from './components/admin/AdminStudents';
+import AdminClients from './components/admin/AdminClients';
+import AdminAdmins from './components/admin/AdminAdmins';
+import AdminSiteSettings from './components/admin/AdminSiteSettings';
+import AdminServices from './components/admin/AdminServices';
+import AdminCourses from './components/admin/AdminCourses';
+import AdminEnrollments from './components/admin/AdminEnrollments';
+import AdminPayments from './components/admin/AdminPayments';
+import AdminProjects from './components/admin/AdminProjects';
+import AdminTeam from './components/admin/AdminTeam';
+import AdminTestimonials from './components/admin/AdminTestimonials';
+import AdminFAQs from './components/admin/AdminFAQs';
+import AdminBlog from './components/admin/AdminBlog';
+import AdminPages from './components/admin/AdminPages';
+import AdminMedia from './components/admin/AdminMedia';
+import AdminCertificates from './components/admin/AdminCertificates';
+import AdminMessages from './components/admin/AdminMessages';
+import AdminNotifications from './components/admin/AdminNotifications';
+import AdminAnnouncements from './components/admin/AdminAnnouncements';
+import AdminActivityLogs from './components/admin/AdminActivityLogs';
+import PublicCertificateVerification from './pages/PublicCertificateVerification';
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home'); 
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,7 +95,9 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authInitialRole, setAuthInitialRole] = useState('student');
   const [pendingAction, setPendingAction] = useState(null); // { type: 'course' | 'quote', payload: any }
+  const [adminSubPage, setAdminSubPage] = useState('dashboard');
 
   // Modal States
   const [admissionOpen, setAdmissionOpen] = useState(false);
@@ -123,10 +156,12 @@ export default function App() {
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
         'cert-verification', 'payment/success', 'payment/fail', 'payment/cancel',
-        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy'
+        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin'
       ];
 
-      if (validPages.includes(route)) {
+      if (route.startsWith('admin')) {
+        setCurrentPage('admin');
+      } else if (validPages.includes(route)) {
         setCurrentPage(route);
       } else {
         setCurrentPage('home');
@@ -209,6 +244,72 @@ export default function App() {
     handleNavigate('cert-verification');
   };
 
+  // Render Public Certificate Verification if path is /certificate/:certificateNumber
+  if (window.location.pathname.startsWith('/certificate/')) {
+    return <PublicCertificateVerification />;
+  }
+
+  // Render Protected Admin Layout if current route is /admin
+  if (currentPage === 'admin') {
+    return (
+      <>
+        <AdminLayout
+          currentUser={currentUser}
+          authLoading={authLoading}
+          onLogout={handleLogout}
+          onOpenAuth={(role = 'admin') => {
+            setAuthInitialRole(role);
+            setAuthModalOpen(true);
+          }}
+          onNavigate={handleNavigate}
+          activeSubPage={adminSubPage}
+          onSelectSubPage={setAdminSubPage}
+        >
+          {adminSubPage === 'dashboard' && <AdminDashboard onSelectSubPage={setAdminSubPage} />}
+          {adminSubPage === 'users' && <AdminUsers initialRoleFilter="all" />}
+          {adminSubPage === 'students' && <AdminStudents />}
+          {adminSubPage === 'clients' && <AdminClients />}
+          {adminSubPage === 'admins' && <AdminAdmins />}
+          {['settings', 'homepage', 'contact-info', 'global-settings'].includes(adminSubPage) && <AdminSiteSettings />}
+          {adminSubPage === 'services' && <AdminServices />}
+          {adminSubPage === 'courses' && <AdminCourses />}
+          {adminSubPage === 'enrollments' && <AdminEnrollments />}
+          {adminSubPage === 'certificates' && <AdminCertificates />}
+          {adminSubPage === 'payments' && <AdminPayments />}
+          {adminSubPage === 'projects' && <AdminProjects />}
+          {adminSubPage === 'team' && <AdminTeam />}
+          {adminSubPage === 'testimonials' && <AdminTestimonials />}
+          {adminSubPage === 'faqs' && <AdminFAQs />}
+          {adminSubPage === 'blog' && <AdminBlog />}
+          {adminSubPage === 'pages' && <AdminPages />}
+          {adminSubPage === 'media' && <AdminMedia />}
+          {adminSubPage === 'messages' && <AdminMessages />}
+          {adminSubPage === 'notifications' && <AdminNotifications />}
+          {adminSubPage === 'announcements' && <AdminAnnouncements />}
+          {adminSubPage === 'activity-logs' && <AdminActivityLogs />}
+          {!['dashboard', 'users', 'students', 'clients', 'admins', 'settings', 'homepage', 'contact-info', 'global-settings', 'services', 'courses', 'enrollments', 'certificates', 'payments', 'projects', 'team', 'testimonials', 'faqs', 'blog', 'pages', 'media', 'messages', 'notifications', 'announcements', 'activity-logs'].includes(adminSubPage) && (
+            <div style={{ padding: '30px', background: '#0B1120', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px', textTransform: 'capitalize' }}>
+                {adminSubPage} Module
+              </h2>
+              <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>
+                Management module for <strong>{adminSubPage}</strong> is ready for configuration.
+              </p>
+            </div>
+          )}
+        </AdminLayout>
+
+        <AuthModal 
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          onLoginSuccess={handleLoginSuccess}
+          pendingAction={pendingAction}
+          initialRole={authInitialRole}
+        />
+      </>
+    );
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header 
@@ -247,6 +348,8 @@ export default function App() {
             <TestimonialsSection />
 
             <BlogSection />
+
+            <FAQSection />
 
             <ContactSection />
           </>
@@ -460,6 +563,14 @@ export default function App() {
         {currentPage === 'delivery-policy' && (
           <DeliveryPolicyPage 
             onNavigate={handleNavigate} 
+          />
+        )}
+
+        {/* Dynamic CMS Page Fallback Route */}
+        {!['home', 'cert-verification', 'about-us', 'company-profile', 'md-message', 'team', 'tanvir-hasan', 'jidan', 'hridoy', 'our-clients', 'courses', 'web-development', 'graphics-design', 'digital-marketing', 'python-django', 'programming-courses', 'others-courses', 'services', 'web-services', 'graphics-services', 'marketing-services', 'others-services', 'payment/success', 'payment/fail', 'payment/cancel', 'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin'].includes(currentPage) && (
+          <DynamicPage 
+            slug={currentPage}
+            onNavigate={handleNavigate}
           />
         )}
       </main>

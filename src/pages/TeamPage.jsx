@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Mail, Code, Palette, Megaphone, Terminal, Users, GraduationCap, Briefcase, Award, CheckCircle, Send, CheckCircle2, Calendar, Clock, Sparkles } from 'lucide-react';
 
-const TEAM_MEMBERS = [
+const TEAM_MEMBERS_DEFAULT = [
   {
     id: 1,
     name: "Engr. Tanvir Hossain Khan",
@@ -57,14 +57,34 @@ const TEAM_MEMBERS = [
 ];
 
 export default function TeamPage({ onNavigate, onOpenAdmission }) {
+  const [teamMembersList, setTeamMembersList] = useState(TEAM_MEMBERS_DEFAULT);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [bookingMember, setBookingMember] = useState(null);
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
   const [bookForm, setBookForm] = useState({ name: '', phone: '', topic: 'Career Guidance' });
 
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPublicTeam = async () => {
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${backendUrl}/api/public/team`);
+        const data = await res.json();
+        if (isMounted && data.success && Array.isArray(data.team) && data.team.length > 0) {
+          setTeamMembersList(data.team);
+        }
+      } catch (err) {
+        console.log('Using static team fallback:', err);
+      }
+    };
+
+    fetchPublicTeam();
+    return () => { isMounted = false; };
+  }, []);
+
   const filteredMembers = selectedFilter === "All" 
-    ? TEAM_MEMBERS 
-    : TEAM_MEMBERS.filter(m => m.category === selectedFilter);
+    ? teamMembersList 
+    : teamMembersList.filter(m => (m.category || m.department) === selectedFilter);
 
   const handleBookingSubmit = (e) => {
     e.preventDefault();

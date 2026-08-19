@@ -1,8 +1,11 @@
 import React from 'react';
 import { ArrowRight, Search, CheckCircle2, Award, Users, Code, ShieldCheck } from 'lucide-react';
 import { COMPANY_STATS } from '../data/testimonialsData';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 
 export default function Hero({ onOpenAdmission, onOpenQuote, searchQuery, setSearchQuery }) {
+  const { settings } = useSiteSettings();
+
   return (
     <section id="hero" className="hero-section">
       <div className="hero-container">
@@ -13,11 +16,11 @@ export default function Hero({ onOpenAdmission, onOpenQuote, searchQuery, setSea
           </div>
           
           <h1 className="hero-title">
-            Empower Your Career with <span>Professional IT Skills</span> & Custom Software
+            {settings.hero_title || 'Empower Your Career with Professional IT Skills & Custom Software'}
           </h1>
 
           <p className="hero-subtitle">
-            Media Scope IT Ltd has been providing quality IT training, Web Development, Mobile Apps, CRM, Payroll Software, and Digital Marketing solutions since 2011.
+            {settings.hero_subtitle || 'Media Scope IT Ltd has been providing quality IT training, Web Development, Mobile Apps, CRM, Payroll Software, and Digital Marketing solutions since 2011.'}
           </p>
 
           {/* Quick Course Search */}

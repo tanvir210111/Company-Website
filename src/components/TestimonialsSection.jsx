@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TESTIMONIALS, CLIENT_LOGOS } from '../data/testimonialsData';
 import { Star, ShieldCheck, CheckCircle2, Quote, Sparkles } from 'lucide-react';
 
 export default function TestimonialsSection() {
+  const [testimonialsList, setTestimonialsList] = useState(TESTIMONIALS);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPublicTestimonials = async () => {
+      try {
+        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const res = await fetch(`${backendUrl}/api/public/testimonials`);
+        const data = await res.json();
+        if (isMounted && data.success && Array.isArray(data.testimonials) && data.testimonials.length > 0) {
+          setTestimonialsList(data.testimonials);
+        }
+      } catch (err) {
+        console.log('Using static testimonials fallback:', err);
+      }
+    };
+
+    fetchPublicTestimonials();
+    return () => { isMounted = false; };
+  }, []);
+
   return (
     <section id="testimonials" className="section" style={{ background: '#070A12' }}>
       <div className="section-container">
@@ -18,7 +39,7 @@ export default function TestimonialsSection() {
 
         {/* ELEGANT 100% EQUAL HEIGHT STUDENT REVIEWS GRID */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '24px', marginBottom: '60px' }}>
-          {TESTIMONIALS.map(item => (
+          {testimonialsList.map(item => (
             <div 
               key={item.id} 
               style={{

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Award, ShieldCheck, Lock } from 'lucide-react';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 
 export default function Footer({ onScrollToCert, onNavigate }) {
+  const { settings } = useSiteSettings();
+
   const handleNavClick = (pageId) => {
     if (onNavigate) {
       onNavigate(pageId);
@@ -24,8 +27,8 @@ export default function Footer({ onScrollToCert, onNavigate }) {
               style={{ height: '46px', objectFit: 'contain', background: 'white', padding: '4px 6px', borderRadius: '4px' }} 
             />
             <div>
-              <h2 style={{ color: 'white', fontSize: '1.25rem', fontWeight: 800, lineHeight: 1.1 }}>MEDIA SCOPE IT LTD</h2>
-              <span style={{ fontSize: '0.68rem', color: '#00B4D8', fontWeight: 600, letterSpacing: '0.5px' }}>IT & SOFTWARE INSTITUTE</span>
+              <h2 style={{ color: 'white', fontSize: '1.25rem', fontWeight: 800, lineHeight: 1.1 }}>{settings.site_name || 'MEDIA SCOPE IT LTD'}</h2>
+              <span style={{ fontSize: '0.68rem', color: '#00B4D8', fontWeight: 600, letterSpacing: '0.5px' }}>{settings.site_tagline || 'IT & SOFTWARE INSTITUTE'}</span>
             </div>
           </div>
 
@@ -46,8 +49,8 @@ export default function Footer({ onScrollToCert, onNavigate }) {
             <div style={{ fontWeight: 700, color: '#00B4D8', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
               <ShieldCheck size={14} /> Official Government Registrations
             </div>
-            <strong>RJSC Reg:</strong> C-166968/2020 | <strong>Trade Lic:</strong> TRAD/DSCC/048330/2020 <br />
-            <strong>TIN:</strong> 125190932932 | <strong>DBID:</strong> [DBID NUMBER]
+            <strong>RJSC Reg:</strong> {settings.rjsc_reg_no || 'C-166968/2020'} | <strong>Trade Lic:</strong> {settings.trade_license_no || 'TRAD/DSCC/048330/2020'} <br />
+            <strong>TIN:</strong> {settings.tin_no || '125190932932'} | <strong>DBID:</strong> {settings.dbid_no || 'DBID-2020-MSIT'}
           </div>
         </div>
 
@@ -106,13 +109,13 @@ export default function Footer({ onScrollToCert, onNavigate }) {
           <h3>Contact Info</h3>
           <ul className="footer-links" style={{ fontSize: '0.88rem' }}>
             <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Phone size={14} color="#FF6B00" /> +88 01325-165451
+              <Phone size={14} color="#FF6B00" /> {settings.contact_phone || '+88 01325-165451'}
             </li>
             <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Mail size={14} color="#00B4D8" /> info@mediascopeit.com
+              <Mail size={14} color="#00B4D8" /> {settings.contact_email || 'info@mediascopeit.com'}
             </li>
             <li style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-              <MapPin size={14} color="#FFB703" style={{ flexShrink: 0, marginTop: '3px' }} /> House-05, Flat B-3, Road-03, Sector-15F, Uttara, Dhaka
+              <MapPin size={14} color="#FFB703" style={{ flexShrink: 0, marginTop: '3px' }} /> {settings.office_address || 'House-05, Flat B-3, Road-03, Sector-15F, Uttara, Dhaka'}
             </li>
             <li style={{ marginTop: '14px' }}>
               <button 
