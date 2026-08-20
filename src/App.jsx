@@ -94,21 +94,26 @@ import { getBackendUrl, adminFetch } from './utils/adminApi';
 const parseCurrentRoute = () => {
   if (typeof window === 'undefined') return { page: 'home', subPage: 'dashboard' };
 
-  const rawPath = (window.location.pathname || '').replace(/^\/+/, '').replace(/\/+$/, '');
-  const rawHash = (window.location.hash || '').replace(/^#\/?/, '').replace(/\/+$/, '');
+  const rawPath = (window.location.pathname || '').trim().toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '');
+  const rawHash = (window.location.hash || '').trim().toLowerCase().replace(/^#\/?/, '').replace(/\/+$/, '');
   const route = rawPath || rawHash;
 
-  // Direct Private Admin Route Parsing (/admin, /admin/services, /admin/courses, etc.)
-  if (route === 'admin' || route.startsWith('admin/')) {
+  // 1. TOP PRIORITY: Explicit Admin Route Matching (/admin, /admin/services, /admin/courses, etc.)
+  if (route === 'admin' || route.startsWith('admin/') || route === 'admin-services') {
+    if (route === 'admin-services') {
+      return { page: 'admin', subPage: 'services' };
+    }
     const parts = route.split('/');
     const sub = parts[1] || 'dashboard';
     return { page: 'admin', subPage: sub };
   }
 
-  if (route === 'admin-services') {
-    return { page: 'admin', subPage: 'services' };
+  // 2. Certificate Verification Route
+  if (route.startsWith('certificate/')) {
+    return { page: route, subPage: 'dashboard' };
   }
 
+  // 3. Known Public Pages
   const validPages = [
     'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
     'video-editor-nashimul-hasan-nibir', 'sr-social-media-marketer-naimur-rahman-naim',
@@ -282,20 +287,22 @@ export default function App() {
     handleNavigate('cert-verification');
   };
 
-  // Render Public Certificate Verification if path is /certificate/:certificateNumber
-  if (window.location.pathname.startsWith('/certificate/')) {
+  // 1. Certificate Verification Route Check
+  const normalizedPath = (typeof window !== 'undefined' ? window.location.pathname : '').trim().toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '');
+  const normalizedHash = (typeof window !== 'undefined' ? window.location.hash : '').trim().toLowerCase().replace(/^#\/?/, '').replace(/\/+$/, '');
+  const currentPathOrHash = normalizedPath || normalizedHash;
+
+  if (currentPathOrHash.startsWith('certificate/')) {
     return <PublicCertificateVerification />;
   }
 
-  // Render Protected Admin Area if current route is /admin or /admin/* or legacy /admin-services
-  const isDirectAdminUrl = typeof window !== 'undefined' && (
-    window.location.pathname.startsWith('/admin') ||
-    window.location.pathname === '/admin-services' ||
-    window.location.hash.startsWith('#admin') ||
-    window.location.hash === '#admin-services'
-  );
+  // 2. TOP PRIORITY: Render Protected Admin Area
+  const isAdminRoute = currentPage === 'admin' || 
+    currentPathOrHash === 'admin' || 
+    currentPathOrHash.startsWith('admin/') || 
+    currentPathOrHash === 'admin-services';
 
-  if (currentPage === 'admin' || isDirectAdminUrl) {
+  if (isAdminRoute) {
     // 1. Session Verification Loading Spinner
     if (authLoading) {
       return (
