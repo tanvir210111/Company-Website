@@ -20,4 +20,13 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            /root/deploy-mediascope.sh
+            if [ -f /root/deploy-mediascope.sh ]; then
+              /root/deploy-mediascope.sh || true
+            fi
+            cd /home/mediascope/Company-Website || exit 1
+            git pull origin main
+            npm run build
+            rm -rf /home/mediascope/htdocs/mediascopeit.com/*
+            cp -a dist/. /home/mediascope/htdocs/mediascopeit.com/
+            cd /home/mediascope/Company-Website/backend || exit 1
+            pm2 restart all || pm2 reload all || pm2 restart backend || pm2 restart server || true
