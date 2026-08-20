@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, Award, BookOpen, ChevronDown, Menu, X, Briefcase, GraduationCap, Globe, Palette, Megaphone, Code2, Terminal, Laptop, Monitor, Server, Settings, User, LogOut, LogIn } from 'lucide-react';
+import { Phone, Mail, Award, BookOpen, ChevronDown, Menu, X, Briefcase, GraduationCap, Globe, Palette, Megaphone, Code2, Terminal, Laptop, Monitor, Server, Settings, User, LogOut, LogIn, ShieldCheck } from 'lucide-react';
 import { useSiteSettings } from '../hooks/useSiteSettings';
 
 export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, onNavigate, currentUser, onOpenAuth, onLogout }) {
@@ -7,6 +7,12 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileAccordion, setMobileAccordion] = useState(null);
+
+  // Safe Backend-Authoritative Role Normalization
+  const userRole = currentUser?.role ? String(currentUser.role).trim().toLowerCase() : '';
+  const isAdmin = userRole === 'admin';
+  const isClient = userRole === 'client';
+  const isStudent = userRole === 'student' || (!isAdmin && !isClient && !!currentUser);
 
   const toggleMobileAccordion = (section) => {
     setMobileAccordion(prev => prev === section ? null : section);
@@ -44,24 +50,79 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
               <Award size={14} /> Verify Certificate
             </button>
             
-            {/* Dual Role Student vs Client Profile Button in Header */}
+            {/* Authenticated User Status Bar */}
             {currentUser ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ 
-                  fontSize: '0.8rem', 
-                  color: currentUser.role === 'client' ? '#FF6B00' : '#00B4D8', 
-                  fontWeight: 700, 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '4px',
-                  background: currentUser.role === 'client' ? 'rgba(255, 107, 0, 0.15)' : 'rgba(0, 180, 216, 0.15)',
-                  padding: '2px 8px',
-                  borderRadius: '10px',
-                  border: currentUser.role === 'client' ? '1px solid #FF6B00' : '1px solid #00B4D8'
-                }}>
-                  {currentUser.role === 'client' ? <Briefcase size={13} /> : <GraduationCap size={13} />}
-                  {currentUser.role === 'client' ? `Client: ${currentUser.name}` : `Student: ${currentUser.name}`}
-                </span>
+                {isAdmin ? (
+                  <span style={{ 
+                    fontSize: '0.8rem', 
+                    color: '#FFB703', 
+                    fontWeight: 700, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '4px',
+                    background: 'rgba(255, 183, 3, 0.15)',
+                    padding: '2px 8px',
+                    borderRadius: '10px',
+                    border: '1px solid #FFB703'
+                  }}>
+                    <ShieldCheck size={13} /> Admin: {currentUser.name}
+                  </span>
+                ) : isClient ? (
+                  <span style={{ 
+                    fontSize: '0.8rem', 
+                    color: '#FF6B00', 
+                    fontWeight: 700, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '4px',
+                    background: 'rgba(255, 107, 0, 0.15)',
+                    padding: '2px 8px',
+                    borderRadius: '10px',
+                    border: '1px solid #FF6B00'
+                  }}>
+                    <Briefcase size={13} /> Client: {currentUser.name}
+                  </span>
+                ) : (
+                  <span style={{ 
+                    fontSize: '0.8rem', 
+                    color: '#00B4D8', 
+                    fontWeight: 700, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '4px',
+                    background: 'rgba(0, 180, 216, 0.15)',
+                    padding: '2px 8px',
+                    borderRadius: '10px',
+                    border: '1px solid #00B4D8'
+                  }}>
+                    <GraduationCap size={13} /> Student: {currentUser.name}
+                  </span>
+                )}
+
+                {/* Admin Panel Button in Top Bar */}
+                {isAdmin && (
+                  <button 
+                    onClick={() => handleNavClick('admin-services')}
+                    style={{
+                      background: 'linear-gradient(135deg, #FFB703 0%, #FF6B00 100%)',
+                      border: 'none',
+                      color: '#070A12',
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      padding: '2px 8px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3px'
+                    }}
+                    title="Open Admin Services Panel"
+                  >
+                    <Settings size={12} /> Admin Panel
+                  </button>
+                )}
+
                 <button 
                   onClick={onLogout}
                   style={{ background: 'none', border: 'none', color: '#EF4444', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '2px' }}
@@ -341,6 +402,30 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
                 Contact Us
               </button>
             </li>
+
+            {/* Admin Panel Link in Desktop Nav (Admin Only) */}
+            {isAdmin && (
+              <li className="nav-item">
+                <button 
+                  onClick={() => handleNavClick('admin-services')} 
+                  className="nav-link" 
+                  style={{ 
+                    background: 'rgba(255, 183, 3, 0.12)', 
+                    border: '1px solid #FFB703', 
+                    color: '#FFB703',
+                    borderRadius: '8px',
+                    padding: '6px 12px',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Settings size={15} /> Admin Panel
+                </button>
+              </li>
+            )}
           </ul>
 
           {/* Actions */}
@@ -495,6 +580,29 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
             >
               Contact Us
             </button>
+
+            {/* Admin Panel Link in Mobile Drawer (Admin Only) */}
+            {isAdmin && (
+              <button 
+                onClick={() => { setMobileMenuOpen(false); handleNavClick('admin-services'); }} 
+                style={{ 
+                  textAlign: 'left', 
+                  padding: '12px 14px', 
+                  borderRadius: '8px', 
+                  background: 'rgba(255, 183, 3, 0.15)', 
+                  border: '1px solid #FFB703', 
+                  color: '#FFB703', 
+                  fontWeight: 700, 
+                  fontSize: '1.05rem', 
+                  cursor: 'pointer', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px' 
+                }}
+              >
+                <Settings size={18} /> Admin Panel
+              </button>
+            )}
 
             {/* Action Buttons */}
             <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', gap: '12px' }}>

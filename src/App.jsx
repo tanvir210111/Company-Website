@@ -58,8 +58,8 @@ import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 
 // Public Page Components
 import FAQSection from './components/FAQSection';
-
 import DynamicPage from './pages/DynamicPage';
+import AdminServicesPage from './pages/AdminServicesPage';
 
 // Admin Panel Components
 import AdminLayout from './components/admin/AdminLayout';
@@ -121,8 +121,12 @@ export default function App() {
 
         // ONLY set authenticated currentUser when the backend HttpOnly cookie is verified!
         if (data.success && data.authenticated && data.user) {
-          setCurrentUser(data.user);
-          localStorage.setItem('msit_user', JSON.stringify(data.user));
+          const normalizedUser = {
+            ...data.user,
+            role: typeof data.user.role === 'string' ? data.user.role.trim().toLowerCase() : data.user.role
+          };
+          setCurrentUser(normalizedUser);
+          localStorage.setItem('msit_user', JSON.stringify(normalizedUser));
         } else {
           // If backend responds unauthenticated or token expired, purge local storage & remain logged out
           setCurrentUser(null);
@@ -142,7 +146,7 @@ export default function App() {
     verifyAuthSession();
   }, []);
 
-  // URL BROWSER ROUTER SYNC (100% Clean Path Routing /team, /senior-software-developer-tanvir-hossain-khan)
+  // URL BROWSER ROUTER SYNC (100% Clean Path Routing /team, /senior-software-developer-tanvir-hossain-khan, /admin-services)
   useEffect(() => {
     const syncPageFromUrl = () => {
       const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
@@ -156,10 +160,13 @@ export default function App() {
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
         'cert-verification', 'payment/success', 'payment/fail', 'payment/cancel',
-        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin'
+        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin',
+        'admin-services'
       ];
 
-      if (route.startsWith('admin')) {
+      if (route === 'admin-services') {
+        setCurrentPage('admin-services');
+      } else if (route.startsWith('admin')) {
         setCurrentPage('admin');
       } else if (validPages.includes(route)) {
         setCurrentPage(route);
@@ -208,8 +215,15 @@ export default function App() {
   };
 
   const handleLoginSuccess = (userObj) => {
-    setCurrentUser(userObj);
-    localStorage.setItem('msit_user', JSON.stringify(userObj));
+    const normalizedUser = userObj ? {
+      ...userObj,
+      role: typeof userObj.role === 'string' ? userObj.role.trim().toLowerCase() : userObj.role
+    } : null;
+
+    setCurrentUser(normalizedUser);
+    if (normalizedUser) {
+      localStorage.setItem('msit_user', JSON.stringify(normalizedUser));
+    }
     setAuthModalOpen(false);
 
     if (pendingAction) {
@@ -566,8 +580,21 @@ export default function App() {
           />
         )}
 
+        {/* Dedicated Admin Services Page Route */}
+        {currentPage === 'admin-services' && (
+          <AdminServicesPage 
+            onNavigate={handleNavigate}
+            currentUser={currentUser}
+            authLoading={authLoading}
+            onOpenAuth={(role = 'admin') => {
+              setAuthInitialRole(role);
+              setAuthModalOpen(true);
+            }}
+          />
+        )}
+
         {/* Dynamic CMS Page Fallback Route */}
-        {!['home', 'cert-verification', 'about-us', 'company-profile', 'md-message', 'team', 'tanvir-hasan', 'jidan', 'hridoy', 'our-clients', 'courses', 'web-development', 'graphics-design', 'digital-marketing', 'python-django', 'programming-courses', 'others-courses', 'services', 'web-services', 'graphics-services', 'marketing-services', 'others-services', 'payment/success', 'payment/fail', 'payment/cancel', 'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin'].includes(currentPage) && (
+        {!['home', 'cert-verification', 'about-us', 'company-profile', 'md-message', 'team', 'tanvir-hasan', 'jidan', 'hridoy', 'our-clients', 'courses', 'web-development', 'graphics-design', 'digital-marketing', 'python-django', 'programming-courses', 'others-courses', 'services', 'web-services', 'graphics-services', 'marketing-services', 'others-services', 'payment/success', 'payment/fail', 'payment/cancel', 'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin', 'admin-services'].includes(currentPage) && (
           <DynamicPage 
             slug={currentPage}
             onNavigate={handleNavigate}

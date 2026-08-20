@@ -109,7 +109,8 @@ export default function AdminLayout({
   }
 
   // 3. Authenticated Non-Admin User (Student or Client attempting /admin)
-  if (currentUser.role !== 'admin') {
+  const userRole = currentUser?.role ? String(currentUser.role).trim().toLowerCase() : '';
+  if (userRole !== 'admin') {
     return (
       <div style={{
         minHeight: '100vh',
@@ -140,7 +141,7 @@ export default function AdminLayout({
           Access Denied: Admin Rights Required
         </h2>
         <p style={{ color: '#94A3B8', maxWidth: '480px', marginBottom: '24px', lineHeight: 1.6 }}>
-          Logged in as <strong style={{ color: '#00B4D8' }}>{currentUser.name}</strong> ({currentUser.role}). Your current user role does not have administrator privileges to access the backend portal.
+          Logged in as <strong style={{ color: '#00B4D8' }}>{currentUser.name}</strong> ({userRole || 'user'}). Your current user role does not have administrator privileges to access the backend portal.
         </p>
         <div style={{ display: 'flex', gap: '12px' }}>
           <button
@@ -176,6 +177,7 @@ export default function AdminLayout({
     { id: 'students', label: 'Students', icon: GraduationCap },
     { id: 'clients', label: 'Clients', icon: Briefcase },
     { id: 'admins', label: 'Admins', icon: ShieldCheck },
+    { id: 'services', label: 'Services', icon: Briefcase },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'enrollments', label: 'Enrollments', icon: FileCheck },
     { id: 'certificates', label: 'Certificates', icon: Award },

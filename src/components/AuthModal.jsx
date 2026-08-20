@@ -54,9 +54,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
 
       const data = await res.json();
       if (data.success && data.user) {
-        localStorage.setItem('msit_user', JSON.stringify(data.user));
+        const normalizedUser = {
+          ...data.user,
+          role: typeof data.user.role === 'string' ? data.user.role.trim().toLowerCase() : data.user.role
+        };
+        localStorage.setItem('msit_user', JSON.stringify(normalizedUser));
         if (data.token) localStorage.setItem('msit_token', data.token);
-        onLoginSuccess(data.user);
+        onLoginSuccess(normalizedUser);
       } else {
         setLoginError(data.message || 'Login failed. Please check your credentials.');
       }
@@ -96,9 +100,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
 
       const data = await res.json();
       if (data.success && data.user) {
-        localStorage.setItem('msit_user', JSON.stringify(data.user));
+        const normalizedUser = {
+          ...data.user,
+          role: typeof data.user.role === 'string' ? data.user.role.trim().toLowerCase() : data.user.role
+        };
+        localStorage.setItem('msit_user', JSON.stringify(normalizedUser));
         if (data.token) localStorage.setItem('msit_token', data.token);
-        onLoginSuccess(data.user);
+        onLoginSuccess(normalizedUser);
       } else {
         setSignUpError(data.message || 'Signup failed. Please try again.');
       }
