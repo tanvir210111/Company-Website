@@ -88,6 +88,7 @@ import AdminAnnouncements from './components/admin/AdminAnnouncements';
 import AdminActivityLogs from './components/admin/AdminActivityLogs';
 import PublicCertificateVerification from './pages/PublicCertificateVerification';
 import { ShieldAlert } from 'lucide-react';
+import { getBackendUrl, adminFetch } from './utils/adminApi';
 
 // Synchronous Route Parser (Ensures initial render never flashes or defaults to home on /admin)
 const parseCurrentRoute = () => {
@@ -150,13 +151,7 @@ export default function App() {
   useEffect(() => {
     const verifyAuthSession = async () => {
       try {
-        const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-        const res = await fetch(`${backendUrl}/api/auth/me`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
-        });
-
+        const res = await adminFetch('/api/auth/me');
         const data = await res.json();
 
         // ONLY set authenticated currentUser when the backend HttpOnly cookie is verified!
@@ -275,10 +270,8 @@ export default function App() {
     localStorage.removeItem('msit_token');
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      await fetch(`${backendUrl}/api/auth/logout`, {
-        method: 'POST',
-        credentials: 'include'
+      await adminFetch('/api/auth/logout', {
+        method: 'POST'
       });
     } catch (err) {
       console.log('Logout API call notice:', err);

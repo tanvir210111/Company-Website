@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, Mail, Key, Eye, EyeOff, ShieldCheck, ArrowLeft, AlertCircle, RefreshCw } from 'lucide-react';
+import { getBackendUrl } from '../../utils/adminApi';
 
 export default function AdminLoginPage({ onLoginSuccess, onNavigate }) {
   const [loginEmail, setLoginEmail] = useState('');
@@ -19,7 +20,7 @@ export default function AdminLoginPage({ onLoginSuccess, onNavigate }) {
     setLoading(true);
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+      const backendUrl = getBackendUrl();
       const res = await fetch(`${backendUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -4,6 +4,7 @@ import {
   CheckCircle2, AlertCircle, ArrowUp, ArrowDown, Code, Users, CreditCard,
   ShoppingCart, Activity, Shield, Globe, Laptop
 } from 'lucide-react';
+import { adminFetch } from '../../utils/adminApi';
 
 const ICON_OPTIONS = ['Users', 'CreditCard', 'ShoppingCart', 'Activity', 'Code', 'Globe', 'Shield', 'Laptop'];
 
@@ -43,16 +44,11 @@ export default function AdminServices() {
     setLoading(true);
     setError(null);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       let queryParams = new URLSearchParams();
       if (searchQuery.trim()) queryParams.append('q', searchQuery.trim());
       if (statusFilter !== 'all') queryParams.append('status', statusFilter);
 
-      const res = await fetch(`${backendUrl}/api/admin/services?${queryParams.toString()}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      });
+      const res = await adminFetch(`/api/admin/services?${queryParams.toString()}`);
       const data = await res.json();
       if (data.success) {
         setServices(data.services || []);
@@ -85,11 +81,8 @@ export default function AdminServices() {
     }
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const res = await fetch(`${backendUrl}/api/admin/services/${srv.id}/status`, {
+      const res = await adminFetch(`/api/admin/services/${srv.id}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ is_active: newStatus })
       });
       const data = await res.json();
@@ -112,11 +105,8 @@ export default function AdminServices() {
     }
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const res = await fetch(`${backendUrl}/api/admin/services/${srv.id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
+      const res = await adminFetch(`/api/admin/services/${srv.id}`, {
+        method: 'DELETE'
       });
       const data = await res.json();
       if (data.success) {
@@ -187,13 +177,10 @@ export default function AdminServices() {
 
     setSubmitting(true);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       const featuresList = featuresText.split('\n').map(f => f.trim()).filter(Boolean);
 
-      const res = await fetch(`${backendUrl}/api/admin/services`, {
+      const res = await adminFetch('/api/admin/services', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           title,
           slug,
@@ -238,13 +225,10 @@ export default function AdminServices() {
 
     setSubmitting(true);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       const featuresList = featuresText.split('\n').map(f => f.trim()).filter(Boolean);
 
-      const res = await fetch(`${backendUrl}/api/admin/services/${selectedService.id}`, {
+      const res = await adminFetch(`/api/admin/services/${selectedService.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           title,
           slug,

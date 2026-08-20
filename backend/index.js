@@ -175,7 +175,7 @@ async function adminMiddleware(req, res, next) {
 
     const decoded = jwt.verify(token, JWT_SECRET);
     
-    let userRole = decoded.role;
+    let userRole = decoded.role ? String(decoded.role).trim().toLowerCase() : '';
     let dbUser = null;
 
     try {
@@ -183,13 +183,13 @@ async function adminMiddleware(req, res, next) {
         const users = await query('SELECT id, full_name, email, phone, role FROM users WHERE id = ? LIMIT 1', [decoded.id]);
         if (users && users.length > 0) {
           dbUser = users[0];
-          userRole = dbUser.role;
+          userRole = dbUser.role ? String(dbUser.role).trim().toLowerCase() : userRole;
         }
       } else if (decoded.email) {
         const users = await query('SELECT id, full_name, email, phone, role FROM users WHERE email = ? LIMIT 1', [decoded.email]);
         if (users && users.length > 0) {
           dbUser = users[0];
-          userRole = dbUser.role;
+          userRole = dbUser.role ? String(dbUser.role).trim().toLowerCase() : userRole;
         }
       }
     } catch (dbErr) {

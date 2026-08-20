@@ -4,6 +4,7 @@ import {
   FolderGit2, CreditCard, MessageSquare, ArrowUpRight, Clock, CheckCircle2,
   RefreshCw, TrendingUp, AlertTriangle, Award, Bell, Plus, History, ShieldCheck, Newspaper
 } from 'lucide-react';
+import { adminFetch } from '../../utils/adminApi';
 
 export default function AdminDashboard({ onSelectSubPage }) {
   const [stats, setStats] = useState(null);
@@ -14,21 +15,22 @@ export default function AdminDashboard({ onSelectSubPage }) {
     setLoading(true);
     setError(null);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const res = await fetch(`${backendUrl}/api/admin/dashboard`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      });
+      const res = await adminFetch('/api/admin/dashboard');
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        data = null;
+      }
 
-      const data = await res.json();
-      if (data.success) {
+      if (res.ok && data && data.success) {
         setStats(data.data || data);
       } else {
-        setError(data.message || 'Failed to load dashboard metrics.');
+        setError((data && data.message) || `Failed to load dashboard metrics (HTTP ${res.status}).`);
       }
     } catch (err) {
-      setError('Error connecting to admin backend.');
+      console.error('Admin Dashboard Fetch Error:', err);
+      setError('Error connecting to admin backend. Please check network and server status.');
     } finally {
       setLoading(false);
     }

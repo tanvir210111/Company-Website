@@ -3,6 +3,7 @@ import {
   GraduationCap, Plus, Search, Filter, RefreshCw, Edit, Trash2, Eye, EyeOff,
   CheckCircle2, AlertCircle, Star, BookOpen, Clock, Tag
 } from 'lucide-react';
+import { adminFetch } from '../../utils/adminApi';
 
 const CATEGORY_OPTIONS = ['Graphics & Design', 'Web & Software', 'Programming', 'Digital Marketing', 'Others'];
 
@@ -44,17 +45,12 @@ export default function AdminCourses() {
     setLoading(true);
     setError(null);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       let queryParams = new URLSearchParams();
       if (searchQuery.trim()) queryParams.append('q', searchQuery.trim());
       if (statusFilter !== 'all') queryParams.append('status', statusFilter);
       if (categoryFilter !== 'all') queryParams.append('category', categoryFilter);
 
-      const res = await fetch(`${backendUrl}/api/admin/courses?${queryParams.toString()}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      });
+      const res = await adminFetch(`/api/admin/courses?${queryParams.toString()}`);
       const data = await res.json();
       if (data.success) {
         setCourses(data.courses || []);
@@ -87,11 +83,8 @@ export default function AdminCourses() {
     }
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const res = await fetch(`${backendUrl}/api/admin/courses/${crs.id}/status`, {
+      const res = await adminFetch(`/api/admin/courses/${crs.id}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ is_active: newStatus })
       });
       const data = await res.json();
@@ -114,11 +107,8 @@ export default function AdminCourses() {
     }
 
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const res = await fetch(`${backendUrl}/api/admin/courses/${crs.id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
+      const res = await adminFetch(`/api/admin/courses/${crs.id}`, {
+        method: 'DELETE'
       });
       const data = await res.json();
       if (data.success) {
@@ -187,13 +177,10 @@ export default function AdminCourses() {
 
     setSubmitting(true);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       const curriculumList = curriculumText.split('\n').map(c => c.trim()).filter(Boolean);
 
-      const res = await fetch(`${backendUrl}/api/admin/courses`, {
+      const res = await adminFetch('/api/admin/courses', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           title,
           slug,
@@ -238,13 +225,10 @@ export default function AdminCourses() {
 
     setSubmitting(true);
     try {
-      const backendUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       const curriculumList = curriculumText.split('\n').map(c => c.trim()).filter(Boolean);
 
-      const res = await fetch(`${backendUrl}/api/admin/courses/${selectedCourse.id}`, {
+      const res = await adminFetch(`/api/admin/courses/${selectedCourse.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           title,
           slug,
