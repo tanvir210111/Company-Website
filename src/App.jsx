@@ -87,10 +87,35 @@ import AdminNotifications from './components/admin/AdminNotifications';
 import AdminAnnouncements from './components/admin/AdminAnnouncements';
 import AdminActivityLogs from './components/admin/AdminActivityLogs';
 import PublicCertificateVerification from './pages/PublicCertificateVerification';
-import { ShieldAlert } from 'lucide-react';
+
+// Student Portal Components
+import StudentLayout from './components/student/StudentLayout';
+import StudentDashboard from './components/student/StudentDashboard';
+import StudentProfile from './components/student/StudentProfile';
+import StudentCourses from './components/student/StudentCourses';
+import StudentEnrollments from './components/student/StudentEnrollments';
+import StudentPayments from './components/student/StudentPayments';
+import StudentCertificates from './components/student/StudentCertificates';
+import StudentProjects from './components/student/StudentProjects';
+import StudentMessages from './components/student/StudentMessages';
+import StudentNotifications from './components/student/StudentNotifications';
+import StudentSettings from './components/student/StudentSettings';
+
+// Client Portal Components
+import ClientLayout from './components/client/ClientLayout';
+import ClientDashboard from './components/client/ClientDashboard';
+import ClientProfile from './components/client/ClientProfile';
+import ClientProjects from './components/client/ClientProjects';
+import ClientProjectRequest from './components/client/ClientProjectRequest';
+import ClientPayments from './components/client/ClientPayments';
+import ClientMessages from './components/client/ClientMessages';
+import ClientNotifications from './components/client/ClientNotifications';
+import ClientSettings from './components/client/ClientSettings';
+
+import { ShieldAlert, LogIn, Lock } from 'lucide-react';
 import { getBackendUrl, adminFetch } from './utils/adminApi';
 
-// Synchronous Route Parser (Ensures initial render never flashes or defaults to home on /admin)
+// Synchronous Route Parser (Ensures initial render never flashes or defaults to home on /admin, /student, or /client)
 const parseCurrentRoute = () => {
   if (typeof window === 'undefined') return { page: 'home', subPage: 'dashboard' };
 
@@ -111,12 +136,26 @@ const parseCurrentRoute = () => {
     return { page: 'admin', subPage: sub };
   }
 
-  // 2. Certificate Verification Route
+  // 2. Student Portal Route Matching (/student, /student/courses, /student/profile, etc.)
+  if (route === 'student' || route.startsWith('student/')) {
+    const parts = route.split('/');
+    const sub = parts[1] || 'dashboard';
+    return { page: 'student', subPage: sub };
+  }
+
+  // 3. Client Portal Route Matching (/client, /client/projects, /client/profile, etc.)
+  if (route === 'client' || route.startsWith('client/')) {
+    const parts = route.split('/');
+    const sub = parts[1] || 'dashboard';
+    return { page: 'client', subPage: sub };
+  }
+
+  // 4. Certificate Verification Route
   if (route.startsWith('certificate/')) {
     return { page: route, subPage: 'dashboard' };
   }
 
-  // 3. Known Public Pages
+  // 5. Known Public Pages
   const validPages = [
     'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
     'video-editor-nashimul-hasan-nibir', 'sr-social-media-marketer-naimur-rahman-naim',
@@ -138,7 +177,9 @@ const parseCurrentRoute = () => {
 export default function App() {
   const initialRoute = parseCurrentRoute();
   const [currentPage, setCurrentPage] = useState(initialRoute.page); 
-  const [adminSubPage, setAdminSubPage] = useState(initialRoute.subPage);
+  const [adminSubPage, setAdminSubPage] = useState(initialRoute.page === 'admin' ? initialRoute.subPage : 'dashboard');
+  const [studentSubPage, setStudentSubPage] = useState(initialRoute.page === 'student' ? initialRoute.subPage : 'dashboard');
+  const [clientSubPage, setClientSubPage] = useState(initialRoute.page === 'client' ? initialRoute.subPage : 'dashboard');
   const [searchQuery, setSearchQuery] = useState('');
   
   // Strict Backend-Authoritative Authentication State (Default: null)
@@ -189,12 +230,14 @@ export default function App() {
     verifyAuthSession();
   }, []);
 
-  // URL BROWSER ROUTER SYNC (Supports /admin, /admin/services, /admin/courses, etc. and all public routes)
+  // URL BROWSER ROUTER SYNC (Supports /admin, /student, /client, and public routes)
   useEffect(() => {
     const syncPageFromUrl = () => {
       const routeInfo = parseCurrentRoute();
       setCurrentPage(routeInfo.page);
-      setAdminSubPage(routeInfo.subPage);
+      if (routeInfo.page === 'admin') setAdminSubPage(routeInfo.subPage);
+      if (routeInfo.page === 'student') setStudentSubPage(routeInfo.subPage);
+      if (routeInfo.page === 'client') setClientSubPage(routeInfo.subPage);
 
       const rawPath = (window.location.pathname || '').replace(/^\/+/, '').replace(/\/+$/, '');
       if (rawPath === 'admin-services') {
@@ -226,9 +269,24 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleStudentSubNavigate = (subPageId) => {
+    setStudentSubPage(subPageId);
+    const newPath = subPageId === 'dashboard' ? '/student' : `/student/${subPageId}`;
+    window.history.pushState(null, '', newPath);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleClientSubNavigate = (subPageId) => {
+    setClientSubPage(subPageId);
+    const newPath = subPageId === 'dashboard' ? '/client' : `/client/${subPageId}`;
+    window.history.pushState(null, '', newPath);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleOpenAdmission = (course = null) => {
     if (!currentUser) {
       setPendingAction({ type: 'course', payload: course });
+      setAuthInitialRole('student');
       setAuthModalOpen(true);
       return;
     }
@@ -240,6 +298,7 @@ export default function App() {
   const handleOpenQuote = (service = null) => {
     if (!currentUser) {
       setPendingAction({ type: 'quote', payload: service });
+      setAuthInitialRole('client');
       setAuthModalOpen(true);
       return;
     }
@@ -269,6 +328,24 @@ export default function App() {
         setQuoteOpen(true);
       }
       setPendingAction(null);
+      return;
+    }
+
+    // Role-based automatic redirect on successful login
+    if (normalizedUser) {
+      if (normalizedUser.role === 'admin') {
+        setCurrentPage('admin');
+        setAdminSubPage('dashboard');
+        window.history.pushState(null, '', '/admin');
+      } else if (normalizedUser.role === 'student') {
+        setCurrentPage('student');
+        setStudentSubPage('dashboard');
+        window.history.pushState(null, '', '/student');
+      } else if (normalizedUser.role === 'client') {
+        setCurrentPage('client');
+        setClientSubPage('dashboard');
+        window.history.pushState(null, '', '/client');
+      }
     }
   };
 
@@ -276,6 +353,8 @@ export default function App() {
     setCurrentUser(null);
     localStorage.removeItem('msit_user');
     localStorage.removeItem('msit_token');
+    setCurrentPage('home');
+    window.history.pushState(null, '', '/');
 
     try {
       await adminFetch('/api/auth/logout', {
@@ -384,11 +463,11 @@ export default function App() {
           </p>
           <div style={{ display: 'flex', gap: '12px' }}>
             <button
-              onClick={() => handleNavigate('home')}
+              onClick={() => handleNavigate(userRole === 'student' ? 'student' : (userRole === 'client' ? 'client' : 'home'))}
               className="btn-primary"
               style={{ padding: '12px 24px', fontWeight: 700, borderRadius: '10px' }}
             >
-              Return to Homepage
+              Go to Authorized Dashboard
             </button>
             <button
               onClick={handleLogout}
@@ -454,6 +533,178 @@ export default function App() {
           </div>
         )}
       </AdminLayout>
+    );
+  }
+
+  // 3. STUDENT PORTAL ROUTE
+  const isStudentRoute = currentPage === 'student' || 
+    currentPathOrHash === 'student' || 
+    currentPathOrHash.startsWith('student/');
+
+  if (isStudentRoute) {
+    if (authLoading) {
+      return (
+        <div style={{ minHeight: '100vh', background: '#070A12', color: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+          <div style={{ width: '48px', height: '48px', border: '4px solid rgba(0, 180, 216, 0.2)', borderTopColor: '#00B4D8', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          <p style={{ color: '#94A3B8', fontSize: '0.95rem', fontWeight: 600 }}>Loading Student Portal...</p>
+        </div>
+      );
+    }
+
+    if (!currentUser) {
+      return (
+        <div style={{ minHeight: '100vh', background: '#070A12', color: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', textAlign: 'center' }}>
+          <div style={{ maxWidth: '400px', width: '100%', background: '#0B1120', padding: '32px 24px', borderRadius: '16px', border: '1px solid rgba(0, 180, 216, 0.3)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(0, 180, 216, 0.12)', border: '1px solid rgba(0, 180, 216, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', color: '#00B4D8' }}>
+              <Lock size={28} />
+            </div>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '10px' }}>Student Login Required</h2>
+            <p style={{ color: '#94A3B8', fontSize: '0.88rem', marginBottom: '20px' }}>Please log in to your student account to access your courses, certificates, and academic portal.</p>
+            <button
+              onClick={() => {
+                setAuthInitialRole('student');
+                setAuthModalOpen(true);
+              }}
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', background: '#00B4D8', color: '#070A12', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginBottom: '10px' }}
+            >
+              Log In as Student
+            </button>
+            <button
+              onClick={() => handleNavigate('home')}
+              style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'transparent', color: '#94A3B8', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', border: '1px solid rgba(255, 255, 255, 0.1)' }}
+            >
+              Return to Website
+            </button>
+          </div>
+          <AuthModal
+            isOpen={authModalOpen}
+            onClose={() => setAuthModalOpen(false)}
+            onLoginSuccess={handleLoginSuccess}
+            initialRole="student"
+          />
+        </div>
+      );
+    }
+
+    const userRole = (currentUser?.role || '').toString().trim().toLowerCase();
+    if (userRole !== 'student') {
+      return (
+        <div style={{ minHeight: '100vh', background: '#070A12', color: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', textAlign: 'center' }}>
+          <div style={{ maxWidth: '440px', background: '#0B1120', padding: '32px 24px', borderRadius: '16px', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#EF4444', marginBottom: '10px' }}>Access Denied</h2>
+            <p style={{ color: '#94A3B8', fontSize: '0.88rem', marginBottom: '20px' }}>Student privileges are required to access this portal. Your active role is <strong>{userRole}</strong>.</p>
+            <button onClick={() => handleNavigate(userRole === 'admin' ? 'admin' : (userRole === 'client' ? 'client' : 'home'))} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#00B4D8', color: '#070A12', fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+              Go to Authorized Dashboard
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <StudentLayout
+        currentUser={currentUser}
+        activeSubPage={studentSubPage || 'dashboard'}
+        onSelectSubPage={handleStudentSubNavigate}
+        onLogout={handleLogout}
+        onNavigate={handleNavigate}
+      >
+        {(studentSubPage === 'dashboard' || !studentSubPage) && <StudentDashboard onSelectSubPage={handleStudentSubNavigate} onNavigate={handleNavigate} />}
+        {studentSubPage === 'profile' && <StudentProfile currentUser={currentUser} onUpdateCurrentUser={handleLoginSuccess} />}
+        {studentSubPage === 'courses' && <StudentCourses onNavigate={handleNavigate} />}
+        {studentSubPage === 'enrollments' && <StudentEnrollments onNavigate={handleNavigate} onSelectSubPage={handleStudentSubNavigate} />}
+        {studentSubPage === 'payments' && <StudentPayments />}
+        {studentSubPage === 'certificates' && <StudentCertificates onNavigate={handleNavigate} />}
+        {studentSubPage === 'projects' && <StudentProjects />}
+        {studentSubPage === 'messages' && <StudentMessages />}
+        {studentSubPage === 'notifications' && <StudentNotifications />}
+        {studentSubPage === 'settings' && <StudentSettings currentUser={currentUser} />}
+      </StudentLayout>
+    );
+  }
+
+  // 4. CLIENT PORTAL ROUTE
+  const isClientRoute = currentPage === 'client' || 
+    currentPathOrHash === 'client' || 
+    currentPathOrHash.startsWith('client/');
+
+  if (isClientRoute) {
+    if (authLoading) {
+      return (
+        <div style={{ minHeight: '100vh', background: '#070A12', color: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+          <div style={{ width: '48px', height: '48px', border: '4px solid rgba(255, 107, 0, 0.2)', borderTopColor: '#FF6B00', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          <p style={{ color: '#94A3B8', fontSize: '0.95rem', fontWeight: 600 }}>Loading Enterprise Client Portal...</p>
+        </div>
+      );
+    }
+
+    if (!currentUser) {
+      return (
+        <div style={{ minHeight: '100vh', background: '#070A12', color: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', textAlign: 'center' }}>
+          <div style={{ maxWidth: '400px', width: '100%', background: '#0B1120', padding: '32px 24px', borderRadius: '16px', border: '1px solid rgba(255, 107, 0, 0.3)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(255, 107, 0, 0.12)', border: '1px solid rgba(255, 107, 0, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', color: '#FF6B00' }}>
+              <Lock size={28} />
+            </div>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '10px' }}>Client Login Required</h2>
+            <p style={{ color: '#94A3B8', fontSize: '0.88rem', marginBottom: '20px' }}>Please log in to your corporate client account to track software projects, invoices, and deliverables.</p>
+            <button
+              onClick={() => {
+                setAuthInitialRole('client');
+                setAuthModalOpen(true);
+              }}
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', background: '#FF6B00', color: '#FFFFFF', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginBottom: '10px' }}
+            >
+              Log In as Corporate Client
+            </button>
+            <button
+              onClick={() => handleNavigate('home')}
+              style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'transparent', color: '#94A3B8', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', border: '1px solid rgba(255, 255, 255, 0.1)' }}
+            >
+              Return to Website
+            </button>
+          </div>
+          <AuthModal
+            isOpen={authModalOpen}
+            onClose={() => setAuthModalOpen(false)}
+            onLoginSuccess={handleLoginSuccess}
+            initialRole="client"
+          />
+        </div>
+      );
+    }
+
+    const userRole = (currentUser?.role || '').toString().trim().toLowerCase();
+    if (userRole !== 'client') {
+      return (
+        <div style={{ minHeight: '100vh', background: '#070A12', color: '#FFFFFF', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', textAlign: 'center' }}>
+          <div style={{ maxWidth: '440px', background: '#0B1120', padding: '32px 24px', borderRadius: '16px', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#EF4444', marginBottom: '10px' }}>Access Denied</h2>
+            <p style={{ color: '#94A3B8', fontSize: '0.88rem', marginBottom: '20px' }}>Corporate Client privileges are required to access this portal. Your active role is <strong>{userRole}</strong>.</p>
+            <button onClick={() => handleNavigate(userRole === 'admin' ? 'admin' : (userRole === 'student' ? 'student' : 'home'))} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#FF6B00', color: '#FFFFFF', fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+              Go to Authorized Dashboard
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <ClientLayout
+        currentUser={currentUser}
+        activeSubPage={clientSubPage || 'dashboard'}
+        onSelectSubPage={handleClientSubNavigate}
+        onLogout={handleLogout}
+        onNavigate={handleNavigate}
+      >
+        {(clientSubPage === 'dashboard' || !clientSubPage) && <ClientDashboard onSelectSubPage={handleClientSubNavigate} onNavigate={handleNavigate} />}
+        {clientSubPage === 'profile' && <ClientProfile currentUser={currentUser} onUpdateCurrentUser={handleLoginSuccess} />}
+        {clientSubPage === 'projects' && <ClientProjects onSelectSubPage={handleClientSubNavigate} />}
+        {clientSubPage === 'new-project' && <ClientProjectRequest onSelectSubPage={handleClientSubNavigate} />}
+        {clientSubPage === 'payments' && <ClientPayments />}
+        {clientSubPage === 'messages' && <ClientMessages />}
+        {clientSubPage === 'notifications' && <ClientNotifications />}
+        {clientSubPage === 'settings' && <ClientSettings currentUser={currentUser} />}
+      </ClientLayout>
     );
   }
 

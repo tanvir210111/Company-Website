@@ -7136,58 +7136,62 @@ app.get('/api/admin/admins', adminMiddleware, async (req, res) => {
 
 /**
  * POST /api/auth/login
- * Authenticates user, sets HttpOnly cookie, and returns user object
+ * Database-authoritative authentication endpoint verifying password_hash, account status, and role
  */
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { loginEmail, loginPassword, role, emailOrPhone, password } = req.body;
-    const identifier = (loginEmail || emailOrPhone || '').trim();
+    const { loginEmail, loginPassword, role, emailOrPhone, password, adminOnly } = req.body;
+    const identifier = (loginEmail || emailOrPhone || '').trim().toLowerCase();
     const pass = loginPassword || password || '';
-    const userRole = role || 'student';
 
-    if (!identifier) {
-      return res.status(400).json({ success: false, message: 'Please enter your email or phone number.' });
+    if (!identifier || !pass) {
+      return res.status(400).json({ success: false, message: 'Please enter both your email/phone and password.' });
     }
 
-    let userObj = null;
+    let dbUser = null;
 
-    // Check MySQL database if available
     try {
-      const users = await query('SELECT * FROM users WHERE email = ? OR phone = ? LIMIT 1', [identifier, identifier]);
+      const users = await query(
+        'SELECT id, full_name, email, phone, password_hash, role, is_active FROM users WHERE LOWER(email) = ? OR phone = ? LIMIT 1',
+        [identifier, identifier]
+      );
       if (users && users.length > 0) {
-        const dbUser = users[0];
-        if (pass && dbUser.password_hash) {
-          const isMatch = bcrypt.compareSync(pass, dbUser.password_hash);
-          if (!isMatch) {
-            return res.status(401).json({ success: false, message: 'Invalid password. Please check your credentials.' });
-          }
-        }
-        userObj = {
-          id: dbUser.id.toString(),
-          name: dbUser.full_name,
-          email: dbUser.email,
-          phone: dbUser.phone,
-          role: dbUser.role || userRole,
-          companyName: dbUser.role === 'client' ? 'Corporate Client' : null
-        };
+        dbUser = users[0];
       }
     } catch (dbErr) {
-      console.log('Database query notice:', dbErr.message);
+      console.log('Login DB lookup notice:', dbErr.message);
     }
 
-    // Build exact user object for this login session (NEVER hardcode admin credentials)
-    if (!userObj) {
-      const cleanName = identifier.includes('@') ? identifier.split('@')[0] : identifier;
-      const cleanEmail = identifier.includes('@') ? identifier : `${identifier}@mediascopeit.com`;
-      userObj = {
-        id: userRole === 'student' ? `STD-2026-${Math.floor(1000 + Math.random() * 9000)}` : `CLT-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-        name: cleanName,
-        email: cleanEmail,
-        phone: identifier.includes('@') ? '' : identifier,
-        role: userRole,
-        companyName: userRole === 'client' ? 'Corporate Client' : null
-      };
+    if (!dbUser) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials. User not found.' });
     }
+
+    // Verify Password Hash
+    const isMatch = bcrypt.compareSync(pass, dbUser.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid password. Please check your credentials.' });
+    }
+
+    // Verify Account Status
+    if (!dbUser.is_active) {
+      return res.status(403).json({ success: false, message: 'Your account has been deactivated. Please contact administration.' });
+    }
+
+    const userRole = (dbUser.role || '').toString().trim().toLowerCase();
+
+    // Admin Gateway Isolation Check: If logging in from /admin, must be admin
+    if (adminOnly && userRole !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Administrator access required.' });
+    }
+
+    const userObj = {
+      id: dbUser.id.toString(),
+      name: dbUser.full_name,
+      email: dbUser.email,
+      phone: dbUser.phone,
+      role: userRole,
+      companyName: userRole === 'client' ? 'Corporate Client' : null
+    };
 
     const token = jwt.sign(userObj, JWT_SECRET, { expiresIn: '7d' });
 
@@ -7212,59 +7216,93 @@ app.post('/api/auth/login', async (req, res) => {
 
 /**
  * POST /api/auth/signup
- * Registers user, sets HttpOnly cookie, and returns user object
+ * Public registration for Students and Corporate Clients (disallows admin self-registration)
  */
 app.post('/api/auth/signup', async (req, res) => {
   try {
     const { name, email, phone, password, role, companyName } = req.body;
-    const userRole = role || 'student';
+    const cleanName = (name || '').trim();
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanPhone = (phone || '').trim();
+    const cleanPassword = password || '';
+    let targetRole = (role || 'student').toString().trim().toLowerCase();
 
-    if (!name || !email || !phone) {
-      return res.status(400).json({ success: false, message: 'Name, email, and phone are required.' });
+    if (!cleanName || !cleanEmail || !cleanPhone || !cleanPassword) {
+      return res.status(400).json({ success: false, message: 'Name, email, phone number, and password are required.' });
     }
 
-    let userId = userRole === 'student' ? `STD-2026-${Math.floor(1000 + Math.random() * 9000)}` : `CLT-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    if (cleanPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long.' });
+    }
 
-    // Optional DB Insertion if active
+    // Security: Disallow self-registering as admin
+    if (targetRole === 'admin' || !['student', 'client'].includes(targetRole)) {
+      targetRole = 'student';
+    }
+
+    // Check duplicate email
     try {
-      if (password) {
-        const hash = bcrypt.hashSync(password, 10);
-        const insertRes = await query(
-          'INSERT INTO users (full_name, email, phone, password_hash, role) VALUES (?, ?, ?, ?, ?)',
-          [name, email, phone, hash, userRole]
-        );
-        if (insertRes && insertRes.insertId) {
-          userId = insertRes.insertId.toString();
+      const emailCheck = await query('SELECT id FROM users WHERE LOWER(email) = ? LIMIT 1', [cleanEmail]);
+      if (emailCheck && emailCheck.length > 0) {
+        return res.status(400).json({ success: false, message: 'An account with this email already exists.' });
+      }
+
+      if (cleanPhone) {
+        const phoneCheck = await query('SELECT id FROM users WHERE phone = ? LIMIT 1', [cleanPhone]);
+        if (phoneCheck && phoneCheck.length > 0) {
+          return res.status(400).json({ success: false, message: 'An account with this phone number already exists.' });
         }
       }
+
+      const passwordHash = bcrypt.hashSync(cleanPassword, 10);
+      const insertRes = await query(
+        'INSERT INTO users (full_name, email, phone, password_hash, role, is_active) VALUES (?, ?, ?, ?, ?, 1)',
+        [cleanName, cleanEmail, cleanPhone, passwordHash, targetRole]
+      );
+
+      const newUserId = insertRes.insertId;
+
+      // Initialize role-specific profile row
+      if (targetRole === 'student') {
+        await query(
+          'INSERT INTO student_profiles (user_id) VALUES (?) ON DUPLICATE KEY UPDATE user_id = VALUES(user_id)',
+          [newUserId]
+        );
+      } else if (targetRole === 'client') {
+        await query(
+          'INSERT INTO client_profiles (user_id, company_name) VALUES (?, ?) ON DUPLICATE KEY UPDATE company_name = VALUES(company_name)',
+          [newUserId, companyName || cleanName]
+        );
+      }
+
+      const userObj = {
+        id: newUserId.toString(),
+        name: cleanName,
+        email: cleanEmail,
+        phone: cleanPhone,
+        role: targetRole,
+        companyName: targetRole === 'client' ? (companyName || cleanName) : null
+      };
+
+      const token = jwt.sign(userObj, JWT_SECRET, { expiresIn: '7d' });
+
+      res.cookie('auth_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' || req.secure || req.headers['x-forwarded-proto'] === 'https',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      });
+
+      return res.status(201).json({
+        success: true,
+        message: 'Account created successfully',
+        user: userObj,
+        token: token
+      });
     } catch (dbErr) {
-      console.log('Database insertion notice:', dbErr.message);
+      console.error('Signup DB Error:', dbErr);
+      return res.status(500).json({ success: false, message: 'Database error creating user account.' });
     }
-
-    const userObj = {
-      id: userId,
-      name: name,
-      email: email,
-      phone: phone,
-      role: userRole,
-      companyName: userRole === 'client' ? (companyName || 'Corporate Client') : null
-    };
-
-    const token = jwt.sign(userObj, JWT_SECRET, { expiresIn: '7d' });
-
-    res.cookie('auth_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production' || req.secure || req.headers['x-forwarded-proto'] === 'https',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
-
-    return res.json({
-      success: true,
-      message: 'Account created successfully',
-      user: userObj,
-      token: token
-    });
   } catch (error) {
     console.error('Signup Endpoint Error:', error);
     return res.status(500).json({ success: false, message: 'Server error during signup.' });
@@ -7282,6 +7320,989 @@ app.post('/api/auth/logout', (req, res) => {
     sameSite: 'lax'
   });
   return res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// ============================================================================
+// STUDENT & CLIENT ROLE MIDDLEWARES
+// ============================================================================
+
+async function studentMiddleware(req, res, next) {
+  try {
+    const token = req.cookies.auth_token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Authentication required. Please login.' });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    let dbUser = null;
+
+    if (decoded.id && !isNaN(decoded.id)) {
+      const users = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [decoded.id]);
+      if (users && users.length > 0) dbUser = users[0];
+    } else if (decoded.email) {
+      const users = await query('SELECT * FROM users WHERE email = ? LIMIT 1', [decoded.email]);
+      if (users && users.length > 0) dbUser = users[0];
+    }
+
+    if (!dbUser) {
+      return res.status(401).json({ success: false, message: 'User account not found.' });
+    }
+
+    if (!dbUser.is_active) {
+      return res.status(403).json({ success: false, message: 'Account is deactivated. Contact administration.' });
+    }
+
+    if (dbUser.role !== 'student') {
+      return res.status(403).json({ success: false, message: 'Access Denied: Student account required.' });
+    }
+
+    req.user = dbUser;
+    req.studentId = dbUser.id;
+    next();
+  } catch (err) {
+    return res.status(401).json({ success: false, message: 'Invalid or expired student session.' });
+  }
+}
+
+async function clientMiddleware(req, res, next) {
+  try {
+    const token = req.cookies.auth_token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Authentication required. Please login.' });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    let dbUser = null;
+
+    if (decoded.id && !isNaN(decoded.id)) {
+      const users = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [decoded.id]);
+      if (users && users.length > 0) dbUser = users[0];
+    } else if (decoded.email) {
+      const users = await query('SELECT * FROM users WHERE email = ? LIMIT 1', [decoded.email]);
+      if (users && users.length > 0) dbUser = users[0];
+    }
+
+    if (!dbUser) {
+      return res.status(401).json({ success: false, message: 'User account not found.' });
+    }
+
+    if (!dbUser.is_active) {
+      return res.status(403).json({ success: false, message: 'Account is deactivated. Contact administration.' });
+    }
+
+    if (dbUser.role !== 'client') {
+      return res.status(403).json({ success: false, message: 'Access Denied: Corporate Client account required.' });
+    }
+
+    req.user = dbUser;
+    req.clientId = dbUser.id;
+    next();
+  } catch (err) {
+    return res.status(401).json({ success: false, message: 'Invalid or expired client session.' });
+  }
+}
+
+// ============================================================================
+// STUDENT DASHBOARD API ENDPOINTS (Scoped strictly by authenticated req.studentId)
+// ============================================================================
+
+/**
+ * GET /api/student/dashboard
+ * Real-time student statistics, active course progress, recent activity
+ */
+app.get('/api/student/dashboard', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    let stats = {
+      enrolledCourses: 0,
+      activeCourses: 0,
+      completedCourses: 0,
+      certificates: 0,
+      pendingPayments: 0,
+      projectRequests: 0
+    };
+
+    let enrollments = [];
+    let recentActivity = [];
+
+    try {
+      // 1. Enrollment stats
+      const enrCounts = await query(`
+        SELECT 
+          COUNT(*) as total,
+          SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as activeCount,
+          SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completedCount,
+          SUM(CASE WHEN payment_status != 'paid' THEN 1 ELSE 0 END) as pendingPayCount
+        FROM enrollments
+        WHERE student_id = ?
+      `, [studentId]);
+
+      if (enrCounts && enrCounts[0]) {
+        stats.enrolledCourses = parseInt(enrCounts[0].total, 10) || 0;
+        stats.activeCourses = parseInt(enrCounts[0].activeCount, 10) || 0;
+        stats.completedCourses = parseInt(enrCounts[0].completedCount, 10) || 0;
+        stats.pendingPayments = parseInt(enrCounts[0].pendingPayCount, 10) || 0;
+      }
+
+      // 2. Certificate stats
+      const certCounts = await query('SELECT COUNT(*) as total FROM certificates WHERE student_id = ? AND status = "valid"', [studentId]);
+      if (certCounts && certCounts[0]) {
+        stats.certificates = parseInt(certCounts[0].total, 10) || 0;
+      }
+
+      // 3. Detailed enrollments
+      const enrRows = await query(`
+        SELECT 
+          e.id, e.enrollment_no, e.enrollment_date, e.total_fee, e.paid_amount, e.due_amount, e.class_mode, e.status, e.payment_status,
+          c.title as course_title, c.slug as course_slug, c.category as course_category, c.hours as course_hours, c.duration as course_duration, c.thumbnail_url,
+          b.batch_number, b.title as batch_title, b.start_date, b.class_days, b.class_time
+        FROM enrollments e
+        LEFT JOIN courses c ON e.course_id = c.id
+        LEFT JOIN course_batches b ON e.batch_id = b.id
+        WHERE e.student_id = ?
+        ORDER BY e.enrollment_date DESC
+      `, [studentId]);
+      enrollments = enrRows || [];
+
+      // 4. Notifications/recent activity
+      const notifs = await query(`
+        SELECT id, title, message, type, is_read, action_url, created_at
+        FROM notifications
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        LIMIT 5
+      `, [studentId]);
+      recentActivity = notifs || [];
+    } catch (dbErr) {
+      console.log('Student dashboard DB notice:', dbErr.message);
+    }
+
+    return res.json({
+      success: true,
+      stats,
+      enrollments,
+      recentActivity,
+      studentName: req.user.full_name
+    });
+  } catch (error) {
+    console.error('Student Dashboard API Error:', error);
+    return res.status(500).json({ success: false, message: 'Server error loading student dashboard.' });
+  }
+});
+
+/**
+ * GET /api/student/profile
+ * Get authenticated student's profile information
+ */
+app.get('/api/student/profile', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    let profile = {
+      id: req.user.id,
+      full_name: req.user.full_name,
+      email: req.user.email,
+      phone: req.user.phone,
+      is_active: req.user.is_active,
+      created_at: req.user.created_at,
+      father_name: '',
+      mother_name: '',
+      address: '',
+      date_of_birth: '',
+      nid_or_birth_cert: '',
+      emergency_phone: '',
+      education_level: '',
+      avatar_url: ''
+    };
+
+    try {
+      const sp = await query('SELECT * FROM student_profiles WHERE user_id = ? LIMIT 1', [studentId]);
+      if (sp && sp.length > 0) {
+        profile = { ...profile, ...sp[0] };
+      }
+    } catch (dbErr) {
+      console.log('Student profile DB notice:', dbErr.message);
+    }
+
+    return res.json({ success: true, profile });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error retrieving profile.' });
+  }
+});
+
+/**
+ * PUT /api/student/profile
+ * Update authenticated student's editable personal info
+ */
+app.put('/api/student/profile', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const { full_name, phone, father_name, mother_name, address, date_of_birth, nid_or_birth_cert, emergency_phone, education_level, avatar_url } = req.body;
+
+    try {
+      if (full_name || phone) {
+        await query(
+          'UPDATE users SET full_name = COALESCE(?, full_name), phone = COALESCE(?, phone) WHERE id = ?',
+          [full_name || null, phone || null, studentId]
+        );
+      }
+
+      await query(`
+        INSERT INTO student_profiles (user_id, father_name, mother_name, address, date_of_birth, nid_or_birth_cert, emergency_phone, education_level, avatar_url)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          father_name = VALUES(father_name),
+          mother_name = VALUES(mother_name),
+          address = VALUES(address),
+          date_of_birth = VALUES(date_of_birth),
+          nid_or_birth_cert = VALUES(nid_or_birth_cert),
+          emergency_phone = VALUES(emergency_phone),
+          education_level = VALUES(education_level),
+          avatar_url = VALUES(avatar_url)
+      `, [studentId, father_name || null, mother_name || null, address || null, date_of_birth || null, nid_or_birth_cert || null, emergency_phone || null, education_level || null, avatar_url || null]);
+
+      return res.json({ success: true, message: 'Profile updated successfully.' });
+    } catch (dbErr) {
+      console.error('Student profile update DB Error:', dbErr);
+      return res.status(500).json({ success: false, message: 'Database error updating profile.' });
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error updating profile.' });
+  }
+});
+
+/**
+ * POST /api/student/change-password
+ * Change password for authenticated student with current password validation
+ */
+app.post('/api/student/change-password', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Current password and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long.' });
+    }
+
+    if (confirmPassword && newPassword !== confirmPassword) {
+      return res.status(400).json({ success: false, message: 'New passwords do not match.' });
+    }
+
+    const users = await query('SELECT password_hash FROM users WHERE id = ? LIMIT 1', [studentId]);
+    if (!users || users.length === 0) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const isMatch = bcrypt.compareSync(currentPassword, users[0].password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: 'Current password is incorrect.' });
+    }
+
+    const newHash = bcrypt.hashSync(newPassword, 10);
+    await query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, studentId]);
+
+    return res.json({ success: true, message: 'Password changed successfully.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error changing password.' });
+  }
+});
+
+/**
+ * GET /api/student/courses
+ * List all courses the authenticated student is enrolled in
+ */
+app.get('/api/student/courses', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const courses = await query(`
+      SELECT 
+        c.id as course_id, c.slug, c.title, c.category, c.hours, c.duration, c.thumbnail_url, c.short_desc,
+        e.id as enrollment_id, e.enrollment_no, e.enrollment_date, e.status as enrollment_status, e.payment_status,
+        b.batch_number, b.title as batch_title, b.start_date, b.class_days, b.class_time, b.class_mode
+      FROM enrollments e
+      JOIN courses c ON e.course_id = c.id
+      LEFT JOIN course_batches b ON e.batch_id = b.id
+      WHERE e.student_id = ?
+      ORDER BY e.enrollment_date DESC
+    `, [studentId]);
+
+    return res.json({ success: true, courses: courses || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching student courses.' });
+  }
+});
+
+/**
+ * GET /api/student/enrollments
+ * Detailed enrollment list for authenticated student
+ */
+app.get('/api/student/enrollments', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const enrollments = await query(`
+      SELECT 
+        e.*,
+        c.title as course_title, c.slug as course_slug, c.category as course_category,
+        b.batch_number, b.title as batch_title
+      FROM enrollments e
+      LEFT JOIN courses c ON e.course_id = c.id
+      LEFT JOIN course_batches b ON e.batch_id = b.id
+      WHERE e.student_id = ?
+      ORDER BY e.enrollment_date DESC
+    `, [studentId]);
+
+    return res.json({ success: true, enrollments: enrollments || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching enrollments.' });
+  }
+});
+
+/**
+ * GET /api/student/payments
+ * Payments & transactions belonging to authenticated student
+ */
+app.get('/api/student/payments', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const payments = await query(`
+      SELECT 
+        p.*,
+        e.enrollment_no,
+        c.title as course_title
+      FROM payments p
+      LEFT JOIN enrollments e ON p.enrollment_id = e.id
+      LEFT JOIN courses c ON e.course_id = c.id
+      WHERE p.user_id = ? OR e.student_id = ?
+      ORDER BY p.created_at DESC
+    `, [studentId, studentId]);
+
+    return res.json({ success: true, payments: payments || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching payments.' });
+  }
+});
+
+/**
+ * GET /api/student/certificates
+ * Certificates issued to authenticated student
+ */
+app.get('/api/student/certificates', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const certificates = await query(`
+      SELECT 
+        crt.*,
+        c.title as course_title, c.slug as course_slug,
+        e.enrollment_no
+      FROM certificates crt
+      LEFT JOIN courses c ON crt.course_id = c.id
+      LEFT JOIN enrollments e ON crt.enrollment_id = e.id
+      WHERE crt.student_id = ?
+      ORDER BY crt.issue_date DESC
+    `, [studentId]);
+
+    return res.json({ success: true, certificates: certificates || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching certificates.' });
+  }
+});
+
+/**
+ * GET /api/student/projects
+ * Course projects / practical projects for authenticated student
+ */
+app.get('/api/student/projects', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    // Query projects or simulated student practical assignments
+    const projects = await query(`
+      SELECT 
+        sp.id, sp.project_code, sp.project_title, sp.service_category, sp.status, sp.start_date, sp.estimated_delivery_date
+      FROM software_projects sp
+      WHERE sp.client_id = ?
+    `, [studentId]);
+
+    return res.json({ success: true, projects: projects || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching projects.' });
+  }
+});
+
+/**
+ * GET /api/student/messages
+ * Internal conversations & messages for authenticated student
+ */
+app.get('/api/student/messages', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const conversations = await query(`
+      SELECT 
+        c.*,
+        (SELECT message FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message,
+        (SELECT created_at FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message_date,
+        (SELECT COUNT(*) FROM messages m WHERE m.conversation_id = c.id AND m.receiver_id = ? AND m.is_read = 0) as unread_count
+      FROM conversations c
+      WHERE c.created_by = ? OR c.recipient_id = ?
+      ORDER BY c.updated_at DESC
+    `, [studentId, studentId, studentId]);
+
+    return res.json({ success: true, conversations: conversations || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching messages.' });
+  }
+});
+
+/**
+ * POST /api/student/messages
+ * Send message / start conversation from student
+ */
+app.post('/api/student/messages', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const { conversation_id, subject, message } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.status(400).json({ success: false, message: 'Message content is required.' });
+    }
+
+    let convId = conversation_id;
+
+    if (!convId) {
+      // Find active admin user
+      const adminUsers = await query('SELECT id FROM users WHERE role = "admin" AND is_active = 1 LIMIT 1');
+      const adminId = (adminUsers && adminUsers[0]?.id) || 1;
+
+      const convRes = await query(
+        'INSERT INTO conversations (subject, created_by, recipient_id, status) VALUES (?, ?, ?, "open")',
+        [subject || 'Student Inquiry', studentId, adminId]
+      );
+      convId = convRes.insertId;
+    }
+
+    // Insert message
+    const convInfo = await query('SELECT created_by, recipient_id FROM conversations WHERE id = ? LIMIT 1', [convId]);
+    const recipientId = convInfo[0]?.created_by === studentId ? convInfo[0]?.recipient_id : convInfo[0]?.created_by;
+
+    await query(
+      'INSERT INTO messages (conversation_id, sender_id, receiver_id, message, is_read) VALUES (?, ?, ?, ?, 0)',
+      [convId, studentId, recipientId || 1, message.trim()]
+    );
+
+    await query('UPDATE conversations SET updated_at = CURRENT_TIMESTAMP WHERE id = ?', [convId]);
+
+    return res.json({ success: true, message: 'Message sent successfully.', conversation_id: convId });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error sending message.' });
+  }
+});
+
+/**
+ * GET /api/student/notifications
+ * Notifications feed for authenticated student
+ */
+app.get('/api/student/notifications', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const notifications = await query(`
+      SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 50
+    `, [studentId]);
+
+    return res.json({ success: true, notifications: notifications || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching notifications.' });
+  }
+});
+
+/**
+ * PATCH /api/student/notifications/:id/read
+ */
+app.patch('/api/student/notifications/:id/read', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    const notifId = req.params.id;
+    await query('UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?', [notifId, studentId]);
+    return res.json({ success: true, message: 'Notification marked as read.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error updating notification.' });
+  }
+});
+
+/**
+ * POST /api/student/notifications/read-all
+ */
+app.post('/api/student/notifications/read-all', studentMiddleware, async (req, res) => {
+  try {
+    const studentId = req.studentId;
+    await query('UPDATE notifications SET is_read = 1 WHERE user_id = ?', [studentId]);
+    return res.json({ success: true, message: 'All notifications marked as read.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error marking notifications read.' });
+  }
+});
+
+// ============================================================================
+// CLIENT DASHBOARD API ENDPOINTS (Scoped strictly by authenticated req.clientId)
+// ============================================================================
+
+/**
+ * GET /api/client/dashboard
+ * Real-time client project statistics, project overview, recent activity
+ */
+app.get('/api/client/dashboard', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    let stats = {
+      totalProjects: 0,
+      activeProjects: 0,
+      completedProjects: 0,
+      pendingRequests: 0,
+      pendingPayments: 0,
+      unreadMessages: 0
+    };
+
+    let projects = [];
+    let recentActivity = [];
+
+    try {
+      // 1. Projects stats
+      const prjCounts = await query(`
+        SELECT 
+          COUNT(*) as total,
+          SUM(CASE WHEN status IN ('in_development', 'srs_planning', 'testing') THEN 1 ELSE 0 END) as activeCount,
+          SUM(CASE WHEN status = 'delivered' THEN 1 ELSE 0 END) as completedCount,
+          SUM(CASE WHEN due_amount > 0 THEN 1 ELSE 0 END) as pendingPayCount
+        FROM software_projects
+        WHERE client_id = ?
+      `, [clientId]);
+
+      if (prjCounts && prjCounts[0]) {
+        stats.totalProjects = parseInt(prjCounts[0].total, 10) || 0;
+        stats.activeProjects = parseInt(prjCounts[0].activeCount, 10) || 0;
+        stats.completedProjects = parseInt(prjCounts[0].completedCount, 10) || 0;
+        stats.pendingPayments = parseInt(prjCounts[0].pendingPayCount, 10) || 0;
+      }
+
+      // 2. Pending Requests stats
+      const reqCounts = await query('SELECT COUNT(*) as total FROM project_requests WHERE client_id = ? AND status = "new"', [clientId]);
+      if (reqCounts && reqCounts[0]) {
+        stats.pendingRequests = parseInt(reqCounts[0].total, 10) || 0;
+      }
+
+      // 3. Unread Messages stats
+      const msgCounts = await query('SELECT COUNT(*) as total FROM messages WHERE receiver_id = ? AND is_read = 0', [clientId]);
+      if (msgCounts && msgCounts[0]) {
+        stats.unreadMessages = parseInt(msgCounts[0].total, 10) || 0;
+      }
+
+      // 4. Projects list
+      const prjRows = await query(`
+        SELECT * FROM software_projects WHERE client_id = ? ORDER BY id DESC
+      `, [clientId]);
+      projects = prjRows || [];
+
+      // 5. Notifications / Activity
+      const notifs = await query(`
+        SELECT id, title, message, type, is_read, action_url, created_at
+        FROM notifications
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+        LIMIT 5
+      `, [clientId]);
+      recentActivity = notifs || [];
+    } catch (dbErr) {
+      console.log('Client dashboard DB notice:', dbErr.message);
+    }
+
+    return res.json({
+      success: true,
+      stats,
+      projects,
+      recentActivity,
+      clientName: req.user.full_name
+    });
+  } catch (error) {
+    console.error('Client Dashboard API Error:', error);
+    return res.status(500).json({ success: false, message: 'Server error loading client dashboard.' });
+  }
+});
+
+/**
+ * GET /api/client/profile
+ * Get authenticated client's company & personal profile
+ */
+app.get('/api/client/profile', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    let profile = {
+      id: req.user.id,
+      full_name: req.user.full_name,
+      email: req.user.email,
+      phone: req.user.phone,
+      is_active: req.user.is_active,
+      created_at: req.user.created_at,
+      company_name: '',
+      designation: '',
+      trade_license_no: '',
+      tin_no: '',
+      bin_no: '',
+      office_address: '',
+      website_url: ''
+    };
+
+    try {
+      const cp = await query('SELECT * FROM client_profiles WHERE user_id = ? LIMIT 1', [clientId]);
+      if (cp && cp.length > 0) {
+        profile = { ...profile, ...cp[0] };
+      }
+    } catch (dbErr) {
+      console.log('Client profile DB notice:', dbErr.message);
+    }
+
+    return res.json({ success: true, profile });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error retrieving client profile.' });
+  }
+});
+
+/**
+ * PUT /api/client/profile
+ * Update authenticated client's company & contact details
+ */
+app.put('/api/client/profile', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const { full_name, phone, company_name, designation, trade_license_no, tin_no, bin_no, office_address, website_url } = req.body;
+
+    try {
+      if (full_name || phone) {
+        await query(
+          'UPDATE users SET full_name = COALESCE(?, full_name), phone = COALESCE(?, phone) WHERE id = ?',
+          [full_name || null, phone || null, clientId]
+        );
+      }
+
+      await query(`
+        INSERT INTO client_profiles (user_id, company_name, designation, trade_license_no, tin_no, bin_no, office_address, website_url)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          company_name = VALUES(company_name),
+          designation = VALUES(designation),
+          trade_license_no = VALUES(trade_license_no),
+          tin_no = VALUES(tin_no),
+          bin_no = VALUES(bin_no),
+          office_address = VALUES(office_address),
+          website_url = VALUES(website_url)
+      `, [clientId, company_name || 'Corporate Client', designation || null, trade_license_no || null, tin_no || null, bin_no || null, office_address || null, website_url || null]);
+
+      return res.json({ success: true, message: 'Company profile updated successfully.' });
+    } catch (dbErr) {
+      console.error('Client profile update DB Error:', dbErr);
+      return res.status(500).json({ success: false, message: 'Database error updating company profile.' });
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error updating client profile.' });
+  }
+});
+
+/**
+ * POST /api/client/change-password
+ * Change password for authenticated client with current password verification
+ */
+app.post('/api/client/change-password', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Current password and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long.' });
+    }
+
+    if (confirmPassword && newPassword !== confirmPassword) {
+      return res.status(400).json({ success: false, message: 'New passwords do not match.' });
+    }
+
+    const users = await query('SELECT password_hash FROM users WHERE id = ? LIMIT 1', [clientId]);
+    if (!users || users.length === 0) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const isMatch = bcrypt.compareSync(currentPassword, users[0].password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: 'Current password is incorrect.' });
+    }
+
+    const newHash = bcrypt.hashSync(newPassword, 10);
+    await query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, clientId]);
+
+    return res.json({ success: true, message: 'Password changed successfully.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error changing password.' });
+  }
+});
+
+/**
+ * GET /api/client/projects
+ * List all software projects belonging to authenticated client
+ */
+app.get('/api/client/projects', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const projects = await query(`
+      SELECT 
+        sp.*,
+        (SELECT COUNT(*) FROM payments p WHERE p.project_id = sp.id AND p.status = 'PAID') as paid_installments_count
+      FROM software_projects sp
+      WHERE sp.client_id = ?
+      ORDER BY sp.id DESC
+    `, [clientId]);
+
+    return res.json({ success: true, projects: projects || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching client projects.' });
+  }
+});
+
+/**
+ * GET /api/client/projects/:id
+ * Single project details with status history and payments
+ */
+app.get('/api/client/projects/:id', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const projectId = req.params.id;
+
+    const prjRows = await query('SELECT * FROM software_projects WHERE id = ? AND client_id = ? LIMIT 1', [projectId, clientId]);
+    if (!prjRows || prjRows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Project not found.' });
+    }
+
+    const project = prjRows[0];
+    const history = await query('SELECT * FROM project_status_history WHERE project_id = ? ORDER BY created_at DESC', [projectId]);
+    const payments = await query('SELECT * FROM payments WHERE project_id = ? ORDER BY created_at DESC', [projectId]);
+
+    return res.json({
+      success: true,
+      project,
+      history: history || [],
+      payments: payments || []
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching project details.' });
+  }
+});
+
+/**
+ * POST /api/client/projects
+ * Submit new commercial software project request from authenticated client
+ */
+app.post('/api/client/projects', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const { project_title, project_type, description, requirements, budget, deadline, priority } = req.body;
+
+    if (!project_title || !project_title.trim()) {
+      return res.status(400).json({ success: false, message: 'Project title is required.' });
+    }
+
+    const contactName = req.user.full_name;
+    const contactEmail = req.user.email;
+    const contactPhone = req.user.phone;
+
+    let companyName = 'Corporate Client';
+    try {
+      const cp = await query('SELECT company_name FROM client_profiles WHERE user_id = ? LIMIT 1', [clientId]);
+      if (cp && cp[0]?.company_name) companyName = cp[0].company_name;
+    } catch (cpErr) {}
+
+    const projectDetails = `Type: ${project_type || 'Software Application'}\nPriority: ${priority || 'Normal'}\nDeadline: ${deadline || 'Flexible'}\n\nDescription:\n${description || ''}\n\nRequirements:\n${requirements || ''}`;
+
+    const insertRes = await query(`
+      INSERT INTO project_requests (client_id, contact_name, contact_email, contact_phone, company_name, service_title, project_details, budget_range, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'new')
+    `, [clientId, contactName, contactEmail, contactPhone, companyName, project_title.trim(), projectDetails, budget || 'Negotiable']);
+
+    // Create confirmation notification for client
+    try {
+      await query(`
+        INSERT INTO notifications (user_id, title, message, type, action_url)
+        VALUES (?, ?, ?, 'project', '/client/projects')
+      `, [clientId, 'Project Request Received', `Your project request "${project_title.trim()}" has been submitted to the engineering team.`]);
+    } catch (notifErr) {}
+
+    return res.status(201).json({
+      success: true,
+      message: 'Project request submitted successfully. Our engineering team will review it shortly.',
+      request_id: insertRes.insertId
+    });
+  } catch (error) {
+    console.error('Submit Project Request Error:', error);
+    return res.status(500).json({ success: false, message: 'Server error submitting project request.' });
+  }
+});
+
+/**
+ * GET /api/client/payments
+ * Payments & invoice history for authenticated client
+ */
+app.get('/api/client/payments', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const payments = await query(`
+      SELECT 
+        p.*,
+        sp.project_code,
+        sp.project_title
+      FROM payments p
+      LEFT JOIN software_projects sp ON p.project_id = sp.id
+      WHERE p.user_id = ? OR sp.client_id = ?
+      ORDER BY p.created_at DESC
+    `, [clientId, clientId]);
+
+    return res.json({ success: true, payments: payments || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching client payments.' });
+  }
+});
+
+/**
+ * GET /api/client/messages
+ * Internal conversations & messages for authenticated client
+ */
+app.get('/api/client/messages', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const conversations = await query(`
+      SELECT 
+        c.*,
+        (SELECT message FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message,
+        (SELECT created_at FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message_date,
+        (SELECT COUNT(*) FROM messages m WHERE m.conversation_id = c.id AND m.receiver_id = ? AND m.is_read = 0) as unread_count
+      FROM conversations c
+      WHERE c.created_by = ? OR c.recipient_id = ?
+      ORDER BY c.updated_at DESC
+    `, [clientId, clientId, clientId]);
+
+    return res.json({ success: true, conversations: conversations || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching client messages.' });
+  }
+});
+
+/**
+ * POST /api/client/messages
+ * Send message / start project discussion from client
+ */
+app.post('/api/client/messages', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const { conversation_id, subject, message } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.status(400).json({ success: false, message: 'Message content is required.' });
+    }
+
+    let convId = conversation_id;
+
+    if (!convId) {
+      const adminUsers = await query('SELECT id FROM users WHERE role = "admin" AND is_active = 1 LIMIT 1');
+      const adminId = (adminUsers && adminUsers[0]?.id) || 1;
+
+      const convRes = await query(
+        'INSERT INTO conversations (subject, created_by, recipient_id, status) VALUES (?, ?, ?, "open")',
+        [subject || 'Project Discussion', clientId, adminId]
+      );
+      convId = convRes.insertId;
+    }
+
+    const convInfo = await query('SELECT created_by, recipient_id FROM conversations WHERE id = ? LIMIT 1', [convId]);
+    const recipientId = convInfo[0]?.created_by === clientId ? convInfo[0]?.recipient_id : convInfo[0]?.created_by;
+
+    await query(
+      'INSERT INTO messages (conversation_id, sender_id, receiver_id, message, is_read) VALUES (?, ?, ?, ?, 0)',
+      [convId, clientId, recipientId || 1, message.trim()]
+    );
+
+    await query('UPDATE conversations SET updated_at = CURRENT_TIMESTAMP WHERE id = ?', [convId]);
+
+    return res.json({ success: true, message: 'Message sent successfully.', conversation_id: convId });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error sending client message.' });
+  }
+});
+
+/**
+ * GET /api/client/notifications
+ * Notifications feed for authenticated client
+ */
+app.get('/api/client/notifications', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const notifications = await query(`
+      SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 50
+    `, [clientId]);
+
+    return res.json({ success: true, notifications: notifications || [] });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error fetching client notifications.' });
+  }
+});
+
+/**
+ * PATCH /api/client/notifications/:id/read
+ */
+app.patch('/api/client/notifications/:id/read', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    const notifId = req.params.id;
+    await query('UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?', [notifId, clientId]);
+    return res.json({ success: true, message: 'Notification marked as read.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error updating notification.' });
+  }
+});
+
+/**
+ * POST /api/client/notifications/read-all
+ */
+app.post('/api/client/notifications/read-all', clientMiddleware, async (req, res) => {
+  try {
+    const clientId = req.clientId;
+    await query('UPDATE notifications SET is_read = 1 WHERE user_id = ?', [clientId]);
+    return res.json({ success: true, message: 'All notifications marked as read.' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Server error marking notifications read.' });
+  }
+});
+
+/**
+ * POST /api/admin/users/:id/reset-password
+ * Protected admin endpoint to safely set a new password for any user account
+ */
+app.post('/api/admin/users/:id/reset-password', adminMiddleware, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10) || req.params.id;
+    const { new_password, password } = req.body;
+    const pass = new_password || password;
+
+    if (!pass || pass.trim().length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long.' });
+    }
+
+    const newHash = bcrypt.hashSync(pass.trim(), 10);
+    await query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, userId]);
+
+    return res.json({ success: true, message: 'User password reset successfully.' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    return res.status(500).json({ success: false, message: 'Server error resetting user password.' });
+  }
 });
 
 /**

@@ -174,7 +174,6 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
             style={{
               padding: '10px',
               borderRadius: '10px',
-              border: 'none',
               background: accountRole === 'student' ? 'rgba(0, 180, 216, 0.2)' : 'transparent',
               color: accountRole === 'student' ? '#00B4D8' : '#94A3B8',
               border: accountRole === 'student' ? '1px solid #00B4D8' : '1px solid transparent',
@@ -183,7 +182,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
               fontSize: '0.86rem',
               display: 'flex',
               alignItems: 'center',
-              justify: 'center',
+              justifyContent: 'center',
               textAlign: 'center',
               gap: '6px'
             }}
@@ -197,7 +196,6 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
             style={{
               padding: '10px',
               borderRadius: '10px',
-              border: 'none',
               background: accountRole === 'client' ? 'rgba(255, 107, 0, 0.2)' : 'transparent',
               color: accountRole === 'client' ? '#FF6B00' : '#94A3B8',
               border: accountRole === 'client' ? '1px solid #FF6B00' : '1px solid transparent',
@@ -206,7 +204,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
               fontSize: '0.86rem',
               display: 'flex',
               alignItems: 'center',
-              justify: 'center',
+              justifyContent: 'center',
               textAlign: 'center',
               gap: '6px'
             }}

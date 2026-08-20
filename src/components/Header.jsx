@@ -54,50 +54,62 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
             {currentUser ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {isAdmin ? (
-                  <span style={{ 
-                    fontSize: '0.8rem', 
-                    color: '#FFB703', 
-                    fontWeight: 700, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '4px',
-                    background: 'rgba(255, 183, 3, 0.15)',
-                    padding: '2px 8px',
-                    borderRadius: '10px',
-                    border: '1px solid #FFB703'
-                  }}>
-                    <ShieldCheck size={13} /> Admin: {currentUser.name}
-                  </span>
+                  <button 
+                    onClick={() => handleNavClick('admin')}
+                    style={{ 
+                      fontSize: '0.8rem', 
+                      color: '#FFB703', 
+                      fontWeight: 700, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px',
+                      background: 'rgba(255, 183, 3, 0.15)',
+                      padding: '3px 10px',
+                      borderRadius: '10px',
+                      border: '1px solid #FFB703',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <ShieldCheck size={13} /> Admin Panel
+                  </button>
                 ) : isClient ? (
-                  <span style={{ 
-                    fontSize: '0.8rem', 
-                    color: '#FF6B00', 
-                    fontWeight: 700, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '4px',
-                    background: 'rgba(255, 107, 0, 0.15)',
-                    padding: '2px 8px',
-                    borderRadius: '10px',
-                    border: '1px solid #FF6B00'
-                  }}>
-                    <Briefcase size={13} /> Client: {currentUser.name}
-                  </span>
+                  <button 
+                    onClick={() => handleNavClick('client')}
+                    style={{ 
+                      fontSize: '0.8rem', 
+                      color: '#FF6B00', 
+                      fontWeight: 700, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px',
+                      background: 'rgba(255, 107, 0, 0.15)',
+                      padding: '3px 10px',
+                      borderRadius: '10px',
+                      border: '1px solid #FF6B00',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <Briefcase size={13} /> Client Portal
+                  </button>
                 ) : (
-                  <span style={{ 
-                    fontSize: '0.8rem', 
-                    color: '#00B4D8', 
-                    fontWeight: 700, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '4px',
-                    background: 'rgba(0, 180, 216, 0.15)',
-                    padding: '2px 8px',
-                    borderRadius: '10px',
-                    border: '1px solid #00B4D8'
-                  }}>
-                    <GraduationCap size={13} /> Student: {currentUser.name}
-                  </span>
+                  <button 
+                    onClick={() => handleNavClick('student')}
+                    style={{ 
+                      fontSize: '0.8rem', 
+                      color: '#00B4D8', 
+                      fontWeight: 700, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px',
+                      background: 'rgba(0, 180, 216, 0.15)',
+                      padding: '3px 10px',
+                      borderRadius: '10px',
+                      border: '1px solid #00B4D8',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <GraduationCap size={13} /> Student Portal
+                  </button>
                 )}
 
 
