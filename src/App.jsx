@@ -61,6 +61,8 @@ import FAQSection from './components/FAQSection';
 import DynamicPage from './pages/DynamicPage';
 
 // Admin Panel Components
+import AdminLoginPage from './components/admin/AdminLoginPage';
+import AdminServicesPage from './pages/AdminServicesPage';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminUsers from './components/admin/AdminUsers';
@@ -85,9 +87,49 @@ import AdminNotifications from './components/admin/AdminNotifications';
 import AdminAnnouncements from './components/admin/AdminAnnouncements';
 import AdminActivityLogs from './components/admin/AdminActivityLogs';
 import PublicCertificateVerification from './pages/PublicCertificateVerification';
+import { ShieldAlert } from 'lucide-react';
+
+// Synchronous Route Parser (Ensures initial render never flashes or defaults to home on /admin)
+const parseCurrentRoute = () => {
+  if (typeof window === 'undefined') return { page: 'home', subPage: 'dashboard' };
+
+  const rawPath = (window.location.pathname || '').replace(/^\/+/, '').replace(/\/+$/, '');
+  const rawHash = (window.location.hash || '').replace(/^#\/?/, '').replace(/\/+$/, '');
+  const route = rawPath || rawHash;
+
+  // Direct Private Admin Route Parsing (/admin, /admin/services, /admin/courses, etc.)
+  if (route === 'admin' || route.startsWith('admin/')) {
+    const parts = route.split('/');
+    const sub = parts[1] || 'dashboard';
+    return { page: 'admin', subPage: sub };
+  }
+
+  if (route === 'admin-services') {
+    return { page: 'admin', subPage: 'services' };
+  }
+
+  const validPages = [
+    'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
+    'video-editor-nashimul-hasan-nibir', 'sr-social-media-marketer-naimur-rahman-naim',
+    'jr-social-media-marketer-fahim-hasan-jidan', 'jr-social-media-marketer-hridoy-hasan',
+    'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
+    'software-courses', 'programming-courses', 'others-courses',
+    'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
+    'cert-verification', 'payment/success', 'payment/fail', 'payment/cancel',
+    'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy'
+  ];
+
+  if (validPages.includes(route)) {
+    return { page: route, subPage: 'dashboard' };
+  }
+
+  return { page: 'home', subPage: 'dashboard' };
+};
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home'); 
+  const initialRoute = parseCurrentRoute();
+  const [currentPage, setCurrentPage] = useState(initialRoute.page); 
+  const [adminSubPage, setAdminSubPage] = useState(initialRoute.subPage);
   const [searchQuery, setSearchQuery] = useState('');
   
   // Strict Backend-Authoritative Authentication State (Default: null)
@@ -96,7 +138,6 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialRole, setAuthInitialRole] = useState('student');
   const [pendingAction, setPendingAction] = useState(null); // { type: 'course' | 'quote', payload: any }
-  const [adminSubPage, setAdminSubPage] = useState('dashboard');
 
   // Modal States
   const [admissionOpen, setAdmissionOpen] = useState(false);
@@ -148,36 +189,13 @@ export default function App() {
   // URL BROWSER ROUTER SYNC (Supports /admin, /admin/services, /admin/courses, etc. and all public routes)
   useEffect(() => {
     const syncPageFromUrl = () => {
-      const rawPath = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
-      const hash = window.location.hash.replace('#', '');
-      const route = rawPath || hash;
+      const routeInfo = parseCurrentRoute();
+      setCurrentPage(routeInfo.page);
+      setAdminSubPage(routeInfo.subPage);
 
-      const validPages = [
-        'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
-        'video-editor-nashimul-hasan-nibir', 'sr-social-media-marketer-naimur-rahman-naim',
-        'jr-social-media-marketer-fahim-hasan-jidan', 'jr-social-media-marketer-hridoy-hasan',
-        'courses', 'web-courses', 'graphics-courses', 'marketing-courses',
-        'software-courses', 'programming-courses', 'others-courses',
-        'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
-        'cert-verification', 'payment/success', 'payment/fail', 'payment/cancel',
-        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy'
-      ];
-
-      // Direct Private Admin Route Parsing (/admin, /admin/services, /admin/courses, etc.)
-      if (route === 'admin' || route.startsWith('admin/')) {
-        setCurrentPage('admin');
-        const parts = route.split('/');
-        const sub = parts[1] || 'dashboard';
-        setAdminSubPage(sub);
-      } else if (route === 'admin-services') {
-        // Legacy redirect to /admin/services
-        setCurrentPage('admin');
-        setAdminSubPage('services');
+      const rawPath = (window.location.pathname || '').replace(/^\/+/, '').replace(/\/+$/, '');
+      if (rawPath === 'admin-services') {
         window.history.replaceState(null, '', '/admin/services');
-      } else if (validPages.includes(route)) {
-        setCurrentPage(route);
-      } else {
-        setCurrentPage('home');
       }
     };
 
@@ -276,8 +294,117 @@ export default function App() {
     return <PublicCertificateVerification />;
   }
 
-  // Render Protected Admin Layout if current route is /admin or /admin/*
-  if (currentPage === 'admin') {
+  // Render Protected Admin Area if current route is /admin or /admin/* or legacy /admin-services
+  const isDirectAdminUrl = typeof window !== 'undefined' && (
+    window.location.pathname.startsWith('/admin') ||
+    window.location.pathname === '/admin-services' ||
+    window.location.hash.startsWith('#admin') ||
+    window.location.hash === '#admin-services'
+  );
+
+  if (currentPage === 'admin' || isDirectAdminUrl) {
+    // 1. Session Verification Loading Spinner
+    if (authLoading) {
+      return (
+        <div style={{
+          minHeight: '100vh',
+          background: '#070A12',
+          color: '#FFFFFF',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '16px'
+        }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            border: '4px solid rgba(0, 180, 216, 0.2)',
+            borderTopColor: '#00B4D8',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }} />
+          <p style={{ color: '#94A3B8', fontSize: '0.95rem', fontWeight: 600 }}>
+            Verifying Administrator Privileges...
+          </p>
+          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+        </div>
+      );
+    }
+
+    // 2. Unauthenticated Visitor -> Render Dedicated Admin Login Page Directly
+    if (!currentUser) {
+      return (
+        <AdminLoginPage
+          onLoginSuccess={handleLoginSuccess}
+          onNavigate={handleNavigate}
+        />
+      );
+    }
+
+    // 3. Authenticated Non-Admin User (Student or Client attempting /admin) -> Render Access Denied
+    const userRole = (currentUser?.role || '').toString().trim().toLowerCase();
+    if (userRole !== 'admin') {
+      return (
+        <div style={{
+          minHeight: '100vh',
+          background: '#070A12',
+          color: '#FFFFFF',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            width: '72px',
+            height: '72px',
+            borderRadius: '20px',
+            background: 'rgba(245, 158, 11, 0.12)',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '20px',
+            color: '#F59E0B'
+          }}>
+            <ShieldAlert size={36} />
+          </div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px' }}>
+            Access Denied: Administrator Access Required
+          </h2>
+          <p style={{ color: '#94A3B8', maxWidth: '480px', marginBottom: '24px', lineHeight: 1.6 }}>
+            Logged in as <strong style={{ color: '#00B4D8' }}>{currentUser.name}</strong> ({userRole || 'user'}). Your current user account does not possess administrator privileges.
+          </p>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              onClick={() => handleNavigate('home')}
+              className="btn-primary"
+              style={{ padding: '12px 24px', fontWeight: 700, borderRadius: '10px' }}
+            >
+              Return to Homepage
+            </button>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '12px 24px',
+                borderRadius: '10px',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                background: 'rgba(239, 68, 68, 0.1)',
+                color: '#EF4444',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              Switch Account (Logout)
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // 4. Authenticated Admin -> Render Full Admin Layout & Modules
     return (
       <AdminLayout
         currentUser={currentUser}
@@ -289,12 +416,12 @@ export default function App() {
         onSelectSubPage={handleAdminSubNavigate}
       >
         {adminSubPage === 'dashboard' && <AdminDashboard onSelectSubPage={handleAdminSubNavigate} />}
+        {adminSubPage === 'services' && <AdminServices />}
         {adminSubPage === 'users' && <AdminUsers initialRoleFilter="all" />}
         {adminSubPage === 'students' && <AdminStudents />}
         {adminSubPage === 'clients' && <AdminClients />}
         {adminSubPage === 'admins' && <AdminAdmins />}
         {['settings', 'homepage', 'contact-info', 'global-settings'].includes(adminSubPage) && <AdminSiteSettings />}
-        {adminSubPage === 'services' && <AdminServices />}
         {adminSubPage === 'courses' && <AdminCourses />}
         {adminSubPage === 'enrollments' && <AdminEnrollments />}
         {adminSubPage === 'certificates' && <AdminCertificates />}
