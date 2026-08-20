@@ -5608,8 +5608,10 @@ app.get('/api/public/team', async (req, res) => {
         teamList = rows.map(r => ({
           ...r,
           avatar: r.photo_url || '/Team/Tanvir Hossain Khan.jpg',
-          role: r.designation,
+          role: r.designation || 'Team Member',
           category: r.department || 'IT Department',
+          skills: [r.designation || 'IT Specialist'],
+          experience: 'Senior Specialist',
           linkedin: r.linkedin_url,
           github: r.github_url,
           facebook: r.facebook_url
@@ -7178,10 +7180,51 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const userRole = (dbUser.role || '').toString().trim().toLowerCase();
+    const requestedRole = (role || '').toString().trim().toLowerCase();
 
-    // Admin Gateway Isolation Check: If logging in from /admin, must be admin
-    if (adminOnly && userRole !== 'admin') {
+    // 1. Dedicated Admin Gateway Isolation Check
+    if ((adminOnly || requestedRole === 'admin') && userRole !== 'admin') {
       return res.status(403).json({ success: false, message: 'Administrator access required.' });
+    }
+
+    // 2. Student Portal Login Isolation Check
+    if (requestedRole === 'student' && userRole !== 'student') {
+      if (userRole === 'admin') {
+        return res.status(403).json({
+          success: false,
+          message: 'This account is registered as an Administrator. Please use the Admin Login.'
+        });
+      }
+      if (userRole === 'client') {
+        return res.status(403).json({
+          success: false,
+          message: 'This account is registered as a Corporate Client. Please use the Client Login.'
+        });
+      }
+      return res.status(403).json({
+        success: false,
+        message: 'This account is not registered as a Student.'
+      });
+    }
+
+    // 3. Corporate Client Portal Login Isolation Check
+    if (requestedRole === 'client' && userRole !== 'client') {
+      if (userRole === 'admin') {
+        return res.status(403).json({
+          success: false,
+          message: 'This account is registered as an Administrator. Please use the Admin Login.'
+        });
+      }
+      if (userRole === 'student') {
+        return res.status(403).json({
+          success: false,
+          message: 'This account is registered as a Student. Please use the Student Login.'
+        });
+      }
+      return res.status(403).json({
+        success: false,
+        message: 'This account is not registered as a Corporate Client.'
+      });
     }
 
     const userObj = {

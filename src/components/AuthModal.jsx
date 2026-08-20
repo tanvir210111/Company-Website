@@ -58,6 +58,30 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
           ...data.user,
           role: typeof data.user.role === 'string' ? data.user.role.trim().toLowerCase() : data.user.role
         };
+
+        // Strict client-side validation to prevent cross-role dashboard redirection
+        if (accountRole === 'student' && normalizedUser.role !== 'student') {
+          if (normalizedUser.role === 'admin') {
+            setLoginError('This account is registered as an Administrator. Please use the Admin Login.');
+          } else if (normalizedUser.role === 'client') {
+            setLoginError('This account is registered as a Corporate Client. Please use the Client Login.');
+          } else {
+            setLoginError('This account is not registered as a Student.');
+          }
+          return;
+        }
+
+        if (accountRole === 'client' && normalizedUser.role !== 'client') {
+          if (normalizedUser.role === 'admin') {
+            setLoginError('This account is registered as an Administrator. Please use the Admin Login.');
+          } else if (normalizedUser.role === 'student') {
+            setLoginError('This account is registered as a Student. Please use the Student Login.');
+          } else {
+            setLoginError('This account is not registered as a Corporate Client.');
+          }
+          return;
+        }
+
         localStorage.setItem('msit_user', JSON.stringify(normalizedUser));
         if (data.token) localStorage.setItem('msit_token', data.token);
         onLoginSuccess(normalizedUser);

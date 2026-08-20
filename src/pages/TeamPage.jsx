@@ -71,7 +71,18 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
         const res = await fetch(`${backendUrl}/api/public/team`);
         const data = await res.json();
         if (isMounted && data.success && Array.isArray(data.team) && data.team.length > 0) {
-          setTeamMembersList(data.team);
+          const normalizedTeam = data.team.map(m => ({
+            ...m,
+            avatar: m.avatar || m.photo_url || '/Team/Tanvir Hossain Khan.jpg',
+            role: m.role || m.designation || 'Team Member',
+            category: m.category || m.department || 'IT Department',
+            experience: m.experience || 'Senior Specialist',
+            bio: m.bio || 'Media Scope IT experienced professional and mentor.',
+            skills: Array.isArray(m.skills) 
+              ? m.skills 
+              : (m.skills ? String(m.skills).split(',').map(s => s.trim()) : [m.role || m.designation || 'IT Specialist'])
+          }));
+          setTeamMembersList(normalizedTeam);
         }
       } catch (err) {
         console.log('Using static team fallback:', err);
@@ -143,114 +154,124 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
 
         {/* Team Members Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '28px', marginBottom: '60px' }}>
-          {filteredMembers.map(member => (
-            <div key={member.id} style={{
-              background: '#0F172A',
-              borderRadius: '22px',
-              overflow: 'hidden',
-              border: '1px solid var(--border-light)',
-              boxShadow: 'var(--shadow-sm)',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-              {/* Avatar Box with Fading Gradient Accent Border */}
-              <div style={{
-                position: 'relative',
-                height: '240px',
+          {filteredMembers.map(member => {
+            const memberSkills = Array.isArray(member.skills) 
+              ? member.skills 
+              : (member.skills ? String(member.skills).split(',').map(s => s.trim()) : [member.role || member.designation || 'IT Specialist']);
+            const avatarSrc = member.avatar || member.photo_url || '/Team/Tanvir Hossain Khan.jpg';
+            const displayRole = member.role || member.designation || 'Team Member';
+            const expBadge = member.experience || 'Senior Specialist';
+
+            return (
+              <div key={member.id} style={{
+                background: '#0F172A',
+                borderRadius: '22px',
                 overflow: 'hidden',
-                borderBottom: '2px solid #00B4D8'
+                border: '1px solid var(--border-light)',
+                boxShadow: 'var(--shadow-sm)',
+                display: 'flex',
+                flexDirection: 'column'
               }}>
-                <img 
-                  src={member.avatar} 
-                  alt={member.name} 
-                  loading="lazy"
-                  decoding="async"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
-                  }} 
-                />
-                <span style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '12px',
-                  background: 'rgba(7, 10, 18, 0.9)',
-                  border: '1px solid #00B4D8',
-                  color: '#00B4D8',
-                  padding: '4px 12px',
-                  borderRadius: '20px',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  backdropFilter: 'blur(6px)'
+                {/* Avatar Box with Fading Gradient Accent Border */}
+                <div style={{
+                  position: 'relative',
+                  height: '240px',
+                  overflow: 'hidden',
+                  borderBottom: '2px solid #00B4D8'
                 }}>
-                  {member.experience}
-                </span>
-              </div>
-
-              <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '4px' }}>
-                  {member.name}
-                </h3>
-                <div style={{ fontSize: '0.85rem', color: '#FF6B00', fontWeight: 700, marginBottom: '12px' }}>
-                  {member.role}
+                  <img 
+                    src={avatarSrc} 
+                    alt={member.name || 'Team Member'} 
+                    onError={(e) => { e.currentTarget.src = '/Team/Tanvir Hossain Khan.jpg'; }}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+                      WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                    }} 
+                  />
+                  <span style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    background: 'rgba(7, 10, 18, 0.9)',
+                    border: '1px solid #00B4D8',
+                    color: '#00B4D8',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    backdropFilter: 'blur(6px)'
+                  }}>
+                    {expBadge}
+                  </span>
                 </div>
 
-                <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginBottom: '20px', flex: 1, lineHeight: 1.6 }}>
-                  {member.bio}
-                </p>
+                <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '4px' }}>
+                    {member.name}
+                  </h3>
+                  <div style={{ fontSize: '0.85rem', color: '#FF6B00', fontWeight: 700, marginBottom: '12px' }}>
+                    {displayRole}
+                  </div>
 
-                {/* Skill Badges */}
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', paddingTop: '16px', borderTop: '1px solid var(--border-light)' }}>
-                  {member.skills.map((skill, idx) => (
-                    <span key={idx} style={{
-                      background: 'rgba(0, 180, 216, 0.12)',
-                      color: '#00B4D8',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      padding: '4px 10px',
-                      borderRadius: '12px',
-                      border: '1px solid var(--border-light)'
-                    }}>
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+                  <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginBottom: '20px', flex: 1, lineHeight: 1.6 }}>
+                    {member.bio || 'Media Scope IT experienced professional and mentor.'}
+                  </p>
 
-                <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  {member.linkedin ? (
-                    <a 
-                      href={member.linkedin} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      style={{ fontSize: '0.82rem', color: '#00B4D8', fontWeight: 700, textDecoration: 'underline' }}
+                  {/* Skill Badges */}
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', paddingTop: '16px', borderTop: '1px solid var(--border-light)' }}>
+                    {memberSkills.map((skill, idx) => (
+                      <span key={idx} style={{
+                        background: 'rgba(0, 180, 216, 0.12)',
+                        color: '#00B4D8',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        border: '1px solid var(--border-light)'
+                      }}>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    {member.linkedin || member.linkedin_url ? (
+                      <a 
+                        href={member.linkedin || member.linkedin_url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        style={{ fontSize: '0.82rem', color: '#00B4D8', fontWeight: 700, textDecoration: 'underline' }}
+                      >
+                        LinkedIn Profile →
+                      </a>
+                    ) : <span style={{ fontSize: '0.8rem', color: '#64748B' }}>Senior Instructor</span>}
+
+                    <button 
+                      onClick={() => {
+                        const slugs = {
+                          1: 'senior-software-developer-tanvir-hossain-khan',
+                          2: 'video-editor-nashimul-hasan-nibir',
+                          3: 'sr-social-media-marketer-naimur-rahman-naim',
+                          4: 'jr-social-media-marketer-fahim-hasan-jidan',
+                          5: 'jr-social-media-marketer-hridoy-hasan'
+                        };
+                        onNavigate(slugs[member.id] || 'team');
+                      }}
+                      className="btn-primary"
+                      style={{ padding: '6px 14px', fontSize: '0.82rem', gap: '4px' }}
                     >
-                      LinkedIn Profile →
-                    </a>
-                  ) : <span style={{ fontSize: '0.8rem', color: '#64748B' }}>Senior Instructor</span>}
-
-                  <button 
-                    onClick={() => {
-                      const slugs = {
-                        1: 'senior-software-developer-tanvir-hossain-khan',
-                        2: 'video-editor-nashimul-hasan-nibir',
-                        3: 'sr-social-media-marketer-naimur-rahman-naim',
-                        4: 'jr-social-media-marketer-fahim-hasan-jidan',
-                        5: 'jr-social-media-marketer-hridoy-hasan'
-                      };
-                      onNavigate(slugs[member.id] || 'team');
-                    }}
-                    className="btn-primary"
-                    style={{ padding: '6px 14px', fontSize: '0.82rem', gap: '4px' }}
-                  >
-                    View Details →
-                  </button>
+                      View Details →
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* NEW FEATURE: Mentor Booking Modal */}
