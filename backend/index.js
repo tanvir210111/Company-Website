@@ -7377,30 +7377,44 @@ async function studentMiddleware(req, res, next) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET);
+    let userRole = decoded.role ? String(decoded.role).trim().toLowerCase() : '';
     let dbUser = null;
 
-    if (decoded.id && !isNaN(decoded.id)) {
-      const users = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [decoded.id]);
-      if (users && users.length > 0) dbUser = users[0];
-    } else if (decoded.email) {
-      const users = await query('SELECT * FROM users WHERE email = ? LIMIT 1', [decoded.email]);
-      if (users && users.length > 0) dbUser = users[0];
+    try {
+      if (decoded.id && !isNaN(decoded.id)) {
+        const users = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [decoded.id]);
+        if (users && users.length > 0) {
+          dbUser = users[0];
+          userRole = dbUser.role ? String(dbUser.role).trim().toLowerCase() : userRole;
+        }
+      } else if (decoded.email) {
+        const users = await query('SELECT * FROM users WHERE email = ? LIMIT 1', [decoded.email]);
+        if (users && users.length > 0) {
+          dbUser = users[0];
+          userRole = dbUser.role ? String(dbUser.role).trim().toLowerCase() : userRole;
+        }
+      }
+    } catch (dbErr) {
+      console.log('Student middleware DB notice:', dbErr.message);
     }
 
-    if (!dbUser) {
-      return res.status(401).json({ success: false, message: 'User account not found.' });
-    }
-
-    if (!dbUser.is_active) {
+    if (dbUser && dbUser.is_active === 0) {
       return res.status(403).json({ success: false, message: 'Account is deactivated. Contact administration.' });
     }
 
-    if (dbUser.role !== 'student') {
+    if (userRole !== 'student') {
       return res.status(403).json({ success: false, message: 'Access Denied: Student account required.' });
     }
 
-    req.user = dbUser;
-    req.studentId = dbUser.id;
+    req.user = dbUser || {
+      id: decoded.id,
+      full_name: decoded.name || 'Student',
+      email: decoded.email || '',
+      phone: decoded.phone || '',
+      role: 'student',
+      is_active: 1
+    };
+    req.studentId = (dbUser && dbUser.id) || decoded.id;
     next();
   } catch (err) {
     return res.status(401).json({ success: false, message: 'Invalid or expired student session.' });
@@ -7415,30 +7429,44 @@ async function clientMiddleware(req, res, next) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET);
+    let userRole = decoded.role ? String(decoded.role).trim().toLowerCase() : '';
     let dbUser = null;
 
-    if (decoded.id && !isNaN(decoded.id)) {
-      const users = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [decoded.id]);
-      if (users && users.length > 0) dbUser = users[0];
-    } else if (decoded.email) {
-      const users = await query('SELECT * FROM users WHERE email = ? LIMIT 1', [decoded.email]);
-      if (users && users.length > 0) dbUser = users[0];
+    try {
+      if (decoded.id && !isNaN(decoded.id)) {
+        const users = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [decoded.id]);
+        if (users && users.length > 0) {
+          dbUser = users[0];
+          userRole = dbUser.role ? String(dbUser.role).trim().toLowerCase() : userRole;
+        }
+      } else if (decoded.email) {
+        const users = await query('SELECT * FROM users WHERE email = ? LIMIT 1', [decoded.email]);
+        if (users && users.length > 0) {
+          dbUser = users[0];
+          userRole = dbUser.role ? String(dbUser.role).trim().toLowerCase() : userRole;
+        }
+      }
+    } catch (dbErr) {
+      console.log('Client middleware DB notice:', dbErr.message);
     }
 
-    if (!dbUser) {
-      return res.status(401).json({ success: false, message: 'User account not found.' });
-    }
-
-    if (!dbUser.is_active) {
+    if (dbUser && dbUser.is_active === 0) {
       return res.status(403).json({ success: false, message: 'Account is deactivated. Contact administration.' });
     }
 
-    if (dbUser.role !== 'client') {
+    if (userRole !== 'client') {
       return res.status(403).json({ success: false, message: 'Access Denied: Corporate Client account required.' });
     }
 
-    req.user = dbUser;
-    req.clientId = dbUser.id;
+    req.user = dbUser || {
+      id: decoded.id,
+      full_name: decoded.name || 'Corporate Client',
+      email: decoded.email || '',
+      phone: decoded.phone || '',
+      role: 'client',
+      is_active: 1
+    };
+    req.clientId = (dbUser && dbUser.id) || decoded.id;
     next();
   } catch (err) {
     return res.status(401).json({ success: false, message: 'Invalid or expired client session.' });

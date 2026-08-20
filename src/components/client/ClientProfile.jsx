@@ -35,8 +35,11 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
     setError(null);
     try {
       const res = await adminFetch('/api/client/profile');
-      const data = await res.json();
-      if (data.success && data.profile) {
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (parseErr) {}
+      if (res.ok && data && data.success && data.profile) {
         setProfile(data.profile);
         setFullName(data.profile.full_name || '');
         setPhone(data.profile.phone || '');
@@ -48,7 +51,7 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
         setOfficeAddress(data.profile.office_address || '');
         setWebsiteUrl(data.profile.website_url || '');
       } else {
-        setError(data.message || 'Failed to load client profile.');
+        setError((data && data.message) || 'Failed to load client profile.');
       }
     } catch (err) {
       setError('Error connecting to backend server.');

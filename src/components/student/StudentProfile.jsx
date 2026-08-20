@@ -36,8 +36,11 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
     setError(null);
     try {
       const res = await adminFetch('/api/student/profile');
-      const data = await res.json();
-      if (data.success && data.profile) {
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (parseErr) {}
+      if (res.ok && data && data.success && data.profile) {
         setProfile(data.profile);
         setFullName(data.profile.full_name || '');
         setPhone(data.profile.phone || '');
@@ -49,7 +52,7 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
         setEmergencyPhone(data.profile.emergency_phone || '');
         setEducationLevel(data.profile.education_level || '');
       } else {
-        setError(data.message || 'Failed to load profile.');
+        setError((data && data.message) || 'Failed to load profile.');
       }
     } catch (err) {
       setError('Error connecting to backend server.');

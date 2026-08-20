@@ -15,11 +15,14 @@ export default function ClientDashboard({ onSelectSubPage, onNavigate }) {
     setError(null);
     try {
       const res = await adminFetch('/api/client/dashboard');
-      const json = await res.json();
-      if (json.success) {
+      let json = null;
+      try {
+        json = await res.json();
+      } catch (parseErr) {}
+      if (res.ok && json && json.success) {
         setData(json);
       } else {
-        setError(json.message || 'Failed to load client dashboard.');
+        setError((json && json.message) || 'Failed to load client dashboard.');
       }
     } catch (err) {
       setError('Could not connect to enterprise client portal.');

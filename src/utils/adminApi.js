@@ -26,6 +26,7 @@ export const adminFetch = async (endpoint, options = {}) => {
 
   const headers = {
     ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+    'Accept': 'application/json',
     ...(options.headers || {})
   };
 
