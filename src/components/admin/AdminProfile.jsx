@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck, User, Mail, Phone, Building2, Calendar, CheckCircle2,
   Lock, Edit3, Key, Camera, RefreshCw, AlertCircle, Save, X, Shield, Clock
@@ -146,6 +146,11 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
+
+    if (!currentPassword) {
+      setErrorMessage('Current password is required.');
+      return;
+    }
 
     if (!newPassword || newPassword.length < 6) {
       setErrorMessage('New password must be at least 6 characters long.');
@@ -746,6 +751,19 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
           </div>
 
           <form onSubmit={handleChangePassword} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="form-group">
+              <label className="form-label" style={fieldLabelStyle}>Current Password *</label>
+              <input
+                type="password"
+                required
+                className="form-input"
+                value={currentPassword}
+                onChange={e => setCurrentPassword(e.target.value)}
+                placeholder="Enter current administrator password..."
+                style={inputStyle}
+              />
+            </div>
+
             <div className="form-group">
               <label className="form-label" style={fieldLabelStyle}>New Password *</label>
               <input
