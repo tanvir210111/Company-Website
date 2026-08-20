@@ -94,9 +94,12 @@ import { getBackendUrl, adminFetch } from './utils/adminApi';
 const parseCurrentRoute = () => {
   if (typeof window === 'undefined') return { page: 'home', subPage: 'dashboard' };
 
-  const rawPath = (window.location.pathname || '').trim().toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '');
-  const rawHash = (window.location.hash || '').trim().toLowerCase().replace(/^#\/?/, '').replace(/\/+$/, '');
-  const route = rawPath || rawHash;
+  const pathname = (window.location.pathname || '').trim().toLowerCase();
+  const hash = (window.location.hash || '').trim().toLowerCase();
+  
+  const cleanPath = pathname.split('?')[0].split('#')[0].replace(/^\/+/, '').replace(/\/+$/, '');
+  const cleanHash = hash.replace(/^#\/?/, '').split('?')[0].replace(/\/+$/, '');
+  const route = cleanPath || cleanHash;
 
   // 1. TOP PRIORITY: Explicit Admin Route Matching (/admin, /admin/services, /admin/courses, etc.)
   if (route === 'admin' || route.startsWith('admin/') || route === 'admin-services') {
@@ -288,9 +291,11 @@ export default function App() {
   };
 
   // 1. Certificate Verification Route Check
-  const normalizedPath = (typeof window !== 'undefined' ? window.location.pathname : '').trim().toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '');
-  const normalizedHash = (typeof window !== 'undefined' ? window.location.hash : '').trim().toLowerCase().replace(/^#\/?/, '').replace(/\/+$/, '');
-  const currentPathOrHash = normalizedPath || normalizedHash;
+  const pathname = (typeof window !== 'undefined' ? window.location.pathname : '').trim().toLowerCase();
+  const hash = (typeof window !== 'undefined' ? window.location.hash : '').trim().toLowerCase();
+  const cleanWindowPath = pathname.split('?')[0].split('#')[0].replace(/^\/+/, '').replace(/\/+$/, '');
+  const cleanWindowHash = hash.replace(/^#\/?/, '').split('?')[0].replace(/\/+$/, '');
+  const currentPathOrHash = cleanWindowPath || cleanWindowHash;
 
   if (currentPathOrHash.startsWith('certificate/')) {
     return <PublicCertificateVerification />;
@@ -415,7 +420,7 @@ export default function App() {
         activeSubPage={adminSubPage}
         onSelectSubPage={handleAdminSubNavigate}
       >
-        {adminSubPage === 'dashboard' && <AdminDashboard onSelectSubPage={handleAdminSubNavigate} />}
+        {(adminSubPage === 'dashboard' || !adminSubPage) && <AdminDashboard onSelectSubPage={handleAdminSubNavigate} />}
         {adminSubPage === 'profile' && <AdminProfile currentUser={currentUser} onUpdateCurrentUser={handleLoginSuccess} />}
         {adminSubPage === 'services' && <AdminServices />}
         {adminSubPage === 'users' && <AdminUsers initialRoleFilter="all" />}
