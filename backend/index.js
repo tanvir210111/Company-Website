@@ -333,40 +333,64 @@ app.get('/api/admin/dashboard', adminMiddleware, async (req, res) => {
       attentionAlerts: []
     };
 
+    // 1. User Metrics
     try {
-      // User Counts
       const uCounts = await query('SELECT role, is_active, COUNT(*) as count FROM users GROUP BY role, is_active');
       if (uCounts && uCounts.length > 0) {
         uCounts.forEach(r => {
-          metrics.totalUsers += r.count;
-          if (r.is_active) metrics.activeUsers += r.count;
-          if (r.role === 'student') metrics.totalStudents += r.count;
-          if (r.role === 'client') metrics.totalClients += r.count;
-          if (r.role === 'admin') metrics.totalAdmins += r.count;
+          const count = parseInt(r.count, 10) || 0;
+          const role = (r.role || '').toString().trim().toLowerCase();
+          metrics.totalUsers += count;
+          if (r.is_active) metrics.activeUsers += count;
+          if (role === 'student') metrics.totalStudents += count;
+          if (role === 'client') metrics.totalClients += count;
+          if (role === 'admin') metrics.totalAdmins += count;
         });
       }
+    } catch (err) {
+      console.log('User counts query notice:', err.message);
+    }
 
-      // Course Counts
+    // 2. Course Metrics
+    try {
       const cCounts = await query('SELECT is_active, COUNT(*) as count FROM courses GROUP BY is_active');
-      if (cCounts) {
+      if (cCounts && cCounts.length > 0) {
         cCounts.forEach(r => {
-          metrics.totalCourses += r.count;
-          if (r.is_active) metrics.activeCourses = r.count;
+          const count = parseInt(r.count, 10) || 0;
+          metrics.totalCourses += count;
+          if (r.is_active) metrics.activeCourses += count;
         });
       }
+    } catch (err) {
+      console.log('Course counts query notice:', err.message);
+    }
 
-      // Enrollment Analytics
+    // 3. Service Metrics
+    try {
+      const servCountRes = await query('SELECT COUNT(*) as count FROM services WHERE is_active = 1');
+      metrics.activeServices = parseInt(servCountRes[0]?.count, 10) || 0;
+    } catch (err) {
+      console.log('Service counts query notice:', err.message);
+    }
+
+    // 4. Enrollment Metrics
+    try {
       const eCounts = await query('SELECT status, COUNT(*) as count FROM enrollments GROUP BY status');
-      if (eCounts) {
+      if (eCounts && eCounts.length > 0) {
         eCounts.forEach(r => {
-          metrics.totalEnrollments += r.count;
-          metrics.enrollmentStatusCounts[r.status] = r.count;
-          if (r.status === 'active') metrics.activeEnrollments = r.count;
-          if (r.status === 'completed') metrics.completedEnrollments = r.count;
+          const count = parseInt(r.count, 10) || 0;
+          metrics.totalEnrollments += count;
+          metrics.enrollmentStatusCounts[r.status] = count;
+          if (r.status === 'active') metrics.activeEnrollments = count;
+          if (r.status === 'completed') metrics.completedEnrollments = count;
         });
       }
+    } catch (err) {
+      console.log('Enrollment counts query notice:', err.message);
+    }
 
-      // Revenue & Financial Metrics
+    // 5. Payment & Revenue Metrics
+    try {
       const revRes = await query(`
         SELECT 
           SUM(CASE WHEN status = 'PAID' THEN amount ELSE 0 END) as totalRevenue,
@@ -377,19 +401,27 @@ app.get('/api/admin/dashboard', adminMiddleware, async (req, res) => {
       `);
       if (revRes && revRes[0]) {
         metrics.totalVerifiedRevenue = parseFloat(revRes[0].totalRevenue || 0);
-        metrics.pendingPaymentsCount = revRes[0].pendingCount || 0;
-        metrics.successfulPaymentsCount = revRes[0].paidCount || 0;
-        metrics.failedPaymentsCount = revRes[0].failedCount || 0;
+        metrics.pendingPaymentsCount = parseInt(revRes[0].pendingCount, 10) || 0;
+        metrics.successfulPaymentsCount = parseInt(revRes[0].paidCount, 10) || 0;
+        metrics.failedPaymentsCount = parseInt(revRes[0].failedCount, 10) || 0;
       }
+    } catch (err) {
+      console.log('Payments query notice:', err.message);
+    }
 
-      // Outstanding Dues
+    // 6. Outstanding Dues
+    try {
       const enrDueRes = await query(`SELECT SUM(total_fee - paid_amount) as due FROM enrollments WHERE status != 'cancelled' AND (total_fee - paid_amount) > 0`);
       if (enrDueRes && enrDueRes[0]) metrics.outstandingEnrollmentDue = parseFloat(enrDueRes[0].due || 0);
+    } catch (err) {}
 
+    try {
       const projDueRes = await query(`SELECT SUM(contract_amount - paid_amount) as due FROM software_projects WHERE status != 'cancelled' AND (contract_amount - paid_amount) > 0`);
       if (projDueRes && projDueRes[0]) metrics.outstandingProjectDue = parseFloat(projDueRes[0].due || 0);
+    } catch (err) {}
 
-      // Monthly Revenue Graph Data (Real PAID payments grouped by YYYY-MM)
+    // 7. Monthly Revenue Graph Data
+    try {
       const monthRevRes = await query(`
         SELECT DATE_FORMAT(created_at, '%Y-%m') as month, SUM(amount) as total
         FROM payments
@@ -399,59 +431,77 @@ app.get('/api/admin/dashboard', adminMiddleware, async (req, res) => {
         LIMIT 12
       `);
       metrics.monthlyRevenue = monthRevRes || [];
+    } catch (err) {}
 
-      // Software Project Analytics
+    // 8. Software Project Metrics
+    try {
       const pCounts = await query('SELECT status, COUNT(*) as count FROM software_projects GROUP BY status');
       if (pCounts) {
         pCounts.forEach(r => {
-          metrics.totalProjects += r.count;
-          metrics.projectStatusCounts[r.status] = r.count;
-          if (['in_development', 'srs_planning'].includes(r.status)) metrics.activeProjects += r.count;
-          if (r.status === 'testing') metrics.testingProjects = r.count;
-          if (r.status === 'delivered') metrics.deliveredProjects = r.count;
-          if (r.status === 'cancelled') metrics.cancelledProjects = r.count;
+          const count = parseInt(r.count, 10) || 0;
+          metrics.totalProjects += count;
+          metrics.projectStatusCounts[r.status] = count;
+          if (['in_development', 'srs_planning'].includes(r.status)) metrics.activeProjects += count;
+          if (r.status === 'testing') metrics.testingProjects = count;
+          if (r.status === 'delivered') metrics.deliveredProjects = count;
+          if (r.status === 'cancelled') metrics.cancelledProjects = count;
         });
       }
+    } catch (err) {}
 
-      // Certificate Counts
+    // 9. Certificate Metrics
+    try {
       const certCounts = await query('SELECT status, COUNT(*) as count FROM certificates GROUP BY status');
       if (certCounts) {
         certCounts.forEach(r => {
-          metrics.totalCertificates += r.count;
-          if (r.status === 'active') metrics.activeCertificates = r.count;
-          if (r.status === 'revoked') metrics.revokedCertificates = r.count;
+          const count = parseInt(r.count, 10) || 0;
+          metrics.totalCertificates += count;
+          if (r.status === 'active') metrics.activeCertificates = count;
+          if (r.status === 'revoked') metrics.revokedCertificates = count;
         });
       }
+    } catch (err) {}
 
-      // Unread Messages & Notifications
+    // 10. Messages & Notifications
+    try {
       const unreadMsgRes = await query('SELECT COUNT(*) as count FROM messages WHERE is_read = 0');
-      metrics.unreadMessages = unreadMsgRes[0]?.count || 0;
+      metrics.unreadMessages = parseInt(unreadMsgRes[0]?.count, 10) || 0;
+    } catch (err) {}
 
+    try {
       const unreadNotifRes = await query('SELECT COUNT(*) as count FROM notifications WHERE is_read = 0');
-      metrics.unreadNotifications = unreadNotifRes[0]?.count || 0;
+      metrics.unreadNotifications = parseInt(unreadNotifRes[0]?.count, 10) || 0;
+    } catch (err) {}
 
+    try {
       const annCountRes = await query("SELECT COUNT(*) as count FROM announcements WHERE status = 'published'");
-      metrics.publishedAnnouncements = annCountRes[0]?.count || 0;
+      metrics.publishedAnnouncements = parseInt(annCountRes[0]?.count, 10) || 0;
+    } catch (err) {}
 
-      // Content Metrics
+    // 11. Content & Team Metrics
+    try {
       const bCounts = await query('SELECT is_published, COUNT(*) as count FROM blog_posts GROUP BY is_published');
       if (bCounts) {
         bCounts.forEach(r => {
-          if (r.is_published) metrics.publishedBlogPosts = r.count;
-          else metrics.draftBlogPosts = r.count;
+          const count = parseInt(r.count, 10) || 0;
+          if (r.is_published) metrics.publishedBlogPosts = count;
+          else metrics.draftBlogPosts = count;
         });
       }
+    } catch (err) {}
 
+    try {
       const pCountRes = await query("SELECT COUNT(*) as count FROM pages WHERE status = 'published'");
-      metrics.publishedPages = pCountRes[0]?.count || 0;
+      metrics.publishedPages = parseInt(pCountRes[0]?.count, 10) || 0;
+    } catch (err) {}
 
-      const servCountRes = await query('SELECT COUNT(*) as count FROM services WHERE is_active = 1');
-      metrics.activeServices = servCountRes[0]?.count || 0;
-
+    try {
       const teamCountRes = await query('SELECT COUNT(*) as count FROM team_members WHERE is_active = 1');
-      metrics.activeTeamMembers = teamCountRes[0]?.count || 0;
+      metrics.activeTeamMembers = parseInt(teamCountRes[0]?.count, 10) || 0;
+    } catch (err) {}
 
-      // Recent Activity Logs (Latest 10)
+    // 12. Recent Activity Logs
+    try {
       const actLogs = await query(`
         SELECT a.id, a.actor_user_id, a.action, a.entity_type, a.entity_id, a.description, a.created_at,
                u.full_name as actor_name
@@ -460,9 +510,8 @@ app.get('/api/admin/dashboard', adminMiddleware, async (req, res) => {
         ORDER BY a.id DESC
         LIMIT 10
       `);
-      metrics.recentActivity = actLogs || [];
+      metrics.recentActivity = actLogs && actLogs.length > 0 ? actLogs : [...mockActivityLogs];
     } catch (dbErr) {
-      console.log('Admin Dashboard query DB notice:', dbErr.message);
       metrics.recentActivity = [...mockActivityLogs];
     }
 
