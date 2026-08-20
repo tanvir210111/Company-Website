@@ -64,6 +64,7 @@ import DynamicPage from './pages/DynamicPage';
 import AdminLoginPage from './components/admin/AdminLoginPage';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './components/admin/AdminDashboard';
+import AdminProfile from './components/admin/AdminProfile';
 import AdminUsers from './components/admin/AdminUsers';
 import AdminStudents from './components/admin/AdminStudents';
 import AdminClients from './components/admin/AdminClients';
@@ -415,6 +416,7 @@ export default function App() {
         onSelectSubPage={handleAdminSubNavigate}
       >
         {adminSubPage === 'dashboard' && <AdminDashboard onSelectSubPage={handleAdminSubNavigate} />}
+        {adminSubPage === 'profile' && <AdminProfile currentUser={currentUser} onUpdateCurrentUser={handleLoginSuccess} />}
         {adminSubPage === 'services' && <AdminServices />}
         {adminSubPage === 'users' && <AdminUsers initialRoleFilter="all" />}
         {adminSubPage === 'students' && <AdminStudents />}
@@ -436,7 +438,7 @@ export default function App() {
         {adminSubPage === 'notifications' && <AdminNotifications />}
         {adminSubPage === 'announcements' && <AdminAnnouncements />}
         {adminSubPage === 'activity-logs' && <AdminActivityLogs />}
-        {!['dashboard', 'users', 'students', 'clients', 'admins', 'settings', 'homepage', 'contact-info', 'global-settings', 'services', 'courses', 'enrollments', 'certificates', 'payments', 'projects', 'team', 'testimonials', 'faqs', 'blog', 'pages', 'media', 'messages', 'notifications', 'announcements', 'activity-logs'].includes(adminSubPage) && (
+        {!['dashboard', 'profile', 'users', 'students', 'clients', 'admins', 'settings', 'homepage', 'contact-info', 'global-settings', 'services', 'courses', 'enrollments', 'certificates', 'payments', 'projects', 'team', 'testimonials', 'faqs', 'blog', 'pages', 'media', 'messages', 'notifications', 'announcements', 'activity-logs'].includes(adminSubPage) && (
           <div style={{ padding: '30px', background: '#0B1120', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px', textTransform: 'capitalize' }}>
               {adminSubPage} Module

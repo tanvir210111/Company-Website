@@ -123,6 +123,7 @@ export default function AdminLayout({
   // Sidebar navigation structure
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'profile', label: 'My Profile', icon: ShieldCheck },
     { id: 'users', label: 'All Users', icon: Users },
     { id: 'students', label: 'Students', icon: GraduationCap },
     { id: 'clients', label: 'Clients', icon: Briefcase },
@@ -249,7 +250,21 @@ export default function AdminLayout({
             <Globe size={15} /> View Website
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#070A12', padding: '4px 12px', borderRadius: '10px', border: '1px solid var(--border-light)' }}>
+          <div 
+            onClick={() => onSelectSubPage && onSelectSubPage('profile')}
+            title="Open Admin Profile"
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              background: activeSubPage === 'profile' ? 'rgba(0, 180, 216, 0.2)' : '#070A12', 
+              padding: '4px 12px', 
+              borderRadius: '10px', 
+              border: activeSubPage === 'profile' ? '1px solid #00B4D8' : '1px solid var(--border-light)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
             <div style={{
               width: '32px',
               height: '32px',
