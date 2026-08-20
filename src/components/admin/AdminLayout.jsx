@@ -3,14 +3,15 @@ import {
   LayoutDashboard, Users, GraduationCap, Briefcase, BookOpen, FileCheck,
   FolderGit2, CreditCard, MessageSquare, FileText, Newspaper, UserCheck,
   Quote, HelpCircle, Image, Settings, LogOut, Menu, X, ShieldAlert,
-  Search, Bell, ChevronRight, Lock, Megaphone, Award, ShieldCheck, History
+  Search, Bell, ChevronRight, Lock, Megaphone, Award, ShieldCheck, History, Globe
 } from 'lucide-react';
+import AdminLoginPage from './AdminLoginPage';
 
 export default function AdminLayout({
   currentUser,
   authLoading,
   onLogout,
-  onOpenAuth,
+  onLoginSuccess,
   onNavigate,
   activeSubPage = 'dashboard',
   onSelectSubPage,
@@ -47,64 +48,13 @@ export default function AdminLayout({
     );
   }
 
-  // 2. Unauthenticated State
+  // 2. Unauthenticated State -> Render Dedicated Admin Login Page
   if (!currentUser) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        background: '#070A12',
-        color: '#FFFFFF',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '24px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          width: '72px',
-          height: '72px',
-          borderRadius: '20px',
-          background: 'rgba(239, 68, 68, 0.12)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '20px',
-          color: '#EF4444'
-        }}>
-          <Lock size={36} />
-        </div>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px' }}>
-          Admin Authentication Required
-        </h2>
-        <p style={{ color: '#94A3B8', maxWidth: '460px', marginBottom: '24px', lineHeight: 1.6 }}>
-          You must be logged in as an authorized administrator of Media Scope IT Ltd to access the management portal.
-        </p>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <button
-            onClick={() => onOpenAuth('admin')}
-            className="btn-primary"
-            style={{ padding: '12px 28px', fontWeight: 700, borderRadius: '10px' }}
-          >
-            Login as Administrator
-          </button>
-          <button
-            onClick={() => onNavigate('home')}
-            style={{
-              padding: '12px 24px',
-              borderRadius: '10px',
-              border: '1px solid var(--border-light)',
-              background: 'transparent',
-              color: '#94A3B8',
-              fontWeight: 600,
-              cursor: 'pointer'
-            }}
-          >
-            Return to Website
-          </button>
-        </div>
-      </div>
+      <AdminLoginPage
+        onLoginSuccess={onLoginSuccess}
+        onNavigate={onNavigate}
+      />
     );
   }
 
@@ -230,7 +180,7 @@ export default function AdminLayout({
 
           {/* Logo & Portal Title */}
           <div 
-            onClick={() => onNavigate('home')} 
+            onClick={() => onSelectSubPage ? onSelectSubPage('dashboard') : onNavigate('admin')} 
             style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
           >
             <div style={{
@@ -274,10 +224,30 @@ export default function AdminLayout({
                 color: '#FFFFFF',
                 fontSize: '0.85rem',
                 outline: 'none',
-                width: '220px'
+                width: '200px'
               }}
             />
           </div>
+
+          <button
+            onClick={() => onNavigate('home')}
+            title="Open Public Website"
+            style={{
+              background: 'rgba(0, 180, 216, 0.1)',
+              border: '1px solid rgba(0, 180, 216, 0.3)',
+              color: '#00B4D8',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.82rem',
+              fontWeight: 700
+            }}
+          >
+            <Globe size={15} /> View Website
+          </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#070A12', padding: '4px 12px', borderRadius: '10px', border: '1px solid var(--border-light)' }}>
             <div style={{
@@ -350,7 +320,10 @@ export default function AdminLayout({
               return (
                 <button
                   key={item.id}
-                  onClick={() => onSelectSubPage(item.id)}
+                  onClick={() => {
+                    setMobileSidebarOpen(false);
+                    onSelectSubPage(item.id);
+                  }}
                   style={{
                     display: 'flex',
                     alignItems: 'center',

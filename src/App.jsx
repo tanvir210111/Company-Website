@@ -59,7 +59,6 @@ import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 // Public Page Components
 import FAQSection from './components/FAQSection';
 import DynamicPage from './pages/DynamicPage';
-import AdminServicesPage from './pages/AdminServicesPage';
 
 // Admin Panel Components
 import AdminLayout from './components/admin/AdminLayout';
@@ -146,12 +145,13 @@ export default function App() {
     verifyAuthSession();
   }, []);
 
-  // URL BROWSER ROUTER SYNC (100% Clean Path Routing /team, /senior-software-developer-tanvir-hossain-khan, /admin-services)
+  // URL BROWSER ROUTER SYNC (Supports /admin, /admin/services, /admin/courses, etc. and all public routes)
   useEffect(() => {
     const syncPageFromUrl = () => {
-      const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+      const rawPath = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
       const hash = window.location.hash.replace('#', '');
-      const route = path || hash;
+      const route = rawPath || hash;
+
       const validPages = [
         'about-us', 'company-profile', 'md-message', 'team', 'our-clients', 'senior-software-developer-tanvir-hossain-khan',
         'video-editor-nashimul-hasan-nibir', 'sr-social-media-marketer-naimur-rahman-naim',
@@ -160,14 +160,20 @@ export default function App() {
         'software-courses', 'programming-courses', 'others-courses',
         'services', 'web-services', 'marketing-services', 'software-services', 'other-services',
         'cert-verification', 'payment/success', 'payment/fail', 'payment/cancel',
-        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin',
-        'admin-services'
+        'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy'
       ];
 
-      if (route === 'admin-services') {
-        setCurrentPage('admin-services');
-      } else if (route.startsWith('admin')) {
+      // Direct Private Admin Route Parsing (/admin, /admin/services, /admin/courses, etc.)
+      if (route === 'admin' || route.startsWith('admin/')) {
         setCurrentPage('admin');
+        const parts = route.split('/');
+        const sub = parts[1] || 'dashboard';
+        setAdminSubPage(sub);
+      } else if (route === 'admin-services') {
+        // Legacy redirect to /admin/services
+        setCurrentPage('admin');
+        setAdminSubPage('services');
+        window.history.replaceState(null, '', '/admin/services');
       } else if (validPages.includes(route)) {
         setCurrentPage(route);
       } else {
@@ -189,6 +195,13 @@ export default function App() {
     } else {
       window.history.pushState(null, '', `/${pageId}`);
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAdminSubNavigate = (subPageId) => {
+    setAdminSubPage(subPageId);
+    const newPath = subPageId === 'dashboard' ? '/admin' : `/admin/${subPageId}`;
+    window.history.pushState(null, '', newPath);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -263,64 +276,51 @@ export default function App() {
     return <PublicCertificateVerification />;
   }
 
-  // Render Protected Admin Layout if current route is /admin
+  // Render Protected Admin Layout if current route is /admin or /admin/*
   if (currentPage === 'admin') {
     return (
-      <>
-        <AdminLayout
-          currentUser={currentUser}
-          authLoading={authLoading}
-          onLogout={handleLogout}
-          onOpenAuth={(role = 'admin') => {
-            setAuthInitialRole(role);
-            setAuthModalOpen(true);
-          }}
-          onNavigate={handleNavigate}
-          activeSubPage={adminSubPage}
-          onSelectSubPage={setAdminSubPage}
-        >
-          {adminSubPage === 'dashboard' && <AdminDashboard onSelectSubPage={setAdminSubPage} />}
-          {adminSubPage === 'users' && <AdminUsers initialRoleFilter="all" />}
-          {adminSubPage === 'students' && <AdminStudents />}
-          {adminSubPage === 'clients' && <AdminClients />}
-          {adminSubPage === 'admins' && <AdminAdmins />}
-          {['settings', 'homepage', 'contact-info', 'global-settings'].includes(adminSubPage) && <AdminSiteSettings />}
-          {adminSubPage === 'services' && <AdminServices />}
-          {adminSubPage === 'courses' && <AdminCourses />}
-          {adminSubPage === 'enrollments' && <AdminEnrollments />}
-          {adminSubPage === 'certificates' && <AdminCertificates />}
-          {adminSubPage === 'payments' && <AdminPayments />}
-          {adminSubPage === 'projects' && <AdminProjects />}
-          {adminSubPage === 'team' && <AdminTeam />}
-          {adminSubPage === 'testimonials' && <AdminTestimonials />}
-          {adminSubPage === 'faqs' && <AdminFAQs />}
-          {adminSubPage === 'blog' && <AdminBlog />}
-          {adminSubPage === 'pages' && <AdminPages />}
-          {adminSubPage === 'media' && <AdminMedia />}
-          {adminSubPage === 'messages' && <AdminMessages />}
-          {adminSubPage === 'notifications' && <AdminNotifications />}
-          {adminSubPage === 'announcements' && <AdminAnnouncements />}
-          {adminSubPage === 'activity-logs' && <AdminActivityLogs />}
-          {!['dashboard', 'users', 'students', 'clients', 'admins', 'settings', 'homepage', 'contact-info', 'global-settings', 'services', 'courses', 'enrollments', 'certificates', 'payments', 'projects', 'team', 'testimonials', 'faqs', 'blog', 'pages', 'media', 'messages', 'notifications', 'announcements', 'activity-logs'].includes(adminSubPage) && (
-            <div style={{ padding: '30px', background: '#0B1120', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px', textTransform: 'capitalize' }}>
-                {adminSubPage} Module
-              </h2>
-              <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>
-                Management module for <strong>{adminSubPage}</strong> is ready for configuration.
-              </p>
-            </div>
-          )}
-        </AdminLayout>
-
-        <AuthModal 
-          isOpen={authModalOpen}
-          onClose={() => setAuthModalOpen(false)}
-          onLoginSuccess={handleLoginSuccess}
-          pendingAction={pendingAction}
-          initialRole={authInitialRole}
-        />
-      </>
+      <AdminLayout
+        currentUser={currentUser}
+        authLoading={authLoading}
+        onLogout={handleLogout}
+        onLoginSuccess={handleLoginSuccess}
+        onNavigate={handleNavigate}
+        activeSubPage={adminSubPage}
+        onSelectSubPage={handleAdminSubNavigate}
+      >
+        {adminSubPage === 'dashboard' && <AdminDashboard onSelectSubPage={handleAdminSubNavigate} />}
+        {adminSubPage === 'users' && <AdminUsers initialRoleFilter="all" />}
+        {adminSubPage === 'students' && <AdminStudents />}
+        {adminSubPage === 'clients' && <AdminClients />}
+        {adminSubPage === 'admins' && <AdminAdmins />}
+        {['settings', 'homepage', 'contact-info', 'global-settings'].includes(adminSubPage) && <AdminSiteSettings />}
+        {adminSubPage === 'services' && <AdminServices />}
+        {adminSubPage === 'courses' && <AdminCourses />}
+        {adminSubPage === 'enrollments' && <AdminEnrollments />}
+        {adminSubPage === 'certificates' && <AdminCertificates />}
+        {adminSubPage === 'payments' && <AdminPayments />}
+        {adminSubPage === 'projects' && <AdminProjects />}
+        {adminSubPage === 'team' && <AdminTeam />}
+        {adminSubPage === 'testimonials' && <AdminTestimonials />}
+        {adminSubPage === 'faqs' && <AdminFAQs />}
+        {adminSubPage === 'blog' && <AdminBlog />}
+        {adminSubPage === 'pages' && <AdminPages />}
+        {adminSubPage === 'media' && <AdminMedia />}
+        {adminSubPage === 'messages' && <AdminMessages />}
+        {adminSubPage === 'notifications' && <AdminNotifications />}
+        {adminSubPage === 'announcements' && <AdminAnnouncements />}
+        {adminSubPage === 'activity-logs' && <AdminActivityLogs />}
+        {!['dashboard', 'users', 'students', 'clients', 'admins', 'settings', 'homepage', 'contact-info', 'global-settings', 'services', 'courses', 'enrollments', 'certificates', 'payments', 'projects', 'team', 'testimonials', 'faqs', 'blog', 'pages', 'media', 'messages', 'notifications', 'announcements', 'activity-logs'].includes(adminSubPage) && (
+          <div style={{ padding: '30px', background: '#0B1120', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px', textTransform: 'capitalize' }}>
+              {adminSubPage} Module
+            </h2>
+            <p style={{ color: '#94A3B8', fontSize: '0.9rem' }}>
+              Management module for <strong>{adminSubPage}</strong> is ready for configuration.
+            </p>
+          </div>
+        )}
+      </AdminLayout>
     );
   }
 
@@ -580,21 +580,8 @@ export default function App() {
           />
         )}
 
-        {/* Dedicated Admin Services Page Route */}
-        {currentPage === 'admin-services' && (
-          <AdminServicesPage 
-            onNavigate={handleNavigate}
-            currentUser={currentUser}
-            authLoading={authLoading}
-            onOpenAuth={(role = 'admin') => {
-              setAuthInitialRole(role);
-              setAuthModalOpen(true);
-            }}
-          />
-        )}
-
         {/* Dynamic CMS Page Fallback Route */}
-        {!['home', 'cert-verification', 'about-us', 'company-profile', 'md-message', 'team', 'tanvir-hasan', 'jidan', 'hridoy', 'our-clients', 'courses', 'web-development', 'graphics-design', 'digital-marketing', 'python-django', 'programming-courses', 'others-courses', 'services', 'web-services', 'graphics-services', 'marketing-services', 'others-services', 'payment/success', 'payment/fail', 'payment/cancel', 'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin', 'admin-services'].includes(currentPage) && (
+        {!['home', 'cert-verification', 'about-us', 'company-profile', 'md-message', 'team', 'tanvir-hasan', 'jidan', 'hridoy', 'our-clients', 'courses', 'web-development', 'graphics-design', 'digital-marketing', 'python-django', 'programming-courses', 'others-courses', 'services', 'web-services', 'graphics-services', 'marketing-services', 'others-services', 'payment/success', 'payment/fail', 'payment/cancel', 'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin'].includes(currentPage) && (
           <DynamicPage 
             slug={currentPage}
             onNavigate={handleNavigate}
@@ -610,6 +597,7 @@ export default function App() {
         onClose={() => setAuthModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
         pendingAction={pendingAction}
+        initialRole={authInitialRole}
       />
 
       {/* Admission & Payment Modal */}

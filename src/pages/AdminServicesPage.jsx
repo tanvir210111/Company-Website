@@ -1,8 +1,9 @@
 import React from 'react';
 import { ArrowLeft, ShieldAlert, Lock, Settings, Briefcase, Eye } from 'lucide-react';
 import AdminServices from '../components/admin/AdminServices';
+import AdminLoginPage from '../components/admin/AdminLoginPage';
 
-export default function AdminServicesPage({ onNavigate, currentUser, authLoading, onOpenAuth }) {
+export default function AdminServicesPage({ onNavigate, currentUser, authLoading, onLoginSuccess }) {
   const role = currentUser?.role ? String(currentUser.role).trim().toLowerCase() : '';
   const isAdmin = role === 'admin';
 
@@ -36,75 +37,13 @@ export default function AdminServicesPage({ onNavigate, currentUser, authLoading
     );
   }
 
-  // 2. Unauthenticated State
+  // 2. Unauthenticated State -> Dedicated Admin Login
   if (!currentUser) {
     return (
-      <div style={{
-        minHeight: '80vh',
-        background: '#070A12',
-        color: '#FFFFFF',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '60px 20px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          maxWidth: '500px',
-          width: '100%',
-          background: '#0B1120',
-          border: '1px solid var(--border-light)',
-          borderRadius: '16px',
-          padding: '40px 30px'
-        }}>
-          <div style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '16px',
-            background: 'rgba(239, 68, 68, 0.12)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 20px auto',
-            color: '#EF4444'
-          }}>
-            <Lock size={32} />
-          </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px' }}>
-            Admin Authentication Required
-          </h2>
-          <p style={{ color: '#94A3B8', fontSize: '0.92rem', marginBottom: '24px', lineHeight: 1.6 }}>
-            You must be logged in with an authorized Administrator account to access the Admin Services Panel.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <button
-              onClick={() => onOpenAuth ? onOpenAuth('admin') : onNavigate('home')}
-              className="btn-primary"
-              style={{ width: '100%', justifyContent: 'center', padding: '12px', fontWeight: 700, borderRadius: '10px' }}
-            >
-              Login as Administrator
-            </button>
-            <button
-              onClick={() => onNavigate('home')}
-              style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: '10px',
-                border: '1px solid var(--border-light)',
-                background: 'transparent',
-                color: '#94A3B8',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
-            >
-              <ArrowLeft size={16} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '6px' }} />
-              Return to Website
-            </button>
-          </div>
-        </div>
-      </div>
+      <AdminLoginPage 
+        onLoginSuccess={onLoginSuccess}
+        onNavigate={onNavigate}
+      />
     );
   }
 

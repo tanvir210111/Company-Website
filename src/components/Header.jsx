@@ -100,28 +100,6 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
                   </span>
                 )}
 
-                {/* Admin Panel Button in Top Bar */}
-                {isAdmin && (
-                  <button 
-                    onClick={() => handleNavClick('admin-services')}
-                    style={{
-                      background: 'linear-gradient(135deg, #FFB703 0%, #FF6B00 100%)',
-                      border: 'none',
-                      color: '#070A12',
-                      fontSize: '0.78rem',
-                      fontWeight: 800,
-                      padding: '2px 8px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '3px'
-                    }}
-                    title="Open Admin Services Panel"
-                  >
-                    <Settings size={12} /> Admin Panel
-                  </button>
-                )}
 
                 <button 
                   onClick={onLogout}
@@ -403,29 +381,6 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
               </button>
             </li>
 
-            {/* Admin Panel Link in Desktop Nav (Admin Only) */}
-            {isAdmin && (
-              <li className="nav-item">
-                <button 
-                  onClick={() => handleNavClick('admin-services')} 
-                  className="nav-link" 
-                  style={{ 
-                    background: 'rgba(255, 183, 3, 0.12)', 
-                    border: '1px solid #FFB703', 
-                    color: '#FFB703',
-                    borderRadius: '8px',
-                    padding: '6px 12px',
-                    cursor: 'pointer',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
-                >
-                  <Settings size={15} /> Admin Panel
-                </button>
-              </li>
-            )}
           </ul>
 
           {/* Actions */}
@@ -581,28 +536,6 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
               Contact Us
             </button>
 
-            {/* Admin Panel Link in Mobile Drawer (Admin Only) */}
-            {isAdmin && (
-              <button 
-                onClick={() => { setMobileMenuOpen(false); handleNavClick('admin-services'); }} 
-                style={{ 
-                  textAlign: 'left', 
-                  padding: '12px 14px', 
-                  borderRadius: '8px', 
-                  background: 'rgba(255, 183, 3, 0.15)', 
-                  border: '1px solid #FFB703', 
-                  color: '#FFB703', 
-                  fontWeight: 700, 
-                  fontSize: '1.05rem', 
-                  cursor: 'pointer', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '8px' 
-                }}
-              >
-                <Settings size={18} /> Admin Panel
-              </button>
-            )}
 
             {/* Action Buttons */}
             <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
