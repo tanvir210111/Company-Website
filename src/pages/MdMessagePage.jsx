@@ -93,25 +93,25 @@ export default function MdMessagePage({ onNavigate, onOpenAdmission }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '50px 40px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#FF6B00" /> Leadership Address & Philosophy
           </div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             Message From Managing Director
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.1rem', maxWidth: '850px', lineHeight: 1.6 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.08rem', maxWidth: '850px', lineHeight: 1.65 }}>
             A formal statement on educational quality, technological empowerment, and building global IT engineering careers from Bangladesh.
           </p>
         </div>
 
         {/* Main Profile & Detailed Letter Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '40px', marginBottom: '60px', alignItems: 'flex-start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '40px', marginBottom: '60px', alignItems: 'flex-start' }}>
           {/* MD Profile Card */}
           <div style={{
             background: '#0F172A',
@@ -235,7 +235,7 @@ export default function MdMessagePage({ onNavigate, onOpenAdmission }) {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '28px' }}>
             {guarantees.map((item, idx) => {
               const IconComp = item.icon;
               return (
@@ -399,7 +399,7 @@ export default function MdMessagePage({ onNavigate, onOpenAdmission }) {
               </div>
             ) : (
               <form onSubmit={handleInquirySubmit}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
                   <div className="form-group">
                     <label className="form-label">Full Name *</label>
                     <input 

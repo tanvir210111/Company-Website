@@ -43,24 +43,24 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '55px 45px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#00B4D8" /> Welcome to Media Scope IT Ltd
           </div>
-          <h1 style={{ fontSize: '3rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '18px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             About Us — Who We Are, Our Legacy & Tech Mission
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.12rem', maxWidth: '900px', lineHeight: 1.7 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.08rem', maxWidth: '900px', lineHeight: 1.65 }}>
             Media Scope IT Ltd is Bangladesh’s leading IT training course institute and custom enterprise software development company. Based in Uttara, Dhaka, we have spent over 12+ years empowering students, engineering commercial software, and building global tech careers.
           </p>
 
           {/* Key Metric Counters */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '20px', marginTop: '36px', paddingTop: '28px', borderTop: '1px solid var(--border-light)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginTop: '28px', paddingTop: '24px', borderTop: '1px solid var(--border-light)' }}>
             <div>
               <div style={{ fontSize: '1.9rem', fontWeight: 800, color: '#FF6B00' }}>2011</div>
               <div style={{ fontSize: '0.82rem', color: '#94A3B8' }}>Founded in Dhaka, BD</div>
@@ -87,7 +87,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
             <h2 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px' }}>Detailed Sub-Pages & Portals</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '28px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 270px), 1fr))', gap: '28px' }}>
             {/* Card 1: Company Profile */}
             <div 
               onClick={() => onNavigate('company-profile')}
@@ -101,7 +101,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
-                justify: 'space-between',
+                justifyContent: 'space-between',
                 height: '100%'
               }}
               className="course-card"
@@ -112,17 +112,21 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                   height: '170px',
                   width: '100%',
                   overflow: 'hidden',
+                  background: '#0B1120',
                   borderBottom: '2px solid #00B4D8'
                 }}>
                   <img 
                     src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" 
                     alt="Company Profile" 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80";
+                    }}
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                      display: 'block'
                     }} 
                   />
 
@@ -180,7 +184,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
-                justify: 'space-between',
+                justifyContent: 'space-between',
                 height: '100%'
               }}
               className="course-card"
@@ -191,17 +195,21 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                   height: '170px',
                   width: '100%',
                   overflow: 'hidden',
+                  background: '#0B1120',
                   borderBottom: '2px solid #FF6B00'
                 }}>
                   <img 
                     src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80" 
                     alt="Message From MD" 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80";
+                    }}
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                      display: 'block'
                     }} 
                   />
 
@@ -218,7 +226,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                     color: '#FF6B00',
                     display: 'flex',
                     alignItems: 'center',
-                    justify: 'center'
+                    justifyContent: 'center'
                   }}>
                     <Quote size={24} />
                   </div>
@@ -259,7 +267,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
-                justify: 'space-between',
+                justifyContent: 'space-between',
                 height: '100%'
               }}
               className="course-card"
@@ -270,17 +278,21 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                   height: '170px',
                   width: '100%',
                   overflow: 'hidden',
+                  background: '#0B1120',
                   borderBottom: '2px solid #FFB703'
                 }}>
                   <img 
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" 
                     alt="Our Team" 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80";
+                    }}
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                      display: 'block'
                     }} 
                   />
 
@@ -297,7 +309,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                     color: '#FFB703',
                     display: 'flex',
                     alignItems: 'center',
-                    justify: 'center'
+                    justifyContent: 'center'
                   }}>
                     <Users size={24} />
                   </div>
@@ -338,7 +350,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 flexDirection: 'column',
-                justify: 'space-between',
+                justifyContent: 'space-between',
                 height: '100%'
               }}
               className="course-card"
@@ -349,17 +361,21 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                   height: '170px',
                   width: '100%',
                   overflow: 'hidden',
+                  background: '#0B1120',
                   borderBottom: '2px solid #10B981'
                 }}>
                   <img 
                     src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" 
                     alt="Our Clients" 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80";
+                    }}
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                      display: 'block'
                     }} 
                   />
 
@@ -376,7 +392,7 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
                     color: '#10B981',
                     display: 'flex',
                     alignItems: 'center',
-                    justify: 'center'
+                    justifyContent: 'center'
                   }}>
                     <Award size={24} />
                   </div>
@@ -407,8 +423,8 @@ export default function AboutUsPage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* DETAILED TEXT SECTION 1: Detailed Corporate Background & Philosophy */}
-        <div style={{ background: '#0F172A', padding: '44px 36px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', alignItems: 'center' }}>
+        <div style={{ background: '#0F172A', padding: '36px 24px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '40px', alignItems: 'center' }}>
             <div>
               <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Deep Dive</span>
               <h2 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px', marginBottom: '18px' }}>

@@ -178,7 +178,7 @@ export default function PublicCertificateVerification() {
                   <CheckCircle2 size={20} /> ✓ Certificate Verified
                 </div>
 
-                <div style={{ background: '#070A12', padding: '20px', borderRadius: '12px', textAlign: 'left', fontSize: '0.9rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', color: '#CBD5E1' }}>
+                <div style={{ background: '#070A12', padding: '20px', borderRadius: '12px', textAlign: 'left', fontSize: '0.9rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '14px', color: '#CBD5E1' }}>
                   <div><strong>Certificate Number:</strong> <span style={{ color: '#00B4D8', fontWeight: 800 }}>{certificateData.certificate_number}</span></div>
                   <div><strong>Issue Date:</strong> {new Date(certificateData.issue_date).toLocaleDateString()}</div>
                   <div style={{ gridColumn: '1 / -1' }}><strong>Student Name:</strong> <span style={{ color: '#FFFFFF', fontWeight: 700 }}>{certificateData.student_name}</span></div>

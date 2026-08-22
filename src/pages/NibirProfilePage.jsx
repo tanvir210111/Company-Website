@@ -50,15 +50,16 @@ export default function NibirProfilePage({ onNavigate, onOpenQuote }) {
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          padding: '40px',
+          padding: '32px 20px',
           marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '36px', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '30px', alignItems: 'center' }}>
             {/* Image Box */}
             <div style={{ position: 'relative', textAlign: 'center' }}>
               <div style={{
-                width: '260px',
+                maxWidth: '260px',
+                width: '100%',
                 height: '280px',
                 margin: '0 auto',
                 borderRadius: '20px',
@@ -98,7 +99,7 @@ export default function NibirProfilePage({ onNavigate, onOpenQuote }) {
                 <Sparkles size={16} color="#FF6B00" /> VIDEO EDITING & MOTION GRAPHICS
               </div>
 
-              <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.15 }}>
+              <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', lineHeight: 1.2 }}>
                 Nashimul Hasan Nibir
               </h1>
 
@@ -129,7 +130,7 @@ export default function NibirProfilePage({ onNavigate, onOpenQuote }) {
         </div>
 
         {/* DETAILS GRID */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginBottom: '50px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '30px', marginBottom: '50px' }}>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div style={{ background: '#0F172A', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>

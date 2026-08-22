@@ -85,7 +85,7 @@ export default function WebDevCoursesPage({ onNavigate, onOpenAdmission }) {
             Why Choose Web Development at Media Scope IT Ltd?
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '20px' }}>
             <div style={{ background: '#070A12', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
               <CheckCircle size={24} color="#00B4D8" style={{ marginBottom: '10px' }} />
               <h4 style={{ color: '#FFFFFF', fontSize: '1.05rem', fontWeight: 700, marginBottom: '6px' }}>GitHub Project Commits</h4>

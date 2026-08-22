@@ -26,24 +26,24 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '50px 40px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#00B4D8" /> Official Corporate Profile & Accreditations
           </div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             Media Scope IT Ltd — Company Profile & Credentials
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.1rem', maxWidth: '850px', lineHeight: 1.6 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.08rem', maxWidth: '850px', lineHeight: 1.65 }}>
             Established in 2011, Media Scope IT Ltd (RJSC Reg: C-166968/2020) is a top-rated IT training course institute and custom enterprise software development firm based in Uttara, Dhaka, Bangladesh.
           </p>
 
           {/* Quick Stats Row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '20px', marginTop: '36px', paddingTop: '28px', borderTop: '1px solid var(--border-light)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginTop: '28px', paddingTop: '24px', borderTop: '1px solid var(--border-light)' }}>
             <div>
               <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FF6B00' }}>2011</div>
               <div style={{ fontSize: '0.82rem', color: '#94A3B8' }}>Year Established</div>
@@ -64,7 +64,7 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* Corporate History & Extended Vision */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', marginBottom: '60px', alignItems: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '40px', marginBottom: '60px', alignItems: 'center' }}>
           <div>
             <span style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>12+ Years Legacy</span>
             <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '20px', color: '#FFFFFF', marginTop: '6px' }}>
@@ -136,7 +136,7 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '20px', marginBottom: '32px' }}>
             <div style={{ background: '#070A12', padding: '20px', borderRadius: '16px', textAlign: 'center', border: '1px solid var(--border-light)' }}>
               <div style={{ fontSize: '2rem', fontWeight: 800, color: '#10B981' }}>88%</div>
               <div style={{ fontSize: '0.85rem', color: '#CBD5E1', fontWeight: 600 }}>90-Day Placement Rate</div>
@@ -185,7 +185,7 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
             <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px' }}>Media Scope IT Growth Milestones</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '24px' }}>
             <div style={{ background: '#0F172A', padding: '24px', borderRadius: '16px', border: '1px solid var(--border-light)', borderTop: '4px solid #FF6B00' }}>
               <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FF6B00', marginBottom: '6px' }}>2011 - 2014</div>
               <h4 style={{ fontSize: '1.1rem', color: '#FFFFFF', fontWeight: 700, marginBottom: '8px' }}>Inception & Early Labs</h4>
@@ -213,12 +213,12 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* Infrastructure & Lab Facilities */}
-        <div style={{ background: '#0B1120', padding: '40px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
+        <div style={{ background: '#0B1120', padding: '36px 20px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
           <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '24px', textAlign: 'center' }}>
             State-of-the-Art Dhanmondi Campus Infrastructure
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '24px' }}>
             <div style={{ background: '#0F172A', padding: '20px', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
               <Server size={28} color="#00B4D8" style={{ marginBottom: '12px' }} />
               <h4 style={{ fontSize: '1.05rem', color: '#FFFFFF', fontWeight: 700, marginBottom: '6px' }}>Gigabit Fiber Internet</h4>
@@ -246,8 +246,8 @@ export default function CompanyProfilePage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* NEW FEATURE 2: Interactive Campus Visit Booking Form */}
-        <div style={{ background: '#0F172A', padding: '40px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
+        <div style={{ background: '#0F172A', padding: '36px 20px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '40px', alignItems: 'center' }}>
             <div>
               <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Schedule a Visit</span>
               <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#FFFFFF', marginTop: '6px', marginBottom: '16px' }}>

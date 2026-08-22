@@ -80,24 +80,24 @@ export default function CoursesPage({ onNavigate, onOpenAdmission }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '55px 45px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#FF6B00" /> Training Departments & Course Portals
           </div>
-          <h1 style={{ fontSize: '3rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '18px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             Training Courses — Choose Your Career Track
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.12rem', maxWidth: '900px', lineHeight: 1.7 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.08rem', maxWidth: '900px', lineHeight: 1.65 }}>
             Explore our 6 specialized IT training departments below. Click on any category to view its dedicated course page, full module syllabus, lab schedules, and enrollment options.
           </p>
 
           {/* Quick Metrics */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '20px', marginTop: '36px', paddingTop: '28px', borderTop: '1px solid var(--border-light)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginTop: '28px', paddingTop: '24px', borderTop: '1px solid var(--border-light)' }}>
             <div>
               <div style={{ fontSize: '1.9rem', fontWeight: 800, color: '#FF6B00' }}>20+</div>
               <div style={{ fontSize: '0.82rem', color: '#94A3B8' }}>Professional Courses</div>
@@ -118,7 +118,7 @@ export default function CoursesPage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* 6 Category Navigation Cards Grid with Equal Heights & Bottom Alignment */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '28px', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '28px', marginBottom: '60px' }}>
           {categories.map((cat) => {
             const IconComp = cat.icon;
             return (
@@ -135,29 +135,33 @@ export default function CoursesPage({ onNavigate, onOpenAdmission }) {
                   transition: 'all 0.3s ease',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   height: '100%'
                 }}
                 className="course-card"
               >
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  {/* Top Related Category Image Header with Bottom Gradient Mask */}
+                  {/* Top Related Category Image Header */}
                   <div style={{
                     position: 'relative',
                     height: '180px',
                     width: '100%',
                     overflow: 'hidden',
+                    background: '#0B1120',
                     borderBottom: `2px solid ${cat.color}`
                   }}>
                     <img 
                       src={cat.image} 
                       alt={cat.title} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80";
+                      }}
                       style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                        display: 'block'
                       }} 
                     />
 

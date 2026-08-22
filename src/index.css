@@ -1625,6 +1625,28 @@ html, body {
   .portal-header-btn-text {
     display: none !important;
   }
+  .portal-header-search {
+    display: none !important;
+  }
+
+  /* Universal Contained Tables on Mobile & Tablet */
+  .table-responsive,
+  div:has(> table) {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Universal Modal Dialog Fitting */
+  .modal-card,
+  .modal-container,
+  .auth-modal-card {
+    max-width: 94vw !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
   /* Valued Corporate Clients Section */
   .corporate-clients-box {

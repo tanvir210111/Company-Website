@@ -121,19 +121,19 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '50px 40px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#00B4D8" /> Our Engineering Mentors & Staff
           </div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             Meet the Media Scope IT Team
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.1rem', maxWidth: '850px', lineHeight: 1.6 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.08rem', maxWidth: '850px', lineHeight: 1.65 }}>
             Our passionate team of experienced software engineers, creative media mentors, and IT infrastructure specialists.
           </p>
         </div>
@@ -153,7 +153,7 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
         </div>
 
         {/* Team Members Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '28px', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '28px', marginBottom: '60px' }}>
           {filteredMembers.map(member => {
             const memberSkills = Array.isArray(member.skills) 
               ? member.skills 
@@ -172,11 +172,12 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
                 display: 'flex',
                 flexDirection: 'column'
               }}>
-                {/* Avatar Box with Fading Gradient Accent Border */}
+                {/* Avatar Box */}
                 <div style={{
                   position: 'relative',
                   height: '240px',
                   overflow: 'hidden',
+                  background: '#0B1120',
                   borderBottom: '2px solid #00B4D8'
                 }}>
                   <img 
@@ -189,8 +190,7 @@ export default function TeamPage({ onNavigate, onOpenAdmission }) {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                      display: 'block'
                     }} 
                   />
                   <span style={{

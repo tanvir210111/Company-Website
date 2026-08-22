@@ -60,24 +60,24 @@ export default function ServicesPage({ onNavigate, onOpenQuote }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '55px 45px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#00B4D8" /> Custom Software & Growth Solutions
           </div>
-          <h1 style={{ fontSize: '3rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '18px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             Our Commercial IT & Software Services Hub
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.12rem', maxWidth: '900px', lineHeight: 1.7 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.08rem', maxWidth: '900px', lineHeight: 1.65 }}>
             Media Scope IT Ltd delivers custom software engineering, e-commerce development, digital marketing campaigns, and IT infrastructure consulting for 500+ corporate clients in Bangladesh.
           </p>
 
           {/* Quick Metrics */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '20px', marginTop: '36px', paddingTop: '28px', borderTop: '1px solid var(--border-light)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginTop: '28px', paddingTop: '24px', borderTop: '1px solid var(--border-light)' }}>
             <div>
               <div style={{ fontSize: '1.9rem', fontWeight: 800, color: '#00B4D8' }}>500+</div>
               <div style={{ fontSize: '0.82rem', color: '#94A3B8' }}>Deployed Systems</div>
@@ -98,7 +98,7 @@ export default function ServicesPage({ onNavigate, onOpenQuote }) {
         </div>
 
         {/* 4 Category Navigation Cards Grid with Equal Heights & Cover Photos */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '28px', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 270px), 1fr))', gap: '28px', marginBottom: '60px' }}>
           {serviceCategories.map((cat) => {
             const IconComp = cat.icon;
             return (
@@ -115,29 +115,33 @@ export default function ServicesPage({ onNavigate, onOpenQuote }) {
                   transition: 'all 0.3s ease',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   height: '100%'
                 }}
                 className="course-card"
               >
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  {/* Top Cover Photo with Gradient Mask */}
+                  {/* Top Cover Photo */}
                   <div style={{
                     position: 'relative',
                     height: '180px',
                     width: '100%',
                     overflow: 'hidden',
+                    background: '#0B1120',
                     borderBottom: `2px solid ${cat.color}`
                   }}>
                     <img 
                       src={cat.image} 
                       alt={cat.title} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80";
+                      }}
                       style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                        display: 'block'
                       }} 
                     />
 
