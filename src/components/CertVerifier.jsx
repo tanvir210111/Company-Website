@@ -36,17 +36,17 @@ export default function CertVerifier({ onNavigate }) {
           </p>
         </div>
 
-        <form onSubmit={handleVerifySubmit} style={{ display: 'flex', gap: '12px', background: '#0F172A', padding: '8px', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
+        <form onSubmit={handleVerifySubmit} className="cert-verify-form" style={{ display: 'flex', gap: '12px', background: '#0F172A', padding: '8px', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
           <input 
             type="text" 
-            className="form-input" 
+            className="form-input cert-verify-input" 
             style={{ border: 'none', background: 'transparent', fontSize: '1rem' }}
             placeholder="Enter Certificate ID (e.g. MS-2026-101)"
             value={certId}
             onChange={(e) => setCertId(e.target.value)}
           />
-          <button type="submit" className="btn-primary" style={{ padding: '12px 28px', fontSize: '0.95rem', whiteSpace: 'nowrap' }}>
-            <Search size={18} /> Open Verification Portal
+          <button type="submit" className="btn-primary cert-verify-submit-btn" style={{ padding: '12px 28px', fontSize: '0.95rem', whiteSpace: 'nowrap' }}>
+            <Search size={18} /> Verify Certificate
           </button>
         </form>
 

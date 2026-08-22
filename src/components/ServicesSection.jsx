@@ -53,7 +53,7 @@ export default function ServicesSection({ onOpenQuote }) {
         </div>
 
         {/* ELEGANT 100% EQUAL HEIGHT SERVICES GRID WITH VERIFIED COVER PHOTOS */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '28px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '24px' }}>
           {servicesList.map(service => {
             const IconComponent = iconMap[service.icon] || Globe;
             return (
@@ -67,17 +67,17 @@ export default function ServicesSection({ onOpenQuote }) {
                   boxShadow: 'var(--shadow-sm)',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   height: '100%',
                   transition: 'all 0.3s ease'
                 }}
                 className="course-card"
               >
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  {/* Related Cover Image with Fading Gradient Mask & Fallback Protection */}
+                  {/* Related Cover Image with Fallback Protection */}
                   <div style={{
                     position: 'relative',
-                    height: '175px',
+                    height: '180px',
                     width: '100%',
                     overflow: 'hidden',
                     background: '#0B1120',
@@ -94,8 +94,7 @@ export default function ServicesSection({ onOpenQuote }) {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%)'
+                        display: 'block'
                       }} 
                     />
 

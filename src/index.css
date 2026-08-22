@@ -1172,75 +1172,328 @@ html, body {
 }
 
 
-@media (max-width: 992px) {
+/* ==========================================================
+   MOBILE & TABLET RESPONSIVE OVERHAUL (BELOW 1024PX ONLY)
+   DESKTOP (1024PX+) REMAINS UNTOUCHED
+   ========================================================== */
+
+@media (max-width: 1023px) {
+  /* Top Contact Bar: Row 1 (Phone + Email) & Row 2 (Cert + Login) */
+  .top-bar {
+    padding: 6px 0;
+  }
+  .top-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .top-contact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 12px;
+    font-size: 0.74rem;
+    width: 100%;
+  }
+  .top-contact-item {
+    font-size: 0.74rem;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .top-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
+  }
+  .cert-verify-btn {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+
+  /* Mobile Header: Left Hamburger, Center Logo/Title, Right Admission */
+  .nav-links {
+    display: none !important;
+  }
+  .header-container {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    padding: 6px !important;
+    cursor: pointer !important;
+    justify-self: start !important;
+    flex-shrink: 0 !important;
+  }
+  .logo-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    justify-self: center !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+  }
+  .logo-text {
+    text-align: left !important;
+  }
+  .logo-text h1 {
+    font-size: 0.95rem !important;
+    white-space: nowrap !important;
+    line-height: 1.1 !important;
+  }
+  .logo-text span {
+    font-size: 0.6rem !important;
+    display: block !important;
+    white-space: nowrap !important;
+  }
+  .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .header-quote-btn {
+    display: none !important;
+  }
+  .header-admission-btn {
+    display: inline-flex !important;
+    padding: 7px 12px !important;
+    font-size: 0.78rem !important;
+    border-radius: 8px !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 40px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
   .hero-container {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 36px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .hero-badge {
+    max-width: 100%;
+    white-space: normal;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .hero-buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 28px !important;
+  }
+  .hero-buttons .btn-primary, 
+  .hero-buttons .btn-secondary {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 10px 8px !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
   }
   .hero-stats {
-    grid-template-columns: repeat(2, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px 14px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid var(--border-light) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .stat-number {
+    font-size: 1.45rem !important;
+  }
+  .stat-label {
+    font-size: 0.75rem !important;
+  }
+
+  /* About Section */
+  .about-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .about-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .about-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .about-card {
+    padding: 12px 10px !important;
+  }
+
+  /* Contact / Send Us Message Section */
+  .contact-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .contact-info-card, 
+  .contact-form-card {
+    padding: 24px 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .contact-form-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Verify Student Certificate Form (Exact 50/50 Balance) */
+  .cert-verify-form {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    padding: 6px !important;
+    align-items: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .cert-verify-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 0.8rem !important;
+    padding: 8px 6px !important;
+    box-sizing: border-box !important;
+  }
+  .cert-verify-submit-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 0.78rem !important;
+    padding: 8px 6px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  /* General Section & Card Responsiveness */
+  .section {
+    padding: 50px 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .section-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .section-title {
+    font-size: 1.7rem;
   }
   .footer-container {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .nav-links {
-    display: none;
-  }
-  .mobile-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 30px;
   }
 }
 
 @media (max-width: 768px) {
-  .top-bar-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
+  .hotline-tag {
+    display: none !important;
   }
   .top-contact {
-    gap: 12px;
-    font-size: 0.78rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .top-actions {
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .cert-verify-btn {
     font-size: 0.72rem;
-    padding: 4px 10px;
+    gap: 8px;
+  }
+  .top-contact-item {
+    font-size: 0.72rem;
   }
   .header-container {
-    padding: 10px 14px;
+    padding: 8px 10px !important;
+  }
+  .logo-box img {
+    height: 38px !important;
   }
   .logo-text h1 {
-    font-size: 1.05rem;
+    font-size: 0.88rem !important;
   }
   .logo-text span {
-    font-size: 0.62rem;
+    font-size: 0.55rem !important;
   }
-  .hero-section {
-    padding: 40px 16px;
+  .header-admission-btn {
+    padding: 6px 10px !important;
+    font-size: 0.72rem !important;
   }
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
-  .hero-subtitle {
-    font-size: 0.95rem;
+  .hero-buttons .btn-primary, 
+  .hero-buttons .btn-secondary {
+    font-size: 0.75rem !important;
+    padding: 9px 6px !important;
   }
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-  .hero-actions .btn-primary, 
-  .hero-actions .btn-secondary {
-    width: 100%;
-    justify-content: center;
+  .about-card {
+    padding: 10px 8px !important;
   }
   .modal-card {
     max-width: 95vw;
@@ -1264,21 +1517,60 @@ html, body {
 }
 
 @media (max-width: 480px) {
+  .top-contact {
+    font-size: 0.68rem;
+    gap: 6px;
+  }
+  .top-contact-item {
+    font-size: 0.68rem;
+  }
+  .cert-verify-btn {
+    font-size: 0.68rem;
+    padding: 3px 6px;
+  }
   .logo-box img {
-    height: 38px !important;
+    height: 34px !important;
   }
   .logo-text h1 {
-    font-size: 0.92rem;
+    font-size: 0.82rem !important;
   }
   .logo-text span {
-    display: none;
+    display: none !important;
+  }
+  .header-admission-btn {
+    padding: 5px 8px !important;
+    font-size: 0.7rem !important;
   }
   .hero-title {
-    font-size: 1.7rem;
+    font-size: 1.55rem;
+  }
+  .hero-subtitle {
+    font-size: 0.88rem;
+  }
+  .hero-buttons {
+    gap: 6px !important;
+  }
+  .hero-buttons .btn-primary, 
+  .hero-buttons .btn-secondary {
+    font-size: 0.72rem !important;
+    padding: 8px 4px !important;
   }
   .hero-stats {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px 12px !important;
+  }
+  .stat-number {
+    font-size: 1.3rem !important;
+  }
+  .stat-label {
+    font-size: 0.7rem !important;
+  }
+  .about-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+  .about-card {
+    padding: 8px 6px !important;
   }
   .footer-container {
     grid-template-columns: 1fr;

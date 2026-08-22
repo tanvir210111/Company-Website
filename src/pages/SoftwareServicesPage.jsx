@@ -33,7 +33,7 @@ export default function SoftwareServicesPage({ onNavigate, onOpenQuote }) {
         </div>
 
         {/* Services Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '28px', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '24px', marginBottom: '60px' }}>
           {swServices.map(service => (
             <div key={service.id} style={{
               background: '#0F172A',
@@ -43,20 +43,35 @@ export default function SoftwareServicesPage({ onNavigate, onOpenQuote }) {
               boxShadow: 'var(--shadow-sm)',
               display: 'flex',
               flexDirection: 'column',
-              justify: 'space-between',
+              justifyContent: 'space-between',
               height: '100%'
             }} className="course-card">
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <div style={{ position: 'relative', height: '180px', overflow: 'hidden', borderBottom: '2px solid #10B981' }}>
-                  <img src={service.image} alt={service.title} style={{ width: '100%', height: '100%', objectFit: 'cover', maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)' }} />
-                  <span style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(7, 10, 18, 0.85)', backdropFilter: 'blur(8px)', color: '#10B981', fontSize: '0.76rem', fontWeight: 700, padding: '4px 12px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+                <div style={{ position: 'relative', height: '190px', width: '100%', overflow: 'hidden', background: '#0B1120', borderBottom: '2px solid #10B981' }}>
+                  <img 
+                    src={service.image} 
+                    alt={service.title} 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80";
+                    }}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      display: 'block'
+                    }} 
+                  />
+                  <span style={{ position: 'absolute', top: '14px', right: '14px', background: 'rgba(7, 10, 18, 0.85)', backdropFilter: 'blur(8px)', color: '#10B981', fontSize: '0.75rem', fontWeight: 700, padding: '4px 12px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
                     {service.category}
                   </span>
                 </div>
 
-                <div style={{ padding: '24px 28px 16px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px' }}>{service.title}</h3>
-                  <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '20px', minHeight: '52px' }}>{service.shortDesc}</p>
+                <div style={{ padding: '22px 22px 16px 22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px' }}>{service.title}</h3>
+                  <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '18px' }}>
+                    {service.description || service.tagline || service.shortDesc}
+                  </p>
                   
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: 'auto', marginBottom: '16px' }}>
                     {service.features.map((feat, idx) => (
@@ -68,10 +83,12 @@ export default function SoftwareServicesPage({ onNavigate, onOpenQuote }) {
                 </div>
               </div>
 
-              <div style={{ padding: '16px 28px 24px 28px', borderTop: '1px solid var(--border-light)', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '16px 22px 20px 22px', borderTop: '1px solid var(--border-light)', marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                 <div>
                   <div style={{ fontSize: '0.78rem', color: '#94A3B8' }}>Starting Package</div>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#10B981' }}>{service.startingPrice}</div>
+                  <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#10B981' }}>
+                    {service.startingPrice || 'Negotiable / Custom Quote'}
+                  </div>
                 </div>
                 <button onClick={() => onOpenQuote(service)} className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
                   Get Proposal

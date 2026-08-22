@@ -39,15 +39,15 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
         <div className="top-bar-container">
           <div className="top-contact">
             <a href={`tel:${(settings.contact_phone || '').replace(/[^0-9+]/g, '')}`} className="top-contact-item">
-              <Phone size={14} /> {settings.contact_phone || '+88 01325-165451'} (Admission Hotline)
+              <Phone size={13} /> {settings.contact_phone || '+88 01325-165451'}<span className="hotline-tag"> (Admission Hotline)</span>
             </a>
             <a href={`mailto:${settings.contact_email || 'info@mediascopeit.com'}`} className="top-contact-item">
-              <Mail size={14} /> {settings.contact_email || 'info@mediascopeit.com'}
+              <Mail size={13} /> {settings.contact_email || 'info@mediascopeit.com'}
             </a>
           </div>
           <div className="top-actions">
             <button onClick={onScrollToCert} className="cert-verify-btn">
-              <Award size={14} /> Verify Certificate
+              <Award size={13} /> Verify Certificate
             </button>
             
             {/* Authenticated User Status Bar */}
@@ -57,7 +57,7 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
                   <button 
                     onClick={() => handleNavClick('admin')}
                     style={{ 
-                      fontSize: '0.8rem', 
+                      fontSize: '0.78rem', 
                       color: '#FFB703', 
                       fontWeight: 700, 
                       display: 'flex', 
@@ -76,7 +76,7 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
                   <button 
                     onClick={() => handleNavClick('client')}
                     style={{ 
-                      fontSize: '0.8rem', 
+                      fontSize: '0.78rem', 
                       color: '#FF6B00', 
                       fontWeight: 700, 
                       display: 'flex', 
@@ -95,7 +95,7 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
                   <button 
                     onClick={() => handleNavClick('student')}
                     style={{ 
-                      fontSize: '0.8rem', 
+                      fontSize: '0.78rem', 
                       color: '#00B4D8', 
                       fontWeight: 700, 
                       display: 'flex', 
@@ -115,7 +115,7 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
 
                 <button 
                   onClick={onLogout}
-                  style={{ background: 'none', border: 'none', color: '#EF4444', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '2px' }}
+                  style={{ background: 'none', border: 'none', color: '#EF4444', fontSize: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '2px' }}
                 >
                   <LogOut size={12} /> Logout
                 </button>
@@ -135,15 +135,25 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
       {/* Main Sticky Navbar */}
       <div className="main-header">
         <div className="header-container">
+          {/* Mobile Hamburger Button (LEFT on Mobile) */}
+          <button 
+            className="mobile-toggle" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Logo Box (CENTER on Mobile, LEFT on Desktop) */}
           <button 
             onClick={() => handleNavClick('home')} 
             className="logo-box" 
-            style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
           >
             <img 
               src="/logo.jpeg" 
               alt="Media Scope IT Logo" 
-              style={{ height: '46px', objectFit: 'contain', borderRadius: '4px' }} 
+              style={{ height: '42px', objectFit: 'contain', borderRadius: '4px' }} 
             />
             <div className="logo-text">
               <h1>MEDIA SCOPE IT LTD</h1>
@@ -395,18 +405,13 @@ export default function Header({ onOpenAdmission, onOpenQuote, onScrollToCert, o
 
           </ul>
 
-          {/* Actions */}
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <button onClick={() => onOpenQuote()} className="btn-secondary" style={{ display: 'none', md: 'inline-flex' }}>
+          {/* Header Actions (RIGHT on Desktop and Mobile) */}
+          <div className="header-actions">
+            <button onClick={() => onOpenQuote()} className="btn-secondary header-quote-btn">
               <Briefcase size={16} /> Get Quote
             </button>
-            <button onClick={() => onOpenAdmission()} className="btn-primary">
-              <GraduationCap size={18} /> Online Admission
-            </button>
-
-            {/* Mobile Toggle Button */}
-            <button className="mobile-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+            <button onClick={() => onOpenAdmission()} className="btn-primary header-admission-btn">
+              <GraduationCap size={16} /> <span className="admission-btn-text">Online Admission</span>
             </button>
           </div>
         </div>
