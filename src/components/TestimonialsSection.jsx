@@ -28,8 +28,9 @@ export default function TestimonialsSection() {
     <section id="testimonials" className="section" style={{ background: '#070A12' }}>
       <div className="section-container">
         <div className="section-header">
-          <div className="section-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={14} color="#FF6B00" /> Success Stories & Student Career Growth
+          <div className="section-tag">
+            <Sparkles size={16} color="#FF6B00" className="section-tag-icon" />
+            <span>Success Stories & Student Career Growth</span>
           </div>
           <h2 className="section-title">Our Graduate Reviews & Alumni Success</h2>
           <p className="section-desc">

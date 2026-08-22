@@ -14,8 +14,8 @@ export default function CertVerifier({ onNavigate }) {
   return (
     <section id="cert-verify" className="section" style={{ background: '#0B1120', borderTop: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}>
       <div className="section-container" style={{ maxWidth: '800px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <div style={{
+        <div className="cert-verify-header" style={{ textAlign: 'center', marginBottom: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+          <div className="cert-verify-icon-box" style={{
             width: '56px',
             height: '56px',
             borderRadius: '50%',
@@ -24,9 +24,10 @@ export default function CertVerifier({ onNavigate }) {
             color: '#00B4D8',
             display: 'flex',
             alignItems: 'center',
-            justify: 'center',
+            justifyContent: 'center',
             margin: '0 auto 16px auto',
-            boxShadow: '0 0 20px rgba(0, 180, 216, 0.3)'
+            boxShadow: '0 0 20px rgba(0, 180, 216, 0.3)',
+            flexShrink: 0
           }}>
             <Award size={28} />
           </div>

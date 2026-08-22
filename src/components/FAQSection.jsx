@@ -59,8 +59,9 @@ export default function FAQSection() {
     <section id="faq" className="section" style={{ background: '#090D16' }}>
       <div className="section-container" style={{ maxWidth: '960px', margin: '0 auto' }}>
         <div className="section-header">
-          <div className="section-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={14} color="#00B4D8" /> Frequently Asked Questions
+          <div className="section-tag">
+            <Sparkles size={16} color="#00B4D8" className="section-tag-icon" />
+            <span>Frequently Asked Questions</span>
           </div>
           <h2 className="section-title">Everything You Need to Know</h2>
           <p className="section-desc">

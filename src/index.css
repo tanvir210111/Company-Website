@@ -516,6 +516,10 @@ button {
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 .section-title {
   font-size: 2.2rem;
@@ -526,6 +530,31 @@ button {
 .section-desc {
   color: var(--text-muted);
   font-size: 1.02rem;
+}
+
+/* Cert Verifier Section Header & Icon Box */
+.cert-verify-header {
+  text-align: center;
+  margin: 0 auto 30px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.cert-verify-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 180, 216, 0.15);
+  border: 2px solid var(--accent-cyan);
+  color: #00B4D8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+  flex-shrink: 0;
 }
 
 /* Course Tabs & Grid */
@@ -1450,7 +1479,78 @@ html, body {
   }
   .section-title {
     font-size: 1.7rem;
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
   }
+  .section-desc {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+  }
+
+  /* Section Header & Decorative Icon Centering on Mobile */
+  .section-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 auto 36px auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .section-tag {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 auto 10px auto !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .section-tag svg,
+  .section-tag .section-tag-icon {
+    margin: 0 auto !important;
+    display: block !important;
+    align-self: center !important;
+    flex-shrink: 0 !important;
+  }
+  .section-tag span {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Verify Student Certificate Header & Icon Centering on Mobile */
+  .cert-verify-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 auto 24px auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .cert-verify-icon-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+    align-self: center !important;
+    flex-shrink: 0 !important;
+  }
+
   .footer-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;

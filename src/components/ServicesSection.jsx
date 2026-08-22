@@ -43,8 +43,9 @@ export default function ServicesSection({ onOpenQuote }) {
     <section id="services" className="section" style={{ background: '#070A12' }}>
       <div className="section-container">
         <div className="section-header">
-          <div className="section-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={14} color="#00B4D8" /> Enterprise Software & Digital Solutions
+          <div className="section-tag">
+            <Sparkles size={16} color="#00B4D8" className="section-tag-icon" />
+            <span>Enterprise Software & Digital Solutions</span>
           </div>
           <h2 className="section-title">Custom Software Development & Corporate Services</h2>
           <p className="section-desc">
