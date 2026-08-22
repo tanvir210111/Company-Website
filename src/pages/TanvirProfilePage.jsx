@@ -282,15 +282,15 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Code size={20} color="#FF6B00" /> Technology & SQA Stack
               </h3>
-              <div className="profile-tech-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
+              <div className="profile-tech-categories" style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%' }}>
                 {TECH_CATEGORIES.map((catGroup, idx) => (
-                  <div key={idx} style={{ background: '#0B1120', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-light)' }}>
+                  <div key={idx} className="profile-tech-card" style={{ background: '#0B1120', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-light)', width: '100%', boxSizing: 'border-box' }}>
                     <div style={{ fontSize: '0.82rem', color: '#00B4D8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '10px' }}>
                       {catGroup.category}
                     </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    <div className="profile-tech-items" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', width: '100%' }}>
                       {catGroup.items.map((item, i) => (
-                        <div key={i} style={{
+                        <div key={i} className="profile-tech-badge" style={{
                           background: 'rgba(0, 180, 216, 0.12)',
                           border: '1px solid rgba(0, 180, 216, 0.3)',
                           color: '#FFFFFF',
@@ -298,9 +298,11 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
                           borderRadius: '10px',
                           fontSize: '0.84rem',
                           fontWeight: 600,
-                          display: 'flex',
+                          display: 'inline-flex',
                           alignItems: 'center',
-                          gap: '6px'
+                          gap: '6px',
+                          width: 'auto',
+                          boxSizing: 'border-box'
                         }}>
                           <CheckCircle2 size={13} color="#00B4D8" /> {item}
                         </div>

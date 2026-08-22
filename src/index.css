@@ -1648,11 +1648,42 @@ html, body {
     box-sizing: border-box !important;
   }
 
-  /* Profile Technology & SQA Stack Compact 2-Column Grid on Mobile/Tablet */
-  .profile-tech-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 12px !important;
+  /* Profile Technology & SQA Stack: Vertical Full-Width Categories + Horizontal Wrapping Badges */
+  .profile-tech-categories {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+  .profile-tech-card {
+    width: 100% !important;
+    background: #0B1120 !important;
+    padding: 14px 18px !important;
+    border-radius: 14px !important;
+    border: 1px solid var(--border-light) !important;
+    box-sizing: border-box !important;
+  }
+  .profile-tech-items {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+  .profile-tech-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: rgba(0, 180, 216, 0.12) !important;
+    border: 1px solid rgba(0, 180, 216, 0.3) !important;
+    color: #FFFFFF !important;
+    padding: 6px 12px !important;
+    border-radius: 10px !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    width: auto !important;
+    box-sizing: border-box !important;
   }
   .profile-actions-grid {
     display: grid !important;
@@ -1812,9 +1843,6 @@ html, body {
 }
 
 @media (max-width: 360px) {
-  .profile-tech-grid {
-    grid-template-columns: 1fr !important;
-  }
   .profile-actions-grid {
     grid-template-columns: 1fr !important;
     gap: 8px !important;

@@ -146,10 +146,10 @@ export default function NibirProfilePage({ onNavigate, onOpenQuote }) {
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Code size={20} color="#FF6B00" /> Core Editing Skills
               </h3>
-              <div className="profile-tech-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '10px' }}>
+              <div className="profile-tech-items" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', width: '100%' }}>
                 {SKILLS.map((skill, idx) => (
-                  <div key={idx} style={{ background: 'rgba(0, 180, 216, 0.12)', border: '1px solid rgba(0, 180, 216, 0.3)', color: '#FFFFFF', padding: '8px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <CheckCircle2 size={14} color="#00B4D8" /> {skill}
+                  <div key={idx} className="profile-tech-badge" style={{ background: 'rgba(0, 180, 216, 0.12)', border: '1px solid rgba(0, 180, 216, 0.3)', color: '#FFFFFF', padding: '6px 12px', borderRadius: '10px', fontSize: '0.84rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px', width: 'auto', boxSizing: 'border-box' }}>
+                    <CheckCircle2 size={13} color="#00B4D8" /> {skill}
                   </div>
                 ))}
               </div>
