@@ -141,7 +141,7 @@ export default function StudentDashboard({ onSelectSubPage, onNavigate }) {
       {/* STATS GRID */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '16px'
       }}>
         {statCards.map((c, i) => {
@@ -180,7 +180,8 @@ export default function StudentDashboard({ onSelectSubPage, onNavigate }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: c.color
+                color: c.color,
+                flexShrink: 0
               }}>
                 <Icon size={20} />
               </div>
@@ -190,7 +191,7 @@ export default function StudentDashboard({ onSelectSubPage, onNavigate }) {
       </div>
 
       {/* TWO COLUMNS: ACTIVE LEARNING & RECENT NOTIFICATIONS */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '20px' }}>
         
         {/* LEARNING PROGRESS SECTION */}
         <div style={{

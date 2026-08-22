@@ -130,7 +130,7 @@ export default function PageEditorModal({ isOpen, onClose, initialPage, onSaveSu
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '14px' }}>
             <div className="form-group">
               <label className="form-label">URL Slug</label>
               <input
@@ -154,7 +154,7 @@ export default function PageEditorModal({ isOpen, onClose, initialPage, onSaveSu
           </div>
 
           <div className="form-group">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '8px' }}>
               <label className="form-label" style={{ marginBottom: 0 }}>Featured Image URL</label>
               <button
                 type="button"

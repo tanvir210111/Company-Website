@@ -140,7 +140,7 @@ export default function ClientDashboard({ onSelectSubPage, onNavigate }) {
       {/* STATS GRID */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '16px'
       }}>
         {statCards.map((c, i) => {
@@ -178,7 +178,8 @@ export default function ClientDashboard({ onSelectSubPage, onNavigate }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: c.color
+                color: c.color,
+                flexShrink: 0
               }}>
                 <Icon size={20} />
               </div>
@@ -188,7 +189,7 @@ export default function ClientDashboard({ onSelectSubPage, onNavigate }) {
       </div>
 
       {/* TWO COLUMNS: ACTIVE PROJECTS & RECENT ACTIVITY */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '20px' }}>
         
         {/* PROJECTS OVERVIEW */}
         <div style={{

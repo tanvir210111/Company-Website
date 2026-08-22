@@ -123,7 +123,7 @@ export default function ClientMessages() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '20px' }}>
         
         {/* NEW MESSAGE FORM */}
         <form onSubmit={handleSendMessage} style={{

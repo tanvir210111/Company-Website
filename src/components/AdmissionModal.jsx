@@ -155,13 +155,13 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
         </div>
 
         {/* Selected Course Summary Box */}
-        <div style={{ background: '#0B1120', padding: '16px 20px', borderRadius: '14px', border: '1px solid var(--border-light)', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ background: '#0B1120', padding: '16px 20px', borderRadius: '14px', border: '1px solid var(--border-light)', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <div style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Enrolling In Course:</div>
             <div style={{ fontSize: '1.05rem', color: '#FFFFFF', fontWeight: 800 }}>{course.title}</div>
             <div style={{ fontSize: '0.8rem', color: '#FF6B00', fontWeight: 600 }}>Batch: {course.nextBatch} ({course.duration})</div>
           </div>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'left' }}>
             <div style={{ fontSize: '0.78rem', color: '#94A3B8' }}>Total Admission Fee:</div>
             <div style={{ fontSize: '1.4rem', color: '#00B4D8', fontWeight: 800 }}>{course.discountFee}</div>
             <div style={{ fontSize: '0.75rem', color: '#64748B', textDecoration: 'line-through' }}>{course.fee}</div>
@@ -189,7 +189,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label">Mobile Number *</label>
                 <input 
@@ -215,7 +215,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label">Class Mode *</label>
                 <select 
@@ -254,7 +254,7 @@ export default function AdmissionModal({ isOpen, onClose, selectedCourse, curren
           <form onSubmit={handleFinalPaymentSubmit}>
             <h4 style={{ fontSize: '1rem', color: '#FFFFFF', fontWeight: 700, marginBottom: '14px' }}>Select Payment Method:</h4>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '10px', marginBottom: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 100px), 1fr))', gap: '10px', marginBottom: '20px' }}>
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, paymentMethod: 'sslcommerz' })}

@@ -27,7 +27,7 @@ export default function PaymentDetailsModal({ isOpen, onClose, payment }) {
         </div>
 
         {/* FINANCIAL SUMMARY HIGHLIGHT */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', background: '#070A12', padding: '16px', borderRadius: '10px', marginBottom: '18px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '12px', background: '#070A12', padding: '16px', borderRadius: '10px', marginBottom: '18px' }}>
           <div>
             <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 700 }}>TRANSACTION AMOUNT</div>
             <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#10B981', marginTop: '4px' }}>
@@ -63,7 +63,7 @@ export default function PaymentDetailsModal({ isOpen, onClose, payment }) {
           <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <User size={16} color="#00B4D8" /> Payer Customer Information
           </h4>
-          <div style={{ background: '#070A12', padding: '14px', borderRadius: '8px', fontSize: '0.84rem', color: '#CBD5E1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          <div style={{ background: '#070A12', padding: '14px', borderRadius: '8px', fontSize: '0.84rem', color: '#CBD5E1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '10px' }}>
             <div><strong>Name:</strong> {payment.user_name || payment.contact_name || 'N/A'}</div>
             <div><strong>Email:</strong> {payment.user_email || 'N/A'}</div>
             <div><strong>Phone:</strong> {payment.user_phone || 'N/A'}</div>
@@ -79,12 +79,12 @@ export default function PaymentDetailsModal({ isOpen, onClose, payment }) {
           </h4>
 
           {isEnrollment ? (
-            <div style={{ background: '#070A12', padding: '14px', borderRadius: '8px', fontSize: '0.84rem', color: '#CBD5E1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div style={{ background: '#070A12', padding: '14px', borderRadius: '8px', fontSize: '0.84rem', color: '#CBD5E1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '10px' }}>
               <div><strong>Enrollment No:</strong> <span style={{ color: '#00B4D8', fontWeight: 700 }}>{payment.enrollment_no}</span></div>
               <div style={{ gridColumn: '1 / -1' }}><strong>Course Title:</strong> {payment.course_title || 'N/A'}</div>
             </div>
           ) : isProject ? (
-            <div style={{ background: '#070A12', padding: '14px', borderRadius: '8px', fontSize: '0.84rem', color: '#CBD5E1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div style={{ background: '#070A12', padding: '14px', borderRadius: '8px', fontSize: '0.84rem', color: '#CBD5E1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '10px' }}>
               <div style={{ gridColumn: '1 / -1' }}><strong>Project Title:</strong> <span style={{ color: '#00B4D8', fontWeight: 700 }}>{payment.project_title}</span></div>
             </div>
           ) : (

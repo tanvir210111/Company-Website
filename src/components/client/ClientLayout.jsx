@@ -26,62 +26,52 @@ export default function ClientLayout({
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#050810', color: '#F8FAFC', display: 'flex', flexDirection: 'column', fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className="portal-layout-container" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
       
+      {/* MOBILE DRAWER BACKDROP */}
+      {mobileMenuOpen && (
+        <div 
+          className="portal-drawer-backdrop" 
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close sidebar overlay"
+        />
+      )}
+
       {/* TOP HEADER */}
-      <header style={{
-        height: '64px',
-        background: '#0B1120',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 20px',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <header className="portal-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              color: '#F8FAFC',
-              borderRadius: '8px',
-              padding: '8px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-            className="md:hidden"
+            className="portal-mobile-menu-btn"
             title="Toggle Menu"
+            aria-label="Toggle client navigation menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
           <div 
             onClick={() => onSelectSubPage('dashboard')} 
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', minWidth: 0 }}
           >
             <div style={{
-              width: '38px',
-              height: '38px',
+              width: '36px',
+              height: '36px',
               borderRadius: '10px',
               background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(255, 107, 0, 0.3)'
+              boxShadow: '0 4px 12px rgba(255, 107, 0, 0.3)',
+              flexShrink: 0
             }}>
-              <Briefcase size={20} color="#FFFFFF" />
+              <Briefcase size={18} color="#FFFFFF" />
             </div>
-            <div>
-              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                MEDIA SCOPE IT <span style={{ color: '#FF6B00', fontSize: '0.78rem', background: 'rgba(255, 107, 0, 0.12)', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(255, 107, 0, 0.3)' }}>CLIENT</span>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span className="portal-header-logo-text" style={{ whiteSpace: 'nowrap' }}>MEDIA SCOPE IT</span>
+                <span className="portal-header-badge" style={{ color: '#FF6B00', fontSize: '0.72rem', background: 'rgba(255, 107, 0, 0.12)', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(255, 107, 0, 0.3)', whiteSpace: 'nowrap' }}>CLIENT</span>
               </div>
-              <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+              <div className="portal-header-subtitle" style={{ fontSize: '0.7rem', color: '#94A3B8', whiteSpace: 'nowrap' }}>
                 Enterprise & Commercial Software Portal
               </div>
             </div>
@@ -89,7 +79,7 @@ export default function ClientLayout({
         </div>
 
         {/* Right Header Elements */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           <button
             onClick={() => onNavigate('home')}
             style={{
@@ -99,7 +89,7 @@ export default function ClientLayout({
               background: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               color: '#94A3B8',
-              padding: '6px 12px',
+              padding: '6px 10px',
               borderRadius: '8px',
               fontSize: '0.8rem',
               fontWeight: 600,
@@ -110,7 +100,7 @@ export default function ClientLayout({
             onMouseOut={(e) => { e.currentTarget.style.color = '#94A3B8'; e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; }}
           >
             <ExternalLink size={14} />
-            <span>Public Site</span>
+            <span className="portal-header-btn-text">Public Site</span>
           </button>
 
           {/* Client Profile Chip */}
@@ -120,7 +110,7 @@ export default function ClientLayout({
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '5px 12px',
+              padding: '4px 10px',
               background: 'rgba(255, 107, 0, 0.08)',
               border: '1px solid rgba(255, 107, 0, 0.25)',
               borderRadius: '20px',
@@ -137,11 +127,12 @@ export default function ClientLayout({
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
-              fontSize: '0.75rem'
+              fontSize: '0.75rem',
+              flexShrink: 0
             }}>
               {(currentUser?.name || 'C')[0].toUpperCase()}
             </div>
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FF6B00' }}>
+            <span className="portal-header-profile-name" style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FF6B00', whiteSpace: 'nowrap', maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {currentUser?.name || 'Corporate Client'}
             </span>
           </div>
@@ -155,7 +146,7 @@ export default function ClientLayout({
               background: 'rgba(239, 68, 68, 0.12)',
               border: '1px solid rgba(239, 68, 68, 0.3)',
               color: '#EF4444',
-              padding: '6px 12px',
+              padding: '6px 10px',
               borderRadius: '8px',
               fontSize: '0.8rem',
               fontWeight: 700,
@@ -166,27 +157,28 @@ export default function ClientLayout({
             onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)'; e.currentTarget.style.color = '#EF4444'; }}
           >
             <LogOut size={14} />
-            <span>Logout</span>
+            <span className="portal-header-btn-text">Logout</span>
           </button>
         </div>
       </header>
 
       {/* MAIN BODY: SIDEBAR + CONTENT */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div className="portal-body-wrapper">
         
         {/* SIDEBAR */}
-        <aside style={{
-          width: '250px',
-          background: '#070A12',
-          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '16px 12px',
-          flexShrink: 0,
-          overflowY: 'auto'
-        }}>
-          <div style={{ padding: '0 8px 12px 8px', fontSize: '0.7rem', fontWeight: 800, color: '#64748B', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Client Portal
+        <aside className={`portal-sidebar portal-sidebar-client ${mobileMenuOpen ? 'drawer-open' : ''}`}>
+          {/* Mobile Drawer Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 8px 12px 8px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#64748B', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Client Portal
+            </div>
+            <button 
+              className="portal-drawer-close-btn"
+              onClick={() => setMobileMenuOpen(false)}
+              title="Close Drawer"
+            >
+              <X size={16} />
+            </button>
           </div>
 
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -214,7 +206,8 @@ export default function ClientLayout({
                     fontSize: '0.86rem',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
-                    textAlign: 'left'
+                    textAlign: 'left',
+                    width: '100%'
                   }}
                   onMouseOver={(e) => {
                     if (!isActive) {
@@ -245,7 +238,7 @@ export default function ClientLayout({
         </aside>
 
         {/* MAIN CONTENT AREA */}
-        <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: '#050810' }}>
+        <main className="portal-main-content">
           {children}
         </main>
       </div>

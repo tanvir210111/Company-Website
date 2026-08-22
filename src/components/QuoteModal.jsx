@@ -110,13 +110,14 @@ export default function QuoteModal({ isOpen, onClose, selectedService, currentUs
           <div style={{ flex: 1, height: '4px', borderRadius: '2px', background: step === 3 ? '#10B981' : 'var(--border-light)' }}></div>
         </div>
 
-        {/* Selected Service Box */}
-        <div style={{ background: '#0B1120', padding: '16px', borderRadius: '14px', border: '1px solid var(--border-light)', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Selected Service Header */}
+        <div style={{ background: '#0B1120', padding: '16px 20px', borderRadius: '14px', border: '1px solid var(--border-light)', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <div style={{ fontSize: '0.78rem', color: '#94A3B8' }}>Selected Service:</div>
-            <div style={{ fontSize: '1.05rem', color: '#FFFFFF', fontWeight: 800 }}>{service.title}</div>
+            <div style={{ fontSize: '0.8rem', color: '#94A3B8' }}>Requesting Quote For:</div>
+            <div style={{ fontSize: '1.1rem', color: '#FFFFFF', fontWeight: 800 }}>{service.title}</div>
+            <div style={{ fontSize: '0.8rem', color: '#00B4D8' }}>{service.category}</div>
           </div>
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'left' }}>
             <div style={{ fontSize: '0.78rem', color: '#94A3B8' }}>Starting Package:</div>
             <div style={{ fontSize: '1.2rem', color: '#00B4D8', fontWeight: 800 }}>{service.startingPrice}</div>
           </div>
@@ -131,7 +132,7 @@ export default function QuoteModal({ isOpen, onClose, selectedService, currentUs
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label">Client / Contact Name *</label>
                 <input 
@@ -157,7 +158,7 @@ export default function QuoteModal({ isOpen, onClose, selectedService, currentUs
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px' }}>
               <div className="form-group">
                 <label className="form-label">Mobile Number *</label>
                 <input 
@@ -206,7 +207,7 @@ export default function QuoteModal({ isOpen, onClose, selectedService, currentUs
           <form onSubmit={handleFinalSubmit}>
             <h4 style={{ fontSize: '1rem', color: '#FFFFFF', fontWeight: 700, marginBottom: '12px' }}>Payment / Consultation Method:</h4>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 100px), 1fr))', gap: '10px', marginBottom: '16px' }}>
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, paymentMethod: 'bkash' })}

@@ -173,7 +173,7 @@ export default function ProjectEditorModal({ isOpen, onClose, initialProject, on
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '12px' }}>
               <div className="form-group">
                 <label className="form-label">Service Category</label>
                 <select className="form-input" value={serviceCategory} onChange={e => setServiceCategory(e.target.value)}>
@@ -194,7 +194,7 @@ export default function ProjectEditorModal({ isOpen, onClose, initialProject, on
             </div>
 
             {/* FINANCIAL CONTRACT */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '12px' }}>
               <div className="form-group">
                 <label className="form-label">Contract Amount (৳) *</label>
                 <input
@@ -231,7 +231,7 @@ export default function ProjectEditorModal({ isOpen, onClose, initialProject, on
             </div>
 
             {/* DATES */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '12px' }}>
               <div className="form-group">
                 <label className="form-label">Start Date</label>
                 <input type="date" className="form-input" value={startDate} onChange={e => setStartDate(e.target.value)} />

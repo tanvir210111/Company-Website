@@ -70,7 +70,7 @@ export default function AdminConversationModal({ isOpen, onClose, conversationId
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-card" onClick={e => e.stopPropagation()} style={{ maxWidth: '680px', display: 'flex', flexDirection: 'column', height: '80vh' }}>
+      <div className="modal-card" onClick={e => e.stopPropagation()} style={{ maxWidth: '680px', display: 'flex', flexDirection: 'column', height: '80vh', maxHeight: '90vh' }}>
         <button className="modal-close" onClick={onClose}>✕</button>
 
         {/* HEADER */}
@@ -105,20 +105,20 @@ export default function AdminConversationModal({ isOpen, onClose, conversationId
                   key={m.id}
                   style={{
                     alignSelf: isAdminSender ? 'flex-end' : 'flex-start',
-                    maxWidth: '82%',
+                    maxWidth: '88%',
                     background: isAdminSender ? '#0F2942' : '#070A12',
                     border: `1px solid ${isAdminSender ? 'rgba(0, 180, 216, 0.3)' : 'var(--border-light)'}`,
                     borderRadius: '12px',
                     padding: '12px 14px'
                   }}
                 >
-                  <div style={{ fontSize: '0.74rem', color: isAdminSender ? '#00B4D8' : '#94A3B8', fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                  <div style={{ fontSize: '0.74rem', color: isAdminSender ? '#00B4D8' : '#94A3B8', fontWeight: 700, marginBottom: '4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
                     <span>{m.sender_name || (isAdminSender ? 'Admin' : conversation?.recipient_name)}</span>
                     <span style={{ fontSize: '0.7rem', color: '#64748B', fontWeight: 400 }}>
                       {new Date(m.created_at).toLocaleString()}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.88rem', color: '#FFFFFF', lineHeight: '1.45', whitespace: 'pre-wrap' }}>
+                  <div style={{ fontSize: '0.88rem', color: '#FFFFFF', lineHeight: '1.45', whiteSpace: 'pre-wrap' }}>
                     {m.message}
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export default function AdminConversationModal({ isOpen, onClose, conversationId
         </div>
 
         {/* REPLY BOX */}
-        <form onSubmit={handleSendReply} style={{ borderTop: '1px solid var(--border-light)', paddingTop: '14px', display: 'flex', gap: '10px' }}>
+        <form onSubmit={handleSendReply} style={{ borderTop: '1px solid var(--border-light)', paddingTop: '14px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <input
             type="text"
             required
@@ -137,6 +137,7 @@ export default function AdminConversationModal({ isOpen, onClose, conversationId
             onChange={e => setReplyText(e.target.value)}
             style={{
               flex: 1,
+              minWidth: '200px',
               background: '#070A12',
               border: '1px solid var(--border-light)',
               borderRadius: '10px',

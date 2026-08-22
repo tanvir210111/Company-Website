@@ -125,7 +125,7 @@ export default function AdminDashboard({ onSelectSubPage }) {
 
       {/* ATTENTION REQUIRED ALERTS */}
       {s.attentionAlerts && s.attentionAlerts.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '12px' }}>
           {s.attentionAlerts.map(alert => (
             <div
               key={alert.id}
@@ -150,7 +150,7 @@ export default function AdminDashboard({ onSelectSubPage }) {
       )}
 
       {/* TOP STAT CARDS GRID */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
         {statCards.map((card, idx) => {
           const Icon = card.icon;
           return (
@@ -232,7 +232,7 @@ export default function AdminDashboard({ onSelectSubPage }) {
       </div>
 
       {/* FINANCIAL OVERVIEW & DISTRIBUTION BREAKDOWN */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '20px' }}>
         
         {/* FINANCIAL SUMMARY CARD */}
         <div style={{ background: '#0B1120', border: '1px solid var(--border-light)', borderRadius: '12px', padding: '20px' }}>
@@ -240,7 +240,7 @@ export default function AdminDashboard({ onSelectSubPage }) {
             <CreditCard color="#10B981" size={20} /> Financial Summary
           </h3>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 130px), 1fr))', gap: '14px', marginBottom: '16px' }}>
             <div style={{ background: '#070A12', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
               <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 700 }}>Total Verified Revenue</div>
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#10B981', marginTop: '2px' }}>
@@ -298,7 +298,7 @@ export default function AdminDashboard({ onSelectSubPage }) {
 
           <div style={{ marginBottom: '18px' }}>
             <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#94A3B8', marginBottom: '8px' }}>Course Enrollment Statuses</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 80px), 1fr))', gap: '8px' }}>
               <div style={statusBoxStyle}>
                 <div style={{ color: '#10B981', fontWeight: 800, fontSize: '1.1rem' }}>{s.enrollmentStatusCounts?.active || 0}</div>
                 <div style={{ fontSize: '0.72rem', color: '#64748B' }}>Active</div>
@@ -316,7 +316,7 @@ export default function AdminDashboard({ onSelectSubPage }) {
 
           <div>
             <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#94A3B8', marginBottom: '8px' }}>Software Project Statuses</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 80px), 1fr))', gap: '8px' }}>
               <div style={statusBoxStyle}>
                 <div style={{ color: '#F59E0B', fontWeight: 800, fontSize: '1.1rem' }}>{s.projectStatusCounts?.in_development || 0}</div>
                 <div style={{ fontSize: '0.72rem', color: '#64748B' }}>Development</div>

@@ -366,7 +366,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '14px' }}>
               <div className="form-group">
                 <label className="form-label">Mobile Number *</label>
                 <input 
@@ -392,7 +392,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, pendingActi
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '14px' }}>
               <div className="form-group">
                 <label className="form-label">Password *</label>
                 <input 

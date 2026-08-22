@@ -169,10 +169,10 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       
-      {/* HEADER WITH AVATAR */}
+      {/* PROFILE HEADER CARD */}
       <div style={{
         background: '#0B1120',
-        borderRadius: '14px',
+        borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '24px',
         display: 'flex',
@@ -181,11 +181,11 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
         flexWrap: 'wrap',
         gap: '16px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
           <div style={{
-            width: '68px',
-            height: '68px',
-            borderRadius: '16px',
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
             background: 'linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)',
             display: 'flex',
             alignItems: 'center',
@@ -193,14 +193,15 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
             fontSize: '1.8rem',
             fontWeight: 800,
             color: '#FFFFFF',
-            boxShadow: '0 4px 16px rgba(0, 180, 216, 0.3)'
+            boxShadow: '0 4px 16px rgba(0, 180, 216, 0.3)',
+            flexShrink: 0
           }}>
             {(p.full_name || currentUser?.name || 'S')[0].toUpperCase()}
           </div>
 
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
+              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: 0 }}>
                 {p.full_name || currentUser?.name}
               </h1>
               <span style={{
@@ -223,7 +224,7 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
         </div>
 
         {/* TABS */}
-        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255, 255, 255, 0.04)', padding: '4px', borderRadius: '10px' }}>
+        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255, 255, 255, 0.04)', padding: '4px', borderRadius: '10px', flexWrap: 'wrap' }}>
           <button
             onClick={() => setActiveTab('overview')}
             style={{
@@ -297,7 +298,7 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
             Personal & Academic Information
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '18px' }}>
             <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
               <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Full Name</div>
               <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.full_name || 'N/A'}</div>
@@ -319,8 +320,13 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
             </div>
 
             <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-              <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Date of Birth</div>
-              <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.date_of_birth ? new Date(p.date_of_birth).toLocaleDateString() : 'Not provided'}</div>
+              <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Father's Name</div>
+              <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.father_name || 'Not provided'}</div>
+            </div>
+
+            <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+              <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Mother's Name</div>
+              <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.mother_name || 'Not provided'}</div>
             </div>
 
             <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
@@ -328,7 +334,12 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
               <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.emergency_phone || 'Not provided'}</div>
             </div>
 
-            <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)', gridColumn: '1 / -1' }}>
+            <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+              <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Date of Birth</div>
+              <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.date_of_birth ? new Date(p.date_of_birth).toLocaleDateString() : 'Not provided'}</div>
+            </div>
+
+            <div style={{ gridColumn: '1 / -1', padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
               <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Present Address</div>
               <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.address || 'Not provided'}</div>
             </div>
@@ -345,10 +356,10 @@ export default function StudentProfile({ currentUser, onUpdateCurrentUser }) {
           padding: '24px'
         }}>
           <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '18px' }}>
-            Update Profile Information
+            Edit Personal Profile
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px', marginBottom: '20px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: '#94A3B8', fontWeight: 600, marginBottom: '6px' }}>Full Name *</label>
               <input

@@ -173,7 +173,7 @@ export default function EnrollmentEditorModal({ isOpen, onClose, initialEnrollme
             </div>
 
             {/* FEES & FINANCIALS */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '12px' }}>
               <div className="form-group">
                 <label className="form-label">Total Fee (৳) *</label>
                 <input
@@ -211,7 +211,7 @@ export default function EnrollmentEditorModal({ isOpen, onClose, initialEnrollme
             </div>
 
             {/* STATUS & CLASS MODE */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '12px' }}>
               <div className="form-group">
                 <label className="form-label">Enrollment Status</label>
                 <select className="form-input" value={status} onChange={e => setStatus(e.target.value)}>

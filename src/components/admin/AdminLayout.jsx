@@ -148,41 +148,33 @@ export default function AdminLayout({
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#050810', color: '#F8FAFC', display: 'flex', flexDirection: 'column' }}>
+    <div className="portal-layout-container">
       
+      {/* MOBILE DRAWER BACKDROP */}
+      {mobileSidebarOpen && (
+        <div 
+          className="portal-drawer-backdrop" 
+          onClick={() => setMobileSidebarOpen(false)}
+          aria-label="Close sidebar overlay"
+        />
+      )}
+
       {/* TOP HEADER */}
-      <header style={{
-        height: '64px',
-        background: '#0B1120',
-        borderBottom: '1px solid var(--border-light)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 20px',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <header className="portal-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
           <button
             onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#94A3B8',
-              cursor: 'pointer',
-              display: 'flex',
-              padding: '6px',
-              borderRadius: '8px'
-            }}
+            className="portal-mobile-menu-btn"
+            title="Toggle Admin Menu"
+            aria-label="Toggle navigation menu"
           >
-            {mobileSidebarOpen ? <X size={22} /> : <Menu size={22} />}
+            {mobileSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
           {/* Logo & Portal Title */}
           <div 
             onClick={() => onSelectSubPage ? onSelectSubPage('dashboard') : onNavigate('admin')} 
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', minWidth: 0 }}
           >
             <div style={{
               width: '34px',
@@ -191,15 +183,16 @@ export default function AdminLayout({
               overflow: 'hidden',
               background: '#FFFFFF',
               padding: '2px',
-              border: '1px solid #00B4D8'
+              border: '1px solid #00B4D8',
+              flexShrink: 0
             }}>
               <img src="/logo.jpeg" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
-            <div>
-              <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
+              <span className="portal-header-logo-text" style={{ fontSize: '1.05rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
                 Media Scope IT
               </span>
-              <span style={{ fontSize: '0.72rem', background: '#00B4D8', color: '#070A12', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', marginLeft: '8px' }}>
+              <span className="portal-header-badge" style={{ fontSize: '0.72rem', background: '#00B4D8', color: '#070A12', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', marginLeft: '6px', whiteSpace: 'nowrap' }}>
                 ADMIN
               </span>
             </div>
@@ -207,8 +200,8 @@ export default function AdminLayout({
         </div>
 
         {/* Header Search & Admin Profile */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          <div className="portal-header-search" style={{
             position: 'relative',
             display: 'flex',
             alignItems: 'center'
@@ -216,7 +209,7 @@ export default function AdminLayout({
             <Search size={16} style={{ position: 'absolute', left: '12px', color: '#64748B' }} />
             <input
               type="text"
-              placeholder="Search admin records..."
+              placeholder="Search records..."
               style={{
                 background: '#070A12',
                 border: '1px solid var(--border-light)',
@@ -225,7 +218,7 @@ export default function AdminLayout({
                 color: '#FFFFFF',
                 fontSize: '0.85rem',
                 outline: 'none',
-                width: '200px'
+                width: '180px'
               }}
             />
           </div>
@@ -237,7 +230,7 @@ export default function AdminLayout({
               background: 'rgba(0, 180, 216, 0.1)',
               border: '1px solid rgba(0, 180, 216, 0.3)',
               color: '#00B4D8',
-              padding: '8px 12px',
+              padding: '6px 10px',
               borderRadius: '8px',
               cursor: 'pointer',
               display: 'flex',
@@ -247,7 +240,8 @@ export default function AdminLayout({
               fontWeight: 700
             }}
           >
-            <Globe size={15} /> View Website
+            <Globe size={15} />
+            <span className="portal-header-btn-text">Website</span>
           </button>
 
           <div 
@@ -256,9 +250,9 @@ export default function AdminLayout({
             style={{ 
               display: 'flex', 
               alignItems: 'center', 
-              gap: '12px', 
+              gap: '8px', 
               background: activeSubPage === 'profile' ? 'rgba(0, 180, 216, 0.2)' : '#070A12', 
-              padding: '4px 12px', 
+              padding: '4px 8px', 
               borderRadius: '10px', 
               border: activeSubPage === 'profile' ? '1px solid #00B4D8' : '1px solid var(--border-light)',
               cursor: 'pointer',
@@ -266,8 +260,8 @@ export default function AdminLayout({
             }}
           >
             <div style={{
-              width: '32px',
-              height: '32px',
+              width: '30px',
+              height: '30px',
               borderRadius: '50%',
               background: 'linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)',
               display: 'flex',
@@ -275,15 +269,16 @@ export default function AdminLayout({
               justifyContent: 'center',
               fontWeight: 800,
               color: '#FFFFFF',
-              fontSize: '0.85rem'
+              fontSize: '0.82rem',
+              flexShrink: 0
             }}>
               {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'A'}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#FFFFFF' }}>
+            <div className="portal-header-profile-name" style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {currentUser.name}
               </span>
-              <span style={{ fontSize: '0.7rem', color: '#00B4D8', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.68rem', color: '#00B4D8', fontWeight: 600 }}>
                 System Admin
               </span>
             </div>
@@ -296,7 +291,7 @@ export default function AdminLayout({
               background: 'rgba(239, 68, 68, 0.1)',
               border: '1px solid rgba(239, 68, 68, 0.3)',
               color: '#EF4444',
-              padding: '8px 12px',
+              padding: '6px 10px',
               borderRadius: '8px',
               cursor: 'pointer',
               display: 'flex',
@@ -306,26 +301,29 @@ export default function AdminLayout({
               fontWeight: 700
             }}
           >
-            <LogOut size={15} /> Logout
+            <LogOut size={15} />
+            <span className="portal-header-btn-text">Logout</span>
           </button>
         </div>
       </header>
 
       {/* MAIN CONTAINER (Sidebar + Content) */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div className="portal-body-wrapper">
         
         {/* SIDEBAR */}
-        <aside style={{
-          width: '240px',
-          background: '#0B1120',
-          borderRight: '1px solid var(--border-light)',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '16px 12px',
-          overflowY: 'auto'
-        }}>
-          <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#64748B', letterSpacing: '0.08em', padding: '0 8px 10px 8px' }}>
-            MANAGEMENT MODULES
+        <aside className={`portal-sidebar ${mobileSidebarOpen ? 'drawer-open' : ''}`}>
+          {/* Mobile Drawer Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 8px 12px 8px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#64748B', letterSpacing: '0.08em' }}>
+              MANAGEMENT MODULES
+            </div>
+            <button 
+              className="portal-drawer-close-btn"
+              onClick={() => setMobileSidebarOpen(false)}
+              title="Close Drawer"
+            >
+              <X size={16} />
+            </button>
           </div>
 
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -353,7 +351,8 @@ export default function AdminLayout({
                     fontSize: '0.86rem',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
-                    textAlign: 'left'
+                    textAlign: 'left',
+                    width: '100%'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -372,7 +371,7 @@ export default function AdminLayout({
         </aside>
 
         {/* MAIN CONTENT AREA */}
-        <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: '#050810' }}>
+        <main className="portal-main-content">
           {children}
         </main>
       </div>

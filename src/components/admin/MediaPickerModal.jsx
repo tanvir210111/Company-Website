@@ -146,7 +146,7 @@ export default function MediaPickerModal({ isOpen, onClose, onSelectMedia }) {
               <p>No media files found in library.</p>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 100px), 1fr))', gap: '12px' }}>
               {mediaList.map(item => {
                 const isSelected = selectedItem?.id === item.id;
                 const isImg = item.mime_type?.startsWith('image/');
@@ -192,12 +192,12 @@ export default function MediaPickerModal({ isOpen, onClose, onSelectMedia }) {
         </div>
 
         {/* FOOTER ACTIONS */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-light)' }}>
-          <div style={{ fontSize: '0.8rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '400px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-light)', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ fontSize: '0.8rem', color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
             {selectedItem ? `Selected: ${selectedItem.original_name}` : 'Click an item above to select'}
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <button onClick={onClose} style={{ padding: '8px 16px', borderRadius: '8px', background: '#0F172A', color: '#94A3B8', border: '1px solid var(--border-light)', fontWeight: 600, cursor: 'pointer' }}>
               Cancel
             </button>

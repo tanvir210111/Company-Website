@@ -449,7 +449,7 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
 
       {/* TAB 1: OVERVIEW DETAILS */}
       {activeTab === 'overview' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '20px' }}>
           
           {/* Account Details Panel */}
           <div style={{
@@ -551,18 +551,18 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
               </div>
             </div>
 
-            <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid var(--border-light)', display: 'flex', gap: '10px' }}>
+            <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid var(--border-light)', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               <button
                 onClick={() => setActiveTab('edit')}
                 className="btn-outline"
-                style={{ flex: 1, justifyContent: 'center', padding: '8px 12px', fontSize: '0.82rem' }}
+                style={{ flex: 1, minWidth: '130px', justifyContent: 'center', padding: '8px 12px', fontSize: '0.82rem' }}
               >
                 <Edit3 size={14} /> Edit Information
               </button>
               <button
                 onClick={() => setActiveTab('security')}
                 className="btn-outline"
-                style={{ flex: 1, justifyContent: 'center', padding: '8px 12px', fontSize: '0.82rem' }}
+                style={{ flex: 1, minWidth: '130px', justifyContent: 'center', padding: '8px 12px', fontSize: '0.82rem' }}
               >
                 <Key size={14} /> Change Password
               </button>
@@ -580,7 +580,7 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
           borderRadius: '16px',
           padding: '24px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', paddingBottom: '14px', borderBottom: '1px solid var(--border-light)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', paddingBottom: '14px', borderBottom: '1px solid var(--border-light)', flexWrap: 'wrap', gap: '12px' }}>
             <div>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
                 Edit Administrator Information
@@ -607,7 +607,7 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
           </div>
 
           <form onSubmit={handleUpdateProfile}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '16px', marginBottom: '20px' }}>
               <div className="form-group">
                 <label className="form-label" style={fieldLabelStyle}>Full Name *</label>
                 <input
@@ -685,7 +685,7 @@ export default function AdminProfile({ currentUser, onUpdateCurrentUser }) {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', flexWrap: 'wrap' }}>
               <button
                 type="button"
                 onClick={() => setActiveTab('overview')}

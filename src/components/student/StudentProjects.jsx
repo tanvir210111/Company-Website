@@ -94,7 +94,7 @@ export default function StudentProjects() {
           <p style={{ fontSize: '0.88rem' }}>Course capstone projects and assignments will be assigned by your instructor during mid-term classes.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '16px' }}>
           {projects.map(prj => (
             <div
               key={prj.id}

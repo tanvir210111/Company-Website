@@ -204,7 +204,7 @@ export default function AdminMessages() {
       </div>
 
       {/* TABLE */}
-      <div style={{ background: '#0B1120', border: '1px solid var(--border-light)', borderRadius: '12px', overflow: 'hidden' }}>
+      <div className="table-responsive-wrapper" style={{ background: '#0B1120', border: '1px solid var(--border-light)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
           <div style={{ padding: '60px', textAlign: 'center', color: '#94A3B8' }}>
             <RefreshCw size={28} className="animate-spin" style={{ margin: '0 auto 12px auto', color: '#00B4D8' }} />
@@ -220,65 +220,67 @@ export default function AdminMessages() {
             <p style={{ fontWeight: 600 }}>No message conversations found.</p>
           </div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem' }}>
-            <thead>
-              <tr style={{ background: '#070A12', color: '#64748B', borderBottom: '1px solid var(--border-light)' }}>
-                <th style={{ padding: '14px 16px' }}>Subject</th>
-                <th style={{ padding: '14px 16px' }}>Recipient</th>
-                <th style={{ padding: '14px 16px' }}>Last Message Preview</th>
-                <th style={{ padding: '14px 16px' }}>Last Updated</th>
-                <th style={{ padding: '14px 16px', textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {conversations.map(c => (
-                <tr key={c.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                  <td style={{ padding: '14px 16px', color: '#FFFFFF', fontWeight: 700, maxWidth: '240px' }}>
-                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {c.subject}
-                    </div>
-                  </td>
-                  <td style={{ padding: '14px 16px', color: '#CBD5E1' }}>
-                    <div>{c.recipient_name}</div>
-                    <div style={{ fontSize: '0.74rem', color: '#00B4D8', textTransform: 'capitalize' }}>{c.recipient_role}</div>
-                  </td>
-                  <td style={{ padding: '14px 16px', color: '#94A3B8', maxWidth: '280px' }}>
-                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.82rem' }}>
-                      {c.last_message || 'No messages yet.'}
-                    </div>
-                  </td>
-                  <td style={{ padding: '14px 16px', color: '#64748B', fontSize: '0.78rem' }}>
-                    {new Date(c.updated_at || c.created_at).toLocaleString()}
-                  </td>
-                  <td style={{ padding: '14px 16px', textAlign: 'right' }}>
-                    <button
-                      onClick={() => { setSelectedConvId(c.id); setThreadModalOpen(true); }}
-                      style={{
-                        background: 'rgba(0, 180, 216, 0.15)',
-                        color: '#00B4D8',
-                        border: '1px solid rgba(0, 180, 216, 0.3)',
-                        borderRadius: '6px',
-                        padding: '6px 12px',
-                        fontSize: '0.76rem',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}
-                    >
-                      <Eye size={14} /> Open Thread
-                    </button>
-                  </td>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem' }}>
+              <thead>
+                <tr style={{ background: '#070A12', color: '#64748B', borderBottom: '1px solid var(--border-light)' }}>
+                  <th style={{ padding: '14px 16px' }}>Subject</th>
+                  <th style={{ padding: '14px 16px' }}>Recipient</th>
+                  <th style={{ padding: '14px 16px' }}>Last Message Preview</th>
+                  <th style={{ padding: '14px 16px' }}>Last Updated</th>
+                  <th style={{ padding: '14px 16px', textAlign: 'right' }}>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {conversations.map(c => (
+                  <tr key={c.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <td style={{ padding: '14px 16px', color: '#FFFFFF', fontWeight: 700, maxWidth: '240px' }}>
+                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {c.subject}
+                      </div>
+                    </td>
+                    <td style={{ padding: '14px 16px', color: '#CBD5E1' }}>
+                      <div>{c.recipient_name}</div>
+                      <div style={{ fontSize: '0.74rem', color: '#00B4D8', textTransform: 'capitalize' }}>{c.recipient_role}</div>
+                    </td>
+                    <td style={{ padding: '14px 16px', color: '#94A3B8', maxWidth: '280px' }}>
+                      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.82rem' }}>
+                        {c.last_message || 'No messages yet.'}
+                      </div>
+                    </td>
+                    <td style={{ padding: '14px 16px', color: '#64748B', fontSize: '0.78rem' }}>
+                      {new Date(c.updated_at || c.created_at).toLocaleString()}
+                    </td>
+                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                      <button
+                        onClick={() => { setSelectedConvId(c.id); setThreadModalOpen(true); }}
+                        style={{
+                          background: 'rgba(0, 180, 216, 0.15)',
+                          color: '#00B4D8',
+                          border: '1px solid rgba(0, 180, 216, 0.3)',
+                          borderRadius: '6px',
+                          padding: '6px 12px',
+                          fontSize: '0.76rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        <Eye size={14} /> Open Thread
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
 
         {/* PAGINATION CONTROLS */}
         {pagination.totalPages > 1 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderTop: '1px solid var(--border-light)', background: '#070A12' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderTop: '1px solid var(--border-light)', background: '#070A12', flexWrap: 'wrap', gap: '10px' }}>
             <div style={{ fontSize: '0.8rem', color: '#94A3B8' }}>
               Showing page <strong>{pagination.page}</strong> of <strong>{pagination.totalPages}</strong> ({pagination.total} total conversations)
             </div>

@@ -185,7 +185,7 @@ export default function AdminClients() {
       </div>
 
       {/* TABLE */}
-      <div style={{ background: '#0B1120', border: '1px solid var(--border-light)', borderRadius: '12px', overflow: 'hidden' }}>
+      <div className="table-responsive-wrapper" style={{ background: '#0B1120', border: '1px solid var(--border-light)', borderRadius: '12px', overflowX: 'auto' }}>
         {loading ? (
           <div style={{ padding: '60px', textAlign: 'center', color: '#94A3B8' }}>
             <RefreshCw size={28} className="animate-spin" style={{ margin: '0 auto 12px auto', color: '#00B4D8' }} />
@@ -201,7 +201,7 @@ export default function AdminClients() {
             <p style={{ fontWeight: 600 }}>No corporate client accounts found.</p>
           </div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem', minWidth: '700px' }}>
             <thead>
               <tr style={{ background: '#070A12', color: '#64748B', borderBottom: '1px solid var(--border-light)' }}>
                 <th style={{ padding: '14px 16px' }}>Client Name</th>

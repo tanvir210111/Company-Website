@@ -169,10 +169,10 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       
-      {/* HEADER WITH LOGO */}
+      {/* PROFILE HEADER CARD */}
       <div style={{
         background: '#0B1120',
-        borderRadius: '14px',
+        borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '24px',
         display: 'flex',
@@ -181,11 +181,11 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
         flexWrap: 'wrap',
         gap: '16px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
           <div style={{
-            width: '68px',
-            height: '68px',
-            borderRadius: '16px',
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
             background: 'linear-gradient(135deg, #FF6B00 0%, #EA580C 100%)',
             display: 'flex',
             alignItems: 'center',
@@ -193,14 +193,15 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
             fontSize: '1.8rem',
             fontWeight: 800,
             color: '#FFFFFF',
-            boxShadow: '0 4px 16px rgba(255, 107, 0, 0.3)'
+            boxShadow: '0 4px 16px rgba(255, 107, 0, 0.3)',
+            flexShrink: 0
           }}>
             {(p.company_name || p.full_name || 'C')[0].toUpperCase()}
           </div>
 
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
+              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: 0 }}>
                 {p.company_name || 'Corporate Client'}
               </h1>
               <span style={{
@@ -223,7 +224,7 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
         </div>
 
         {/* TABS */}
-        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255, 255, 255, 0.04)', padding: '4px', borderRadius: '10px' }}>
+        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255, 255, 255, 0.04)', padding: '4px', borderRadius: '10px', flexWrap: 'wrap' }}>
           <button
             onClick={() => setActiveTab('overview')}
             style={{
@@ -272,6 +273,7 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
         </div>
       </div>
 
+      {/* FEEDBACK ALERTS */}
       {successMsg && (
         <div style={{ padding: '12px 16px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10B981', color: '#10B981', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
           <CheckCircle2 size={16} /> {successMsg}
@@ -293,10 +295,10 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
           padding: '24px'
         }}>
           <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '18px' }}>
-            Corporate Entity & Contact Details
+            Corporate & Representative Information
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '18px' }}>
             <div style={{ padding: '14px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
               <div style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 600 }}>Company Name</div>
               <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 700, marginTop: '2px' }}>{p.company_name || 'N/A'}</div>
@@ -352,7 +354,7 @@ export default function ClientProfile({ currentUser, onUpdateCurrentUser }) {
             Update Company & Representative Information
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px', marginBottom: '20px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', color: '#94A3B8', fontWeight: 600, marginBottom: '6px' }}>Company / Organization Name *</label>
               <input

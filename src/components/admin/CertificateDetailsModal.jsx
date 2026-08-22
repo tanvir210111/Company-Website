@@ -17,7 +17,7 @@ export default function CertificateDetailsModal({ isOpen, onClose, certificate }
       <div className="modal-card" onClick={e => e.stopPropagation()} style={{ maxWidth: '750px', background: '#0B1120' }}>
         
         {/* ACTION HEADER (HIDDEN DURING PRINT) */}
-        <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', borderBottom: '1px solid var(--border-light)', paddingBottom: '14px' }}>
+        <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', borderBottom: '1px solid var(--border-light)', paddingBottom: '14px', flexWrap: 'wrap', gap: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Award color="#00B4D8" size={26} />
             <div>
@@ -30,7 +30,7 @@ export default function CertificateDetailsModal({ isOpen, onClose, certificate }
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button
               onClick={handlePrint}
               style={{
@@ -58,7 +58,7 @@ export default function CertificateDetailsModal({ isOpen, onClose, certificate }
           background: 'linear-gradient(135deg, #070A12 0%, #0F172A 100%)',
           border: '3px double #00B4D8',
           borderRadius: '16px',
-          padding: '40px 30px',
+          padding: '28px 18px',
           textAlign: 'center',
           color: '#FFFFFF',
           position: 'relative',
@@ -75,7 +75,7 @@ export default function CertificateDetailsModal({ isOpen, onClose, certificate }
               border: '2px solid #00B4D8',
               display: 'flex',
               alignItems: 'center',
-              justify: 'center'
+              justifyContent: 'center'
             }}>
               <Award size={36} color="#00B4D8" />
             </div>
@@ -84,21 +84,21 @@ export default function CertificateDetailsModal({ isOpen, onClose, certificate }
           <h2 style={{ fontSize: '0.9rem', letterSpacing: '0.25em', color: '#00B4D8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
             MEDIA SCOPE IT LTD
           </h2>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '20px' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '16px' }}>
             CERTIFICATE OF COMPLETION
           </h1>
 
-          <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginBottom: '12px' }}>
+          <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginBottom: '10px' }}>
             THIS CERTIFIES THAT
           </p>
 
-          <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#00B4D8', borderBottom: '2px solid rgba(0,180,216,0.3)', display: 'inline-block', paddingBottom: '6px', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#00B4D8', borderBottom: '2px solid rgba(0,180,216,0.3)', display: 'inline-block', paddingBottom: '6px', marginBottom: '14px' }}>
             {certificate.student_name}
           </h3>
 
-          <p style={{ fontSize: '0.88rem', color: '#CBD5E1', maxWidth: '520px', margin: '0 auto 20px auto', lineHeight: '1.5' }}>
+          <p style={{ fontSize: '0.88rem', color: '#CBD5E1', maxWidth: '520px', margin: '0 auto 18px auto', lineHeight: '1.5' }}>
             has successfully completed the professional training program in <br />
-            <strong style={{ color: '#FFFFFF', fontSize: '1.05rem' }}>{certificate.course_title}</strong>
+            <strong style={{ color: '#FFFFFF', fontSize: '1.02rem' }}>{certificate.course_title}</strong>
           </p>
 
           {/* VERIFICATION BADGE */}
@@ -113,18 +113,18 @@ export default function CertificateDetailsModal({ isOpen, onClose, certificate }
             background: isRevoked ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)',
             color: isRevoked ? '#EF4444' : '#10B981',
             border: `1px solid ${isRevoked ? '#EF4444' : '#10B981'}`,
-            marginBottom: '24px'
+            marginBottom: '20px'
           }}>
             {isRevoked ? <AlertTriangle size={16} /> : <CheckCircle2 size={16} />}
             {isRevoked ? 'REVOKED CERTIFICATE' : 'VERIFIED OFFICIAL CERTIFICATE'}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px', fontSize: '0.8rem', color: '#94A3B8' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '18px', fontSize: '0.8rem', color: '#94A3B8' }}>
             <div style={{ textAlign: 'left' }}>
               <div><strong>Certificate No:</strong> {certificate.certificate_number}</div>
               <div><strong>Issue Date:</strong> {new Date(certificate.issue_date).toLocaleDateString()}</div>
             </div>
-            <div style={{ textAlign: 'right' }}>
+            <div style={{ textAlign: 'left' }}>
               <div><strong>Authorized Signature:</strong></div>
               <div style={{ fontFamily: 'cursive', color: '#00B4D8', fontSize: '1.1rem', marginTop: '4px', fontWeight: 700 }}>
                 Media Scope IT Academic Board

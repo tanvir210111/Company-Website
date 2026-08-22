@@ -81,7 +81,7 @@ export default function StudentSettings({ currentUser }) {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '20px' }}>
         
         {/* SECURITY & PASSWORD */}
         <form onSubmit={handlePasswordSubmit} style={{
