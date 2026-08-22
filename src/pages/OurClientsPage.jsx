@@ -104,19 +104,19 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
         {/* Page Banner Header */}
         <div style={{
           background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-          padding: '50px 40px',
+          padding: '40px 24px',
           borderRadius: '24px',
           border: '1px solid var(--border-light)',
-          marginBottom: '50px',
+          marginBottom: '40px',
           boxShadow: 'var(--shadow-md)'
         }}>
           <div style={{ color: '#FF6B00', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} color="#FF6B00" /> Enterprise Trust & Portfolio
           </div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.15 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#FFFFFF', marginBottom: '16px', lineHeight: 1.2 }}>
             Our Corporate Clients & Case Studies
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '1.1rem', maxWidth: '850px', lineHeight: 1.6 }}>
+          <p style={{ color: '#94A3B8', fontSize: '1.05rem', maxWidth: '850px', lineHeight: 1.6 }}>
             Over 500+ government bodies, corporate conglomerates, financial institutions, and retail brands rely on Media Scope IT Ltd for software solutions and IT training.
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
         </div>
 
         {/* Case Studies Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '28px', marginBottom: '60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '28px', marginBottom: '60px' }}>
           {filteredStudies.map(study => {
             const IconComponent = study.icon;
             return (
@@ -148,7 +148,7 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
                 boxShadow: 'var(--shadow-sm)',
                 display: 'flex',
                 flexDirection: 'column',
-                justify: 'space-between'
+                justifyContent: 'space-between'
               }}>
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -161,7 +161,7 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
                       color: '#00B4D8',
                       display: 'flex',
                       alignItems: 'center',
-                      justify: 'center'
+                      justifyContent: 'center'
                     }}>
                       <IconComponent size={28} />
                     </div>
@@ -198,10 +198,9 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
                         background: 'rgba(255, 255, 255, 0.05)',
                         color: '#E2E8F0',
                         fontSize: '0.74rem',
-                        fontWeight: 600,
                         padding: '3px 8px',
-                        borderRadius: '10px',
-                        border: '1px solid var(--border-light)'
+                        borderRadius: '6px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
                       }}>
                         {tech}
                       </span>
@@ -209,7 +208,7 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
                   </div>
                 </div>
 
-                <div style={{ paddingTop: '16px', borderTop: '1px solid var(--border-light)', fontSize: '0.8rem', color: '#10B981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ paddingTop: '18px', borderTop: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', color: '#10B981', fontWeight: 700 }}>
                   <Award size={16} /> Verified Corporate SLA & Success
                 </div>
               </div>
@@ -217,15 +216,15 @@ export default function OurClientsPage({ onNavigate, onOpenQuote }) {
           })}
         </div>
 
-        {/* NEW FEATURE: Interactive Enterprise Cost Estimator Calculator */}
-        <div style={{ background: '#0F172A', padding: '40px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
+        {/* Interactive Enterprise Cost Estimator Calculator */}
+        <div style={{ background: '#0F172A', padding: '32px 20px', borderRadius: '24px', border: '1px solid var(--border-light)', marginBottom: '60px' }}>
           <div style={{ textAlign: 'center', marginBottom: '30px' }}>
             <Calculator size={34} color="#00B4D8" style={{ marginBottom: '8px' }} />
             <h2 style={{ fontSize: '1.8rem', color: '#FFFFFF', fontWeight: 800 }}>Instant Software Cost & Proposal Estimator</h2>
             <p style={{ color: '#94A3B8', fontSize: '0.94rem' }}>Select your expected software type and branch size to calculate an estimated deployment investment.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center', background: '#070A12', padding: '30px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '28px', alignItems: 'center', background: '#070A12', padding: '24px 18px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
             <div>
               <div className="form-group">
                 <label className="form-label">Software Product Type *</label>

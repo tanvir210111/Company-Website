@@ -84,7 +84,7 @@ export default function ServicesSection({ onOpenQuote }) {
                     borderBottom: '2px solid #00B4D8'
                   }}>
                     <img 
-                      src={service.image} 
+                      src={service.image_url || service.image || fallbackImage} 
                       alt={service.title} 
                       onError={(e) => {
                         e.target.onerror = null;
@@ -112,7 +112,8 @@ export default function ServicesSection({ onOpenQuote }) {
                       color: '#00B4D8',
                       display: 'flex',
                       alignItems: 'center',
-                      justify: 'center'
+                      justifyContent: 'center',
+                      zIndex: 10
                     }}>
                       <IconComponent size={22} />
                     </div>
@@ -129,7 +130,8 @@ export default function ServicesSection({ onOpenQuote }) {
                       fontWeight: 700,
                       padding: '4px 10px',
                       borderRadius: '14px',
-                      border: '1px solid var(--border-light)'
+                      border: '1px solid var(--border-light)',
+                      zIndex: 10
                     }}>
                       {service.category}
                     </span>
@@ -141,12 +143,12 @@ export default function ServicesSection({ onOpenQuote }) {
                     </h3>
                     
                     <p style={{ fontSize: '0.86rem', color: '#94A3B8', lineHeight: 1.6, marginBottom: '18px', minHeight: '46px' }}>
-                      {service.tagline}
+                      {service.tagline || service.short_description || service.description || ''}
                     </p>
 
                     {/* Feature Bullets List - MinHeight ensures identical height for all cards */}
-                    <div style={{ minHeight: '140px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
-                      {service.features.map((feat, idx) => (
+                    <div style={{ minHeight: '130px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+                      {(Array.isArray(service.features) ? service.features : []).map((feat, idx) => (
                         <div key={idx} style={{ fontSize: '0.82rem', color: '#CBD5E1', display: 'flex', alignItems: 'flex-start', gap: '8px', lineHeight: 1.4 }}>
                           <CheckCircle size={15} color="#10B981" style={{ flexShrink: 0, marginTop: '2px' }} />
                           <span>{feat}</span>

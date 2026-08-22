@@ -39,7 +39,7 @@ export default function ClientLayout({
 
       {/* TOP HEADER */}
       <header className="portal-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+        <div className="portal-header-left" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="portal-mobile-menu-btn"
@@ -51,6 +51,7 @@ export default function ClientLayout({
 
           <div 
             onClick={() => onSelectSubPage('dashboard')} 
+            className="portal-header-branding"
             style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', minWidth: 0 }}
           >
             <div style={{
@@ -66,8 +67,8 @@ export default function ClientLayout({
             }}>
               <Briefcase size={18} color="#FFFFFF" />
             </div>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+              <div className="portal-header-title-row" style={{ fontSize: '0.95rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'nowrap' }}>
                 <span className="portal-header-logo-text" style={{ whiteSpace: 'nowrap' }}>MEDIA SCOPE IT</span>
                 <span className="portal-header-badge" style={{ color: '#FF6B00', fontSize: '0.72rem', background: 'rgba(255, 107, 0, 0.12)', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(255, 107, 0, 0.3)', whiteSpace: 'nowrap' }}>CLIENT</span>
               </div>
@@ -79,9 +80,10 @@ export default function ClientLayout({
         </div>
 
         {/* Right Header Elements */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+        <div className="portal-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
           <button
             onClick={() => onNavigate('home')}
+            className="portal-header-public-btn"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -96,8 +98,7 @@ export default function ClientLayout({
               cursor: 'pointer',
               transition: 'all 0.2s ease'
             }}
-            onMouseOver={(e) => { e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; }}
-            onMouseOut={(e) => { e.currentTarget.style.color = '#94A3B8'; e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; }}
+            title="Return to Public Website"
           >
             <ExternalLink size={14} />
             <span className="portal-header-btn-text">Public Site</span>
@@ -106,6 +107,7 @@ export default function ClientLayout({
           {/* Client Profile Chip */}
           <div 
             onClick={() => onSelectSubPage('profile')}
+            className="portal-header-profile-chip"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -116,6 +118,7 @@ export default function ClientLayout({
               borderRadius: '20px',
               cursor: 'pointer'
             }}
+            title="My Profile"
           >
             <div style={{
               width: '24px',
@@ -139,6 +142,7 @@ export default function ClientLayout({
 
           <button
             onClick={onLogout}
+            className="portal-header-logout-btn"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -153,8 +157,7 @@ export default function ClientLayout({
               cursor: 'pointer',
               transition: 'all 0.2s ease'
             }}
-            onMouseOver={(e) => { e.currentTarget.style.background = '#EF4444'; e.currentTarget.style.color = '#FFFFFF'; }}
-            onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)'; e.currentTarget.style.color = '#EF4444'; }}
+            title="Logout"
           >
             <LogOut size={14} />
             <span className="portal-header-btn-text">Logout</span>

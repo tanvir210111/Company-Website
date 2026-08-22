@@ -119,7 +119,7 @@ export default function QuoteModal({ isOpen, onClose, selectedService, currentUs
           </div>
           <div style={{ textAlign: 'left' }}>
             <div style={{ fontSize: '0.78rem', color: '#94A3B8' }}>Starting Package:</div>
-            <div style={{ fontSize: '1.2rem', color: '#00B4D8', fontWeight: 800 }}>{service.startingPrice}</div>
+            <div style={{ fontSize: '1.2rem', color: '#00B4D8', fontWeight: 800 }}>{service.startingPrice || service.starting_price || 'Custom Scope'}</div>
           </div>
         </div>
 

@@ -49,7 +49,7 @@ export default function DigitalMarketingServicesPage({ onNavigate, onOpenQuote }
               <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <div style={{ position: 'relative', height: '190px', width: '100%', overflow: 'hidden', background: '#0B1120', borderBottom: '2px solid #FF6B00' }}>
                   <img 
-                    src={service.image} 
+                    src={service.image_url || service.image || "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80"} 
                     alt={service.title} 
                     onError={(e) => {
                       e.target.onerror = null;
@@ -62,7 +62,7 @@ export default function DigitalMarketingServicesPage({ onNavigate, onOpenQuote }
                       display: 'block'
                     }} 
                   />
-                  <span style={{ position: 'absolute', top: '14px', right: '14px', background: 'rgba(7, 10, 18, 0.85)', backdropFilter: 'blur(8px)', color: '#FF6B00', fontSize: '0.75rem', fontWeight: 700, padding: '4px 12px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+                  <span style={{ position: 'absolute', top: '14px', right: '14px', background: 'rgba(7, 10, 18, 0.85)', backdropFilter: 'blur(8px)', color: '#FF6B00', fontSize: '0.75rem', fontWeight: 700, padding: '4px 12px', borderRadius: '20px', border: '1px solid var(--border-light)', zIndex: 10 }}>
                     {service.category}
                   </span>
                 </div>

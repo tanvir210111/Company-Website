@@ -6,6 +6,7 @@ export const SERVICES = [
     tagline: "Empower your sales & customer support team in Bangladesh",
     icon: "Users",
     image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
     features: [
       "Lead Capture & Funnel Tracking",
       "Automated SMS & Email Follow-ups",
@@ -22,6 +23,7 @@ export const SERVICES = [
     tagline: "Automated salary, attendance & tax calculations",
     icon: "CreditCard",
     image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
     features: [
       "Biometric Attendance Machine Sync",
       "Automated Payslip Generation & SMS Notification",
@@ -38,6 +40,7 @@ export const SERVICES = [
     tagline: "Smart POS solution for Super Shops, Retail & Wholesale",
     icon: "ShoppingCart",
     image: "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80",
     features: [
       "Barcode Scanner & Thermal Printer Support",
       "Real-time Inventory & Stock Alerts",
@@ -54,6 +57,7 @@ export const SERVICES = [
     tagline: "Complete healthcare management & lab reporting system",
     icon: "Activity",
     image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
     features: [
       "Patient Registration & Doctor Token Generation",
       "Pathology & Radiology Test Billing",
@@ -70,6 +74,7 @@ export const SERVICES = [
     tagline: "#1 FB Ad Boosting Service in Bangladesh",
     icon: "Megaphone",
     image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
     features: [
       "Targeted Audience Demographics & Interest Filtering",
       "Ad Creative Design & Copywriting",
@@ -86,6 +91,7 @@ export const SERVICES = [
     tagline: "Rank #1 on Google for high-converting keywords",
     icon: "Search",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
     features: [
       "In-Depth Keyword Research & Competitor Audit",
       "On-Page Content & Meta Optimization",
@@ -102,6 +108,7 @@ export const SERVICES = [
     tagline: "High-performance dynamic websites & e-commerce",
     icon: "Globe",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
     features: [
       "Modern Responsive Mobile-First UX Design",
       "E-Commerce Store with bKash/Nagad Payment Gateway",
@@ -118,6 +125,7 @@ export const SERVICES = [
     tagline: "Native and cross-platform Flutter/React Native apps",
     icon: "Smartphone",
     image: "https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=800&q=80",
+    image_url: "https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=800&q=80",
     features: [
       "Cross-Platform iOS & Android Development",
       "Push Notifications & Real-Time Sync",

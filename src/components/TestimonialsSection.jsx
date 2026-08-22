@@ -38,176 +38,187 @@ export default function TestimonialsSection() {
         </div>
 
         {/* ELEGANT 100% EQUAL HEIGHT STUDENT REVIEWS GRID */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '24px', marginBottom: '60px' }}>
-          {testimonialsList.map(item => (
-            <div 
-              key={item.id} 
-              style={{
-                background: 'linear-gradient(145deg, #0F172A 0%, #161F33 100%)',
-                borderRadius: '22px',
-                padding: '28px 24px 22px 24px',
-                border: '1px solid var(--border-light)',
-                borderTop: `3px solid ${item.accentColor}`,
-                boxShadow: '0 12px 32px rgba(0, 0, 0, 0.35)',
-                display: 'flex',
-                flexDirection: 'column',
-                justify: 'space-between',
-                height: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'all 0.3s ease'
-              }}
-              className="course-card"
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                {/* Top Bar: Star Rating & Quote Badge */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    background: 'rgba(255, 183, 3, 0.12)',
-                    padding: '4px 10px',
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255, 183, 3, 0.3)'
-                  }}>
-                    {[...Array(item.rating)].map((_, i) => (
-                      <Star key={i} size={14} fill="#FFB703" color="#FFB703" />
-                    ))}
-                    <span style={{ fontSize: '0.78rem', color: '#FFB703', fontWeight: 800, marginLeft: '4px' }}>5.0</span>
-                  </div>
-
-                  <div style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '10px',
-                    background: `${item.accentColor}18`,
-                    border: `1px solid ${item.accentColor}`,
-                    color: item.accentColor,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justify: 'center'
-                  }}>
-                    <Quote size={18} />
-                  </div>
-                </div>
-
-                {/* Achievement Badge */}
-                <div style={{
-                  display: 'inline-block',
-                  background: 'rgba(7, 10, 18, 0.8)',
-                  color: item.accentColor,
-                  fontSize: '0.78rem',
-                  fontWeight: 800,
-                  padding: '4px 12px',
-                  borderRadius: '12px',
-                  border: `1px solid ${item.accentColor}50`,
-                  marginBottom: '14px',
-                  alignSelf: 'flex-start'
-                }}>
-                  {item.achievement}
-                </div>
-
-                {/* Student Quote - Fixed minHeight so all quotes take identical vertical space */}
-                <p style={{ 
-                  fontStyle: 'italic', 
-                  fontSize: '0.9rem', 
-                  color: '#E2E8F0', 
-                  lineHeight: 1.65, 
-                  marginBottom: '20px', 
-                  minHeight: '84px',
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 270px), 1fr))', gap: '24px', marginBottom: '60px' }}>
+          {testimonialsList.map(item => {
+            const accent = item.accentColor || '#00B4D8';
+            return (
+              <div 
+                key={item.id} 
+                style={{
+                  background: 'linear-gradient(145deg, #0F172A 0%, #161F33 100%)',
+                  borderRadius: '22px',
+                  padding: '28px 24px 22px 24px',
+                  border: '1px solid var(--border-light)',
+                  borderTop: `3px solid ${accent}`,
+                  boxShadow: '0 12px 32px rgba(0, 0, 0, 0.35)',
                   display: 'flex',
-                  alignItems: 'center'
-                }}>
-                  "{item.quote}"
-                </p>
-              </div>
-
-              {/* Student Profile Footer - Fixed height & single-line truncation for perfect horizontal alignment */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                paddingTop: '16px',
-                borderTop: '1px solid var(--border-light)',
-                marginTop: 'auto',
-                height: '68px'
-              }}>
-                <div style={{
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  height: '100%',
                   position: 'relative',
-                  width: '48px',
-                  height: '48px',
-                  flexShrink: 0
-                }}>
-                  <img 
-                    src={item.avatar} 
-                    alt={item.name} 
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      borderRadius: '50%',
-                      border: `2px solid ${item.accentColor}`,
-                      boxShadow: `0 0 12px ${item.accentColor}40`
-                    }} 
-                  />
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '-2px',
-                    right: '-2px',
-                    background: '#10B981',
-                    color: '#070A12',
-                    borderRadius: '50%',
-                    width: '18px',
-                    height: '18px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justify: 'center',
-                    border: '2px solid #0F172A'
-                  }}>
-                    <CheckCircle2 size={12} strokeWidth={3} />
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease'
+                }}
+                className="course-card"
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  {/* Top Bar: Star Rating & Quote Badge */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      background: 'rgba(255, 183, 3, 0.12)',
+                      padding: '4px 10px',
+                      borderRadius: '16px',
+                      border: '1px solid rgba(255, 183, 3, 0.3)'
+                    }}>
+                      {[...Array(Math.max(1, Math.round(item.rating || 5)))].map((_, i) => (
+                        <Star key={i} size={14} fill="#FFB703" color="#FFB703" />
+                      ))}
+                      <span style={{ fontSize: '0.78rem', color: '#FFB703', fontWeight: 800, marginLeft: '4px' }}>
+                        {(item.rating || 5.0).toFixed(1)}
+                      </span>
+                    </div>
+
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '10px',
+                      background: `${accent}18`,
+                      border: `1px solid ${accent}`,
+                      color: accent,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <Quote size={18} />
+                    </div>
                   </div>
+
+                  {/* Achievement Badge (if present) */}
+                  {item.achievement && (
+                    <div style={{
+                      display: 'inline-block',
+                      background: 'rgba(7, 10, 18, 0.8)',
+                      color: accent,
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      padding: '4px 12px',
+                      borderRadius: '12px',
+                      border: `1px solid ${accent}50`,
+                      marginBottom: '14px',
+                      alignSelf: 'flex-start'
+                    }}>
+                      {item.achievement}
+                    </div>
+                  )}
+
+                  {/* Student Quote */}
+                  <p style={{ 
+                    fontStyle: 'italic', 
+                    fontSize: '0.9rem', 
+                    color: '#E2E8F0', 
+                    lineHeight: 1.65, 
+                    marginBottom: '20px', 
+                    minHeight: '60px',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
+                    "{item.quote || item.review_text || item.message || "This course provided a comprehensive journey from the basics to advanced practical skills. The mentorship changed my career trajectory."}"
+                  </p>
                 </div>
 
-                <div style={{ overflow: 'hidden', width: '100%' }}>
-                  <div style={{ 
-                    fontWeight: 800, 
-                    fontSize: '0.94rem', 
-                    color: '#FFFFFF', 
-                    whiteSpace: 'nowrap', 
-                    overflow: 'hidden', 
-                    textOverflow: 'ellipsis' 
+                {/* Student Profile Footer */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  paddingTop: '16px',
+                  borderTop: '1px solid var(--border-light)',
+                  marginTop: 'auto',
+                  height: '68px'
+                }}>
+                  <div style={{
+                    position: 'relative',
+                    width: '48px',
+                    height: '48px',
+                    flexShrink: 0
                   }}>
-                    {item.name}
+                    <img 
+                      src={item.avatar || item.photo_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"} 
+                      alt={item.name} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80";
+                      }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '50%',
+                        border: `2px solid ${accent}`,
+                        boxShadow: `0 0 12px ${accent}40`
+                      }} 
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-2px',
+                      right: '-2px',
+                      background: '#10B981',
+                      color: '#070A12',
+                      borderRadius: '50%',
+                      width: '18px',
+                      height: '18px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: '2px solid #0F172A'
+                    }}>
+                      <CheckCircle2 size={12} strokeWidth={3} />
+                    </div>
                   </div>
-                  <div style={{ 
-                    fontSize: '0.78rem', 
-                    color: item.accentColor, 
-                    fontWeight: 700, 
-                    marginTop: '2px', 
-                    whiteSpace: 'nowrap', 
-                    overflow: 'hidden', 
-                    textOverflow: 'ellipsis' 
-                  }}>
-                    {item.course}
-                  </div>
-                  <div style={{ 
-                    fontSize: '0.74rem', 
-                    color: '#94A3B8', 
-                    whiteSpace: 'nowrap', 
-                    overflow: 'hidden', 
-                    textOverflow: 'ellipsis' 
-                  }}>
-                    {item.role}
+
+                  <div style={{ overflow: 'hidden', width: '100%' }}>
+                    <div style={{ 
+                      fontWeight: 800, 
+                      fontSize: '0.94rem', 
+                      color: '#FFFFFF', 
+                      whiteSpace: 'nowrap', 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis' 
+                    }}>
+                      {item.name}
+                    </div>
+                    <div style={{ 
+                      fontSize: '0.78rem', 
+                      color: accent, 
+                      fontWeight: 700, 
+                      marginTop: '2px', 
+                      whiteSpace: 'nowrap', 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis' 
+                    }}>
+                      {item.course || item.company || 'Alumni Graduate'}
+                    </div>
+                    <div style={{ 
+                      fontSize: '0.74rem', 
+                      color: '#94A3B8', 
+                      whiteSpace: 'nowrap', 
+                      overflow: 'hidden', 
+                      textOverflow: 'ellipsis' 
+                    }}>
+                      {item.role || item.author_title || 'Software Professional'}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Valued Corporate Clients Photo Showcase Grid */}
-        <div style={{
+        <div className="corporate-clients-box" style={{
           background: 'linear-gradient(180deg, #0B1120 0%, #0F172A 100%)',
           border: '1px solid var(--border-light)',
           borderRadius: '24px',
@@ -218,7 +229,7 @@ export default function TestimonialsSection() {
             <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '1.5px', display: 'inline-block', marginBottom: '6px' }}>
               Enterprise & Institutional Trust
             </span>
-            <h3 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#FFFFFF' }}>
+            <h3 className="corporate-clients-heading" style={{ fontSize: '2.1rem', fontWeight: 800, color: '#FFFFFF' }}>
               Valued Corporate & Institutional Clients
             </h3>
             <p style={{ color: '#94A3B8', fontSize: '0.96rem', maxWidth: '700px', margin: '6px auto 0 auto' }}>
@@ -226,9 +237,9 @@ export default function TestimonialsSection() {
             </p>
           </div>
 
-          <div style={{
+          <div className="corporate-clients-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
             gap: '24px'
           }}>
             {CLIENT_LOGOS.map((client, idx) => (
@@ -243,7 +254,7 @@ export default function TestimonialsSection() {
                   transition: 'all 0.3s ease',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   height: '100%'
                 }}
                 className="course-card"
@@ -251,20 +262,24 @@ export default function TestimonialsSection() {
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <div style={{
                     position: 'relative',
-                    height: '150px',
+                    height: '160px',
                     width: '100%',
                     overflow: 'hidden',
+                    background: '#0B1120',
                     borderBottom: `2px solid ${client.color}`
                   }}>
                     <img 
                       src={client.image} 
                       alt={client.name} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80";
+                      }}
                       style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                        display: 'block'
                       }} 
                     />
 
@@ -279,7 +294,8 @@ export default function TestimonialsSection() {
                       fontSize: '0.78rem',
                       fontWeight: 800,
                       padding: '4px 12px',
-                      borderRadius: '12px'
+                      borderRadius: '12px',
+                      zIndex: 10
                     }}>
                       {client.logoBadge}
                     </div>
