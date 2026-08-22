@@ -60,6 +60,53 @@ import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 import FAQSection from './components/FAQSection';
 import DynamicPage from './pages/DynamicPage';
 
+// Complete registry of all static routes to prevent 404 fallback from rendering under valid pages
+const KNOWN_STATIC_ROUTES = new Set([
+  'home',
+  'cert-verification',
+  'about-us',
+  'company-profile',
+  'md-message',
+  'team',
+  'senior-software-developer-tanvir-hossain-khan',
+  'tanvir-hasan',
+  'video-editor-nashimul-hasan-nibir',
+  'nibir',
+  'sr-social-media-marketer-naimur-rahman-naim',
+  'naim',
+  'jr-social-media-marketer-fahim-hasan-jidan',
+  'jidan',
+  'jr-social-media-marketer-hridoy-hasan',
+  'hridoy',
+  'our-clients',
+  'courses',
+  'web-courses',
+  'web-development',
+  'graphics-courses',
+  'graphics-design',
+  'marketing-courses',
+  'digital-marketing',
+  'software-courses',
+  'python-django',
+  'programming-courses',
+  'others-courses',
+  'services',
+  'web-services',
+  'marketing-services',
+  'graphics-services',
+  'software-services',
+  'other-services',
+  'others-services',
+  'payment/success',
+  'payment/fail',
+  'payment/cancel',
+  'terms-and-conditions',
+  'privacy-policy',
+  'refund-policy',
+  'delivery-policy',
+  'admin'
+]);
+
 // Admin Panel Components
 import AdminLoginPage from './components/admin/AdminLoginPage';
 import AdminLayout from './components/admin/AdminLayout';
@@ -789,7 +836,7 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'senior-software-developer-tanvir-hossain-khan' && (
+        {(currentPage === 'senior-software-developer-tanvir-hossain-khan' || currentPage === 'tanvir-hasan') && (
           <TanvirProfilePage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission} 
@@ -797,28 +844,28 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'video-editor-nashimul-hasan-nibir' && (
+        {(currentPage === 'video-editor-nashimul-hasan-nibir' || currentPage === 'nibir') && (
           <NibirProfilePage 
             onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
           />
         )}
 
-        {currentPage === 'sr-social-media-marketer-naimur-rahman-naim' && (
+        {(currentPage === 'sr-social-media-marketer-naimur-rahman-naim' || currentPage === 'naim') && (
           <NaimProfilePage 
             onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
           />
         )}
 
-        {currentPage === 'jr-social-media-marketer-fahim-hasan-jidan' && (
+        {(currentPage === 'jr-social-media-marketer-fahim-hasan-jidan' || currentPage === 'jidan') && (
           <JidanProfilePage 
             onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
           />
         )}
 
-        {currentPage === 'jr-social-media-marketer-hridoy-hasan' && (
+        {(currentPage === 'jr-social-media-marketer-hridoy-hasan' || currentPage === 'hridoy') && (
           <HridoyProfilePage 
             onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
@@ -840,28 +887,28 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'web-courses' && (
+        {(currentPage === 'web-courses' || currentPage === 'web-development') && (
           <WebDevCoursesPage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission}
           />
         )}
 
-        {currentPage === 'graphics-courses' && (
+        {(currentPage === 'graphics-courses' || currentPage === 'graphics-design') && (
           <GraphicsCoursesPage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission}
           />
         )}
 
-        {currentPage === 'marketing-courses' && (
+        {(currentPage === 'marketing-courses' || currentPage === 'digital-marketing') && (
           <DigitalMarketingCoursesPage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission}
           />
         )}
 
-        {currentPage === 'software-courses' && (
+        {(currentPage === 'software-courses' || currentPage === 'python-django') && (
           <SoftwareDevCoursesPage 
             onNavigate={handleNavigate} 
             onOpenAdmission={handleOpenAdmission}
@@ -897,7 +944,7 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'marketing-services' && (
+        {(currentPage === 'marketing-services' || currentPage === 'graphics-services') && (
           <DigitalMarketingServicesPage 
             onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
@@ -911,7 +958,7 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'other-services' && (
+        {(currentPage === 'other-services' || currentPage === 'others-services') && (
           <OtherServicesPage 
             onNavigate={handleNavigate} 
             onOpenQuote={handleOpenQuote}
@@ -965,7 +1012,7 @@ export default function App() {
         )}
 
         {/* Dynamic CMS Page Fallback Route */}
-        {!['home', 'cert-verification', 'about-us', 'company-profile', 'md-message', 'team', 'tanvir-hasan', 'jidan', 'hridoy', 'our-clients', 'courses', 'web-development', 'graphics-design', 'digital-marketing', 'python-django', 'programming-courses', 'others-courses', 'services', 'web-services', 'graphics-services', 'marketing-services', 'others-services', 'payment/success', 'payment/fail', 'payment/cancel', 'terms-and-conditions', 'privacy-policy', 'refund-policy', 'delivery-policy', 'admin'].includes(currentPage) && (
+        {!KNOWN_STATIC_ROUTES.has(currentPage) && (
           <DynamicPage 
             slug={currentPage}
             onNavigate={handleNavigate}

@@ -1648,6 +1648,26 @@ html, body {
     box-sizing: border-box !important;
   }
 
+  /* Profile Technology & SQA Stack Compact 2-Column Grid on Mobile/Tablet */
+  .profile-tech-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .profile-actions-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .profile-action-btn {
+    padding: 8px 10px !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
   /* Valued Corporate Clients Section */
   .corporate-clients-box {
     padding: 24px 16px !important;
@@ -1788,6 +1808,20 @@ html, body {
   .form-group-row {
     flex-direction: column !important;
     gap: 12px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .profile-tech-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .profile-actions-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .profile-action-btn {
+    font-size: 0.75rem !important;
+    padding: 8px 10px !important;
   }
 }
 

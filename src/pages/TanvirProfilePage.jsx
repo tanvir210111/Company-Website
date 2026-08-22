@@ -209,31 +209,31 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               </div>
 
               {/* Social & Contact Actions */}
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <div className="profile-actions-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '10px', marginTop: '8px' }}>
                 <a 
                   href="https://www.linkedin.com/in/tanvir-khan-90122a30b" 
                   target="_blank" 
                   rel="noreferrer"
-                  className="btn-primary"
-                  style={{ padding: '10px 20px', fontSize: '0.88rem' }}
+                  className="btn-primary profile-action-btn"
+                  style={{ padding: '9px 12px', fontSize: '0.82rem', justifyContent: 'center', textAlign: 'center' }}
                 >
-                  <Globe size={16} /> Official LinkedIn Profile
+                  <Globe size={15} /> LinkedIn Profile
                 </a>
                 <a 
                   href="https://github.com/tanvir210111" 
                   target="_blank" 
                   rel="noreferrer"
-                  className="btn-outline"
-                  style={{ padding: '10px 20px', fontSize: '0.88rem' }}
+                  className="btn-outline profile-action-btn"
+                  style={{ padding: '9px 12px', fontSize: '0.82rem', justifyContent: 'center', textAlign: 'center' }}
                 >
-                  <Code size={16} /> GitHub Profile
+                  <Code size={15} /> GitHub Profile
                 </a>
                 <button 
                   onClick={() => onOpenQuote()} 
-                  className="btn-secondary"
-                  style={{ padding: '10px 20px', fontSize: '0.88rem' }}
+                  className="btn-secondary profile-action-btn"
+                  style={{ padding: '10px 14px', fontSize: '0.84rem', justifyContent: 'center', textAlign: 'center', gridColumn: '1 / -1' }}
                 >
-                  <Briefcase size={16} /> Request Consultation
+                  <Briefcase size={15} /> Request Consultation
                 </button>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function TanvirProfilePage({ onNavigate, onOpenAdmission, onOpenQ
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Code size={20} color="#FF6B00" /> Technology & SQA Stack
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="profile-tech-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
                 {TECH_CATEGORIES.map((catGroup, idx) => (
                   <div key={idx} style={{ background: '#0B1120', padding: '14px 18px', borderRadius: '14px', border: '1px solid var(--border-light)' }}>
                     <div style={{ fontSize: '0.82rem', color: '#00B4D8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '10px' }}>

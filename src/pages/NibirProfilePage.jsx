@@ -120,9 +120,9 @@ export default function NibirProfilePage({ onNavigate, onOpenQuote }) {
                 </span>
               </div>
 
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <button onClick={() => onOpenQuote()} className="btn-primary" style={{ padding: '10px 20px', fontSize: '0.88rem' }}>
-                  <Briefcase size={16} /> Request Video Project Quote
+              <div className="profile-actions-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '10px', marginTop: '8px' }}>
+                <button onClick={() => onOpenQuote()} className="btn-primary profile-action-btn" style={{ padding: '10px 16px', fontSize: '0.84rem', justifyContent: 'center', textAlign: 'center' }}>
+                  <Briefcase size={15} /> Request Video Project Quote
                 </button>
               </div>
             </div>
@@ -146,9 +146,9 @@ export default function NibirProfilePage({ onNavigate, onOpenQuote }) {
               <h3 style={{ fontSize: '1.3rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Code size={20} color="#FF6B00" /> Core Editing Skills
               </h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              <div className="profile-tech-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '10px' }}>
                 {SKILLS.map((skill, idx) => (
-                  <div key={idx} style={{ background: 'rgba(0, 180, 216, 0.12)', border: '1px solid rgba(0, 180, 216, 0.3)', color: '#FFFFFF', padding: '8px 14px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div key={idx} style={{ background: 'rgba(0, 180, 216, 0.12)', border: '1px solid rgba(0, 180, 216, 0.3)', color: '#FFFFFF', padding: '8px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <CheckCircle2 size={14} color="#00B4D8" /> {skill}
                   </div>
                 ))}
