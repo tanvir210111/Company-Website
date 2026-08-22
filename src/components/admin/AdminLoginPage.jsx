@@ -93,7 +93,8 @@ export default function AdminLoginPage({ onLoginSuccess, onNavigate }) {
   return (
     <div style={{
       minHeight: '100vh',
-      width: '100vw',
+      width: '100%',
+      maxWidth: '100%',
       background: 'radial-gradient(ellipse at top, #0d1b2a 0%, #070a12 70%, #030712 100%)',
       display: 'flex',
       alignItems: 'center',
